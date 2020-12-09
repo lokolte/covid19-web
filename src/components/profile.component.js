@@ -4,6 +4,8 @@ import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
+import "../App.css";
+
 class Profile extends Component {
   render() {
     const { user: currentUser } = this.props;
@@ -15,7 +17,7 @@ class Profile extends Component {
     console.log("current user: ", currentUser);
 
     return (
-      <div className="container">
+      <div className="container content">
         <header className="jumbotron">
           <h3>
             <strong>{currentUser.account.email}</strong> Profile
@@ -41,7 +43,7 @@ class Profile extends Component {
 }
 
 function mapStateToProps(state) {
-  const { user } = state.auth;
+  const { user } = state.authentication;
   return {
     user,
   };

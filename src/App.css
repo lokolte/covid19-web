@@ -32,3 +32,24 @@ label {
   -webkit-border-radius: 50%;
   border-radius: 50%;
 }
+
+body::-webkit-scrollbar {
+  width: 0.25rem;
+}
+
+body::-webkit-scrollbar-track {
+  background: #1e1e24;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #6649b8;
+}
+
+.content {
+  margin-top: 10vh;
+  margin-left: 8.5vh;
+}
+
+.dialog {
+  margin-top: 10vh;
+}

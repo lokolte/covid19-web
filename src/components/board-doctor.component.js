@@ -1,6 +1,7 @@
 /** @format */
 
 import React, { Component } from "react";
+import "../App.css";
 
 import UserService from "../services/user.service";
 
@@ -35,7 +36,7 @@ export default class BoardDoctor extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="container content">
         <header className="jumbotron">
           <h3>{this.state.content}</h3>
         </header>

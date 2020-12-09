@@ -11,6 +11,8 @@ import { connect } from "react-redux";
 import { login } from "../actions/auth";
 import { isEmail } from "validator";
 
+import "../App.css";
+
 const required = (value) => {
   if (!value) {
     return (
@@ -93,7 +95,7 @@ class Login extends Component {
     }
 
     return (
-      <div className="col-md-12">
+      <div className="col-md-12 dialog">
         <div className="card card-container">
           <img
             src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
@@ -164,7 +166,7 @@ class Login extends Component {
 }
 
 function mapStateToProps(state) {
-  const { isLoggedIn } = state.auth;
+  const { isLoggedIn } = state.authentication;
   const { message } = state.message;
   return {
     isLoggedIn,

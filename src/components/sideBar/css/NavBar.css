@@ -1,0 +1,118 @@
+/** @format */
+:root {
+  font-size: 16px;
+  --primary-color: #f5f5f5;
+  --background-color: #1a83ff;
+  --primary-pading: 1vh 2vh 1vh 2vh;
+  --secundary-pading: 0.5vh 1vh 0.5vh 1vh;
+  --standart-size: 8.5vh;
+  --transition-speed: 600ms;
+}
+
+.navbar {
+  width: 100%;
+  height: var(--standart-size);
+  display: flex;
+  position: fixed !important;
+  top: 0;
+  justify-content: start;
+  align-items: center;
+}
+
+.menu-bars {
+  margin-left: 2rem;
+  margin-right: 2rem;
+  font-size: 2rem;
+}
+
+.nav-menu.active {
+  width: 25vh;
+  display: flex;
+  position: fixed;
+  top: 0;
+  margin-top: var(--standart-size);
+  left: 0;
+  transition: 450ms;
+}
+
+.nav-menu.inactive {
+  width: var(--standart-size);
+  display: flex;
+  position: fixed;
+  top: 0;
+  margin-top: var(--standart-size);
+  left: 0;
+  transition: 450ms;
+}
+
+.nav-text {
+  display: flex;
+  align-items: center;
+  padding: var(--secundary-pading);
+  list-style: none;
+  height: 60px;
+  left: 0;
+}
+
+.nav-text a {
+  color: var(--primary-color);
+  font-size: 18px;
+  width: 95%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: var(--primary-pading);
+  border-radius: 0.3vh;
+}
+
+.nav-text a:hover {
+  background-color: var(--background-color);
+}
+
+.nav-text-alternative {
+  display: flex;
+  align-items: center;
+  padding: var(--secundary-pading);
+  list-style: none;
+  height: 60px;
+  left: 0;
+}
+
+.nav-text-alternative a {
+  color: var(--primary-color);
+  font-size: 30px;
+  width: 95%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: var(--primary-pading);
+  border-radius: 0.3vh;
+}
+
+.nav-text-alternative a:hover {
+  background-color: var(--background-color);
+}
+
+.nav-menu-items {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  padding-inline-start: 0;
+  flex-direction: column;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.nav-menu-items-centered {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  padding-inline-start: 0;
+  flex-direction: column;
+  align-items: center;
+  float: left;
+}
+
+span {
+  margin-left: 16px;
+}
