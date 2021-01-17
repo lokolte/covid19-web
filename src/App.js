@@ -13,6 +13,9 @@ import BoardDoctor from "./components/board-doctor.component";
 import BoardAdmin from "./components/board-admin.component";
 import Navbar from "./components/sideBar/navbar.component";
 
+import Forms from "./components/forms/form-list.component";
+import Answers from "./components/answers/answer.component";
+
 import { clearMessage } from "./actions/message";
 
 import { history } from "./helpers/history";
@@ -38,6 +41,8 @@ class App extends Component {
               <Route exact path="/profile" component={Profile} />
               <Route path="/doctor" component={BoardDoctor} />
               <Route path="/admin" component={BoardAdmin} />
+              <Route path="/forms" component={Forms} />
+              <Route path="/answers" component={Answers} />
             </Switch>
           </div>
         </div>

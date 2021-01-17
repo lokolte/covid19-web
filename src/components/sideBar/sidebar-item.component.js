@@ -1,9 +1,9 @@
 /** @format */
-import { SidebarData } from "./sidebar-data";
+import { Sidebar_Data } from "../../config/sidebar-data";
 import { Link } from "react-router-dom";
 
 function SideBarItem(props) {
-  return SidebarData.map((item, index) => {
+  return Sidebar_Data.map((item, index) => {
     return props.active ? (
       <li key={index} className={item.cName}>
         <Link to={item.path}>

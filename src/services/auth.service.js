@@ -1,8 +1,7 @@
 /** @format */
 
 import axios from "axios";
-
-const API_URL = "http://192.168.0.20:9900";
+import { API_URL } from "../config/env.config";
 
 class AuthService {
   login(email, password) {
