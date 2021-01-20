@@ -15,6 +15,8 @@ import Navbar from "./components/sideBar/navbar.component";
 
 import Forms from "./components/forms/form-list.component";
 import Answers from "./components/answers/answer.component";
+import FormPatients from "./components/patients/form.component";
+import AnswersForm from "./components/patients/answers.form.component";
 
 import { clearMessage } from "./actions/message";
 
@@ -43,6 +45,14 @@ class App extends Component {
               <Route path="/admin" component={BoardAdmin} />
               <Route path="/forms" component={Forms} />
               <Route path="/answers" component={Answers} />
+              <Route
+                path="/patients/:personId/forms/:formId/answers"
+                component={AnswersForm}
+              />
+              <Route
+                path="/patients/:personId/forms"
+                component={FormPatients}
+              />
             </Switch>
           </div>
         </div>

@@ -1,16 +1,18 @@
 /** @format */
 
-import { GET_FORMS_SUCCESS, GET_FORMS_FAIL, SET_MESSAGE } from "./types";
+import { GET_ANSWERS_SUCCESS, GET_ANSWERS_FAIL, SET_MESSAGE } from "./types";
 
 import FormService from "../services/form.service";
 
-export const getForms = () => (dispatch) => {
-  return FormService.getPersonForms().then(
+export const getAnswers = (idForm, idPerson) => (dispatch) => {
+  return FormService.getAnswersForm(idForm, idPerson).then(
     (data) => {
       dispatch({
-        type: GET_FORMS_SUCCESS,
-        payload: { forms: data.forms },
+        type: GET_ANSWERS_SUCCESS,
+        payload: { answers: data },
       });
+
+      console.log("se trajo algo?", data);
 
       return Promise.resolve();
     },
@@ -23,7 +25,7 @@ export const getForms = () => (dispatch) => {
         error.toString();
 
       dispatch({
-        type: GET_FORMS_FAIL,
+        type: GET_ANSWERS_FAIL,
       });
 
       dispatch({

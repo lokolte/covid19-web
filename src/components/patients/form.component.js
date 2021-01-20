@@ -3,9 +3,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { getPatients } from "../actions/patients";
-import "../App.css";
+import { getForms } from "../../actions/forms";
+// import FormItem from "./form-item.component";
 
+import "../../App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.css";
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
@@ -13,69 +14,61 @@ import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 
-import UserService from "../services/user.service";
-
-class Home extends Component {
+class FormPatients extends Component {
   constructor(props) {
     super(props);
-
-    this.loadPatients = this.loadPatients.bind(this);
+    this.loadForms = this.loadForms.bind(this);
 
     this.state = {
-      patients: undefined,
+      forms: undefined,
       currentPage: 1,
       sizePerPage: 10,
-      content: "Este es el home page",
+      personId: undefined,
     };
   }
 
-  loadPatients() {
-    const { dispatch, patients } = this.props;
+  componentDidMount() {
+    const { personId } = this.props.match.params;
+    this.state.persona = personId;
+    localStorage.setItem("personId", personId);
+  }
 
-    dispatch(getPatients()).then(() => {
+  loadForms() {
+    const { dispatch, forms } = this.props;
+
+    dispatch(getForms()).then(() => {
       this.setState({
-        patients: patients,
+        forms: forms,
       });
     });
   }
 
-  // componentDidMount() {
-  //   UserService.getPersons().then(
-  //     (response) => {
-  //       this.setState({
-  //         content: response.data,
-  //       });
-  //     },
-  //     (error) => {
-  //       this.setState({
-  //         content:
-  //           (error.response && error.response.data) ||
-  //           error.message ||
-  //           error.toString(),
-  //       });
-  //     }
-  //   );
-  // }
-
   rankFormatter(cell, row, rowIndex, formatExtraData) {
-    let url = "/patients/" + row.id + "/forms";
+    let url =
+      "/patients/" +
+      localStorage.getItem("personId") +
+      "/forms/" +
+      row.id +
+      "/answers";
     return <a href={url}>Detalles</a>;
   }
 
   render() {
     const { user: currentUser } = this.props;
 
+    console.log("personId : " + this.state.person);
+
     if (!currentUser) {
       return <Redirect to="/login" />;
     }
 
-    if (!this.state.patients) {
-      this.loadPatients();
+    if (!this.state.forms) {
+      this.loadForms();
     }
 
     const columns = [
-      { dataField: "name", text: "Nombre", sort: true },
-      { dataField: "phone", text: "Telefono", sort: true },
+      { dataField: "title", text: "Título", sort: true },
+      { dataField: "subtitle", text: "Subtítulo", sort: true },
       {
         dataField: "actions",
         text: "Acciones",
@@ -118,22 +111,22 @@ class Home extends Component {
       <div className="content">
         <div className="container">
           <header className="jumbotron center-jumbotron">
-            <h3 className="center">Pacientes</h3>
+            <h3 className="center">Formularios</h3>
           </header>
         </div>
 
         <div>
-          {this.state.patients ? (
+          {this.state.forms ? (
             <ToolkitProvider
               bootstrap4
               keyField="id"
-              data={this.state.patients}
+              data={this.state.forms}
               columns={columns}
               search={true}
             >
               {(props) => (
                 <div>
-                  <h6>Ingrese algo para filtrar los pacientes:</h6>
+                  <h6>Ingrese algo para filtrar los formularios:</h6>
                   <SearchBar text="Buscar" {...props.searchProps} />
                   <ClearSearchButton text="Limpiar" {...props.searchProps} />
                   <hr />
@@ -154,17 +147,15 @@ class Home extends Component {
     );
   }
 }
-
 function mapStateToProps(state) {
   const { user } = state.authentication;
-  const { patients } = state.patients;
+  const { forms } = state.forms;
   const { message } = state.message;
   return {
     user,
-    patients,
+    forms,
     message,
   };
 }
 
-//export default connect(mapStateToProps)(Home);
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps)(FormPatients);
