@@ -4,8 +4,8 @@ import { GET_ANSWERS_SUCCESS, GET_ANSWERS_FAIL, SET_MESSAGE } from "./types";
 
 import UserService from "../services/user.service";
 
-export const getAnswers = () => (dispatch) => {
-  return UserService.getPersonAnswers().then(
+export const getAnswers = (answerId) => (dispatch) => {
+  return UserService.getPersonAnswers(answerId).then(
     (data) => {
       dispatch({
         type: GET_ANSWERS_SUCCESS,

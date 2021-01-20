@@ -3,39 +3,47 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { getAnswers } from "../../actions/answers";
-// import FormItem from "./form-item.component";
+import { getPatients } from "../../actions/patients";
 
 import "../../App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.css";
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 
-class Answers extends Component {
+class Patients extends Component {
   constructor(props) {
     super(props);
-    this.loadAnswers = this.loadAnswers.bind(this);
+
+    this.loadPatients = this.loadPatients.bind(this);
+
+    this.verDetalle = this.verDetalle.bind(this);
 
     this.state = {
-      answers: undefined,
+      patients: undefined,
       currentPage: 1,
       sizePerPage: 10,
+      content: "Este es el home page",
     };
   }
 
-  loadAnswers() {
-    const { dispatch, answers } = this.props;
+  loadPatients() {
+    const { dispatch, patients } = this.props;
 
-    const answerId = this.props.match.params.id;
-
-    dispatch(getAnswers(answerId)).then(() => {
+    dispatch(getPatients()).then(() => {
       this.setState({
-        answers: answers,
+        patients: patients,
       });
     });
+  }
+
+  verDetalle(cell, row, rowIndex, formatExtraData) {
+    console.log("row : ", row);
+    const answerId = this.state.patients?.filter((x) => x.id == row.id)[0];
+    return <a href={"/patients/" + answerId.id + "/answers"}>Detalles</a>;
   }
 
   render() {
@@ -45,19 +53,26 @@ class Answers extends Component {
       return <Redirect to="/login" />;
     }
 
-    if (!this.state.answers) {
-      this.loadAnswers();
+    if (!this.state.patients) {
+      this.loadPatients();
     }
 
     const columns = [
-      { dataField: "id", text: "Id", sort: true },
-      { dataField: "form.title", text: "Formulario", sort: true },
-      { dataField: "answerDate", text: "Fecha", sort: true },
+      { dataField: "name", text: "Nombre", sort: true },
+      { dataField: "phone", text: "Telefono", sort: true },
+      {
+        dataField: "actions",
+        text: "Acciones",
+        sort: false,
+        isDummyField: true,
+        csvExport: false,
+        formatter: this.verDetalle,
+      },
     ];
 
     const defaultSorted = [
       {
-        dataField: "answerDate",
+        dataField: "orderLevel",
         order: "desc",
       },
     ];
@@ -87,22 +102,22 @@ class Answers extends Component {
       <div className="content">
         <div className="container">
           <header className="jumbotron center-jumbotron">
-            <h3 className="center">Consultas</h3>
+            <h3 className="center">Consultas de Pacientes</h3>
           </header>
         </div>
 
         <div>
-          {this.state.answers ? (
+          {this.state.patients ? (
             <ToolkitProvider
               bootstrap4
               keyField="id"
-              data={this.state.answers}
+              data={this.state.patients}
               columns={columns}
               search={true}
             >
               {(props) => (
                 <div>
-                  <h6>Ingrese algo para filtrar los formularios:</h6>
+                  <h6>Ingrese algo para filtrar los pacientes:</h6>
                   <SearchBar text="Buscar" {...props.searchProps} />
                   <ClearSearchButton text="Limpiar" {...props.searchProps} />
                   <hr />
@@ -123,15 +138,16 @@ class Answers extends Component {
     );
   }
 }
+
 function mapStateToProps(state) {
   const { user } = state.authentication;
-  const { answers } = state.answers;
+  const { patients } = state.patients;
   const { message } = state.message;
   return {
     user,
-    answers,
+    patients,
     message,
   };
 }
 
-export default connect(mapStateToProps)(Answers);
+export default connect(mapStateToProps)(Patients);

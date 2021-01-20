@@ -13,9 +13,9 @@ class UserService {
       });
   }
 
-  getPersonAnswers() {
+  getPersonAnswers(answerId) {
     return axios
-      .get(API_URL + "/answers", { headers: authHeader() })
+      .get(API_URL + "/answers/" + answerId, { headers: authHeader() })
       .then((response) => {
         return response.data;
       });
