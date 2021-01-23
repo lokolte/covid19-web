@@ -43,7 +43,7 @@ class FormPatients extends Component {
     });
   }
 
-  rankFormatter(cell, row, rowIndex, formatExtraData) {
+  verDetalle(cell, row, rowIndex, formatExtraData) {
     let url =
       "/patients/" +
       localStorage.getItem("personId") +
@@ -55,8 +55,6 @@ class FormPatients extends Component {
 
   render() {
     const { user: currentUser } = this.props;
-
-    console.log("personId : " + this.state.person);
 
     if (!currentUser) {
       return <Redirect to="/login" />;
@@ -75,7 +73,7 @@ class FormPatients extends Component {
         sort: false,
         isDummyField: true,
         csvExport: false,
-        formatter: this.rankFormatter,
+        formatter: this.verDetalle,
       },
     ];
 

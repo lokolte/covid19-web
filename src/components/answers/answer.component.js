@@ -29,7 +29,9 @@ class Answers extends Component {
   loadAnswers() {
     const { dispatch, answers } = this.props;
 
-    dispatch(getAnswers()).then(() => {
+    const answerId = this.props.match.params.id;
+
+    dispatch(getAnswers(answerId)).then(() => {
       this.setState({
         answers: answers,
       });

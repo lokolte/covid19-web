@@ -21,7 +21,7 @@ export const Sidebar_Data = [
   },
   {
     title: "Consultas",
-    path: "/answers",
+    path: "/patients",
     icon: <IoIcons.IoIosPaper />,
     cName: "nav-text",
     cNameAlt: "nav-text-alternative",

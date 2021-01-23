@@ -9,7 +9,7 @@ export const getAnswers = (idForm, idPerson) => (dispatch) => {
     (data) => {
       dispatch({
         type: GET_ANSWERS_SUCCESS,
-        payload: { answers: data },
+        payload: { answers: data.answers },
       });
 
       console.log("se trajo algo?", data);
