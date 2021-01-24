@@ -2,10 +2,10 @@
 
 import { GET_ANSWERS_SUCCESS, GET_ANSWERS_FAIL, SET_MESSAGE } from "./types";
 
-import FormService from "../services/form.service";
+import PersonService from "../services/person.service";
 
 export const getAnswers = (idForm, idPerson) => (dispatch) => {
-  return FormService.getAnswersForm(idForm, idPerson).then(
+  return PersonService.getAnswersForm(idForm, idPerson).then(
     (data) => {
       dispatch({
         type: GET_ANSWERS_SUCCESS,

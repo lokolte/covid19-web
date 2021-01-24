@@ -12,16 +12,6 @@ class FormService {
         return response.data;
       });
   }
-
-  getAnswersForm(idForm, idPerson) {
-    return axios
-      .get(API_URL + "/forms/" + idForm + "/answers/" + idPerson, {
-        headers: authHeader(),
-      })
-      .then((response) => {
-        return response.data;
-      });
-  }
 }
 
 export default new FormService();
