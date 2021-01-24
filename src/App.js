@@ -14,6 +14,8 @@ import BoardAdmin from "./components/board-admin.component";
 import Navbar from "./components/sideBar/navbar.component";
 
 import Patients from "./components/patients/patient-list.component";
+import PatientsAssignment from "./components/patients/patients-assignment.component";
+import Assignment from "./components/patients/assignment.component";
 import Forms from "./components/forms/form-list.component";
 import Answers from "./components/answers/answer.component";
 import FormPatients from "./components/patients/form.component";
@@ -54,6 +56,15 @@ class App extends Component {
               <Route
                 path="/patients/:personId/forms"
                 component={FormPatients}
+              />
+              <Route
+                exact
+                path="/assign-patients"
+                component={PatientsAssignment}
+              />
+              <Route
+                path="/patients/:personId/assignment"
+                component={Assignment}
               />
             </Switch>
           </div>

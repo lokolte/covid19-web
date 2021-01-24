@@ -6,6 +6,7 @@ import forms from "./forms";
 import answers from "./answers";
 import message from "./message";
 import patients from "./patients";
+import doctors from "./doctors";
 
 export default combineReducers({
   authentication,
@@ -13,4 +14,5 @@ export default combineReducers({
   answers,
   message,
   patients,
+  doctors,
 });
