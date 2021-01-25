@@ -1,11 +1,10 @@
 /** @format */
 
-import React from "react";
 import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
 import * as IoIcons from "react-icons/io";
 
-export const SidebarData = [
+export const Sidebar_Data = [
   {
     title: "Home",
     path: "/",
@@ -22,8 +21,15 @@ export const SidebarData = [
   },
   {
     title: "Consultas",
-    path: "/answers",
+    path: "/patients",
     icon: <IoIcons.IoIosPaper />,
+    cName: "nav-text",
+    cNameAlt: "nav-text-alternative",
+  },
+  {
+    title: "Pacientes",
+    path: "/assign-patients",
+    icon: <IoIcons.IoIosPerson />,
     cName: "nav-text",
     cNameAlt: "nav-text-alternative",
   },

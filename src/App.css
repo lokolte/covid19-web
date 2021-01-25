@@ -53,3 +53,7 @@ body::-webkit-scrollbar-thumb {
 .dialog {
   margin-top: 10vh;
 }
+
+.center-jumbotron {
+  text-align: center;
+}

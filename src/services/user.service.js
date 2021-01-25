@@ -2,20 +2,31 @@
 
 import axios from "axios";
 import authHeader from "./auth-header";
-
-const API_URL = "http://localhost:9900";
+import { API_URL } from "../config/env.config";
 
 class UserService {
   getPersons() {
-    return axios.get(API_URL + "/persons", { headers: authHeader() });
+    return axios
+      .get(API_URL + "/persons", { headers: authHeader() })
+      .then((response) => {
+        return response.data;
+      });
   }
 
-  getPersonAnswers() {
-    return axios.get(API_URL + "/answers", { headers: authHeader() });
+  getPersonAnswers(answerId) {
+    return axios
+      .get(API_URL + "/answers/" + answerId, { headers: authHeader() })
+      .then((response) => {
+        return response.data;
+      });
   }
 
   getPersonForms() {
-    return axios.get(API_URL + "/forms", { headers: authHeader() });
+    return axios
+      .get(API_URL + "/forms", { headers: authHeader() })
+      .then((response) => {
+        return response.data;
+      });
   }
 }
 
