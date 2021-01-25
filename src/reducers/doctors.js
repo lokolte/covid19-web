@@ -2,9 +2,7 @@
 
 import { GET_DOCTORS_SUCCESS, GET_DOCTORS_FAIL } from "../actions/types";
 
-const initialState = [];
-
-export default function (state = initialState, action) {
+export default function (state = [], action) {
   const { type, payload } = action;
 
   switch (type) {

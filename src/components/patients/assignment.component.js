@@ -4,8 +4,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { getDoctors } from "../../actions/doctors";
-import service from "../../services/person.service";
-// import FormItem from "./form-item.component";
+import { saveAssignment } from "../../actions/doctors";
 
 import "../../App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -42,16 +41,11 @@ class Assignment extends Component {
   }
 
   saveAssignment() {
+    const { dispatch } = this.props;
     const { personId } = this.props.match.params;
-    service.saveAssignment(2, this.state.doctorId).then(
-      (data) => {
-        window.location.replace("/assign-patients");
-        return Promise.resolve();
-      },
-      (error) => {
-        return Promise.reject();
-      }
-    );
+    dispatch(saveAssignment(personId, this.state.doctorId)).then(() => {
+      window.location.replace("/assign-patients");
+    });
   }
 
   render() {

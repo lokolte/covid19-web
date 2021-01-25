@@ -51,10 +51,6 @@ class PersonService {
         }
       )
       .then((response) => {
-        if (response.data) {
-          console.log("respuesta server : ", response.data);
-        }
-
         return response.data;
       });
   }
