@@ -17,26 +17,28 @@ class Profile extends Component {
     console.log("current user: ", currentUser);
 
     return (
-      <div className="container content">
-        <header className="jumbotron">
-          <h3>
-            <strong>{currentUser.account.email}</strong> Profile
-          </h3>
-        </header>
-        <p>
-          <strong>Token:</strong> {currentUser.jwt.substring(0, 20)} ...{" "}
-          {currentUser.jwt.substr(currentUser.jwt.length - 20)}
-        </p>
-        <p>
-          <strong>Id:</strong> {currentUser.account.id}
-        </p>
-        <p>
-          <strong>Email:</strong> {currentUser.account.email}
-        </p>
-        <strong>Authorities:</strong>
-        <ul>
-          <li>{currentUser.account.role.name}</li>
-        </ul>
+      <div className="content">
+        <div className="container">
+          <header className="jumbotron">
+            <h3>
+              <strong>{currentUser.account.email}</strong> Profile
+            </h3>
+          </header>
+          <p>
+            <strong>Token:</strong> {currentUser.jwt.substring(0, 20)} ...{" "}
+            {currentUser.jwt.substr(currentUser.jwt.length - 20)}
+          </p>
+          <p>
+            <strong>Id:</strong> {currentUser.account.id}
+          </p>
+          <p>
+            <strong>Email:</strong> {currentUser.account.email}
+          </p>
+          <strong>Authorities:</strong>
+          <ul>
+            <li>{currentUser.account.role.name}</li>
+          </ul>
+        </div>
       </div>
     );
   }
