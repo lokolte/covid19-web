@@ -21,7 +21,6 @@ import Forms from "./components/forms/form-list.component";
 import Answers from "./components/answers/answer.component";
 import FormPatients from "./components/patients/form.component";
 import AnswersForm from "./components/patients/answers.form.component";
-import ChatPage from "./components/messages/message.component";
 
 import { clearMessage } from "./actions/message";
 
@@ -69,7 +68,6 @@ class App extends Component {
                 path="/patients/:personId/assignment"
                 component={Assignment}
               />
-              <Route path="/messages" component={ChatPage} />
             </Switch>
           </div>
         </div>

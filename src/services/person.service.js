@@ -41,6 +41,26 @@ class PersonService {
       });
   }
 
+  getPatients(id) {
+    return axios
+      .get(API_URL + "/persons/" + id + "/patients", { headers: authHeader() })
+      .then((response) => {
+        return response.data;
+      });
+  }
+
+  sendMessage(id, idPatient, message) {
+    return axios
+      .post(
+        API_URL + "/persons/" + id + "/patients/" + idPatient + "/messages",
+        { messageText: message },
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        return response;
+      });
+  }
+
   getMessages(idPerson, idPatient) {
     return axios
       .get(

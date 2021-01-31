@@ -1,6 +1,11 @@
 /** @format */
 
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import { getPatients } from "../../actions/patientsDoctor";
+import { getMessages, sendMessage } from "../../actions/messagesPatient";
+
 import {
   MDBCard,
   MDBCardBody,
@@ -15,133 +20,79 @@ import {
 import "./css/message.css";
 
 class ChatPage extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
+    this.loadPatients = this.loadPatients.bind(this);
+    this.loadMessages = this.loadMessages.bind(this);
+
     this.state = {
-      friends: [
-        {
-          name: "John Doe",
-          avatar: "https://mdbootstrap.com/img/Photos/Avatars/avatar-8",
-          message: "Hello, Are you there?",
-          when: "Just now",
-          toRespond: 1,
-          seen: false,
-          active: true,
-        },
-        {
-          name: "Danny Smith",
-          message: "Lorem ipsum dolor sit",
-          avatar: "https://mdbootstrap.com/img/Photos/Avatars/avatar-1",
-          when: "5 min ago",
-          toRespond: 0,
-          seen: false,
-          active: false,
-        },
-        {
-          name: "Alex Steward",
-          message: "Lorem ipsum dolor sit",
-          avatar: "https://mdbootstrap.com/img/Photos/Avatars/avatar-2",
-          when: "Yesterday",
-          toRespond: 0,
-          seen: false,
-          active: false,
-        },
-        {
-          name: "Ashley Olsen",
-          message: "Lorem ipsum dolor sit",
-          avatar: "https://mdbootstrap.com/img/Photos/Avatars/avatar-3",
-          when: "Yesterday",
-          toRespond: 0,
-          seen: false,
-          active: false,
-        },
-        {
-          name: "Kate Moss",
-          message: "Lorem ipsum dolor sit",
-          avatar: "https://mdbootstrap.com/img/Photos/Avatars/avatar-4",
-          when: "Yesterday",
-          toRespond: 0,
-          seen: true,
-          active: false,
-        },
-        {
-          name: "Lara Croft",
-          message: "Lorem ipsum dolor sit",
-          avatar: "https://mdbootstrap.com/img/Photos/Avatars/avatar-5",
-          when: "Yesterday",
-          toRespond: 0,
-          seen: false,
-          active: false,
-        },
-        {
-          name: "Brad Pitt",
-          message: "Lorem ipsum dolor sit",
-          avatar: "https://mdbootstrap.com/img/Photos/Avatars/avatar-6",
-          when: "5 min ago",
-          toRespond: 0,
-          seen: true,
-          active: false,
-        },
-        {
-          name: "Ken Ditto",
-          avatar: "https://mdbootstrap.com/img/Photos/Avatars/img(3).jpg",
-          message: "Hello, Are you there?",
-          when: "Yesterday",
-          toRespond: 0,
-          seen: false,
-          active: false,
-        },
-        {
-          name: "Marta Wozniak",
-          message: "Lorem ipsum dolor sit.",
-          avatar: "https://mdbootstrap.com/img/Photos/Avatars/img(2).jpg",
-          when: "5 min ago",
-          toRespond: 0,
-          seen: false,
-          active: false,
-        },
-      ],
-      messages: [
-        {
-          author: "Brad Pitt",
-          avatar: "https://mdbootstrap.com/img/Photos/Avatars/avatar-6",
-          when: "12 mins ago",
-          message:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        },
-        {
-          author: "Lara Croft",
-          avatar: "https://mdbootstrap.com/img/Photos/Avatars/avatar-5",
-          when: "13 mins ago",
-          message:
-            " Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
-        },
-        {
-          author: "Brad Pitt",
-          avatar: "https://mdbootstrap.com/img/Photos/Avatars/avatar-6",
-          when: "14 mins ago",
-          message:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        },
-        {
-          author: "Lara Croft",
-          avatar: "https://mdbootstrap.com/img/Photos/Avatars/avatar-5",
-          when: "16 mins ago",
-          message:
-            " Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
-        },
-        {
-          author: "Brad Pitt",
-          avatar: "https://mdbootstrap.com/img/Photos/Avatars/avatar-6",
-          when: "17 mins ago",
-          message:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        },
-      ],
+      patientsDoctor: undefined,
+      messages: undefined,
+      idPatient: undefined,
     };
   }
 
+  loadPatients() {
+    const { dispatch, patientsDoctor } = this.props;
+    dispatch(getPatients(localStorage.getItem("userId"))).then(() => {
+      this.setState({
+        patientsDoctor: patientsDoctor,
+      });
+      console.log("patients : ", this.state.patientsDoctor?.length);
+    });
+  }
+
+  loadMessages(patient) {
+    const { dispatch, messages } = this.props;
+    this.state.idPatient = patient;
+    document.getElementById("messageText").classList.remove("invisible");
+    document.getElementById("sendMessageBtn").classList.remove("invisible");
+
+    dispatch(getMessages(localStorage.getItem("userId"), patient)).then(() => {
+      this.setState({
+        messages: messages,
+      });
+      console.log("messages : ", this.state.messages?.length);
+    });
+  }
+
+  sendMessage() {
+    const { dispatch } = this.props;
+    let mensaje = document.getElementById("messageText").value;
+    document.getElementById("messageText").value = "";
+
+    dispatch(
+      sendMessage(localStorage.getItem("userId"), this.state.idPatient, mensaje)
+    ).then(() => {
+      this.setState({});
+      console.log("messages : ", this.state.messages?.length);
+    });
+
+    if (this.state.messages == undefined) this.state.messages = [];
+    this.setState({
+      messages: [
+        ...this.state.messages,
+        {
+          id: new Date().getTime(),
+          messageText: mensaje,
+          messageDate: localStorage.getItem("userName"),
+        },
+      ],
+    });
+  }
+
   render() {
+    const { user: currentUser } = this.props;
+
+    if (!currentUser) {
+      return <Redirect to="/login" />;
+    }
+
+    if (!this.state.patientsDoctor) {
+      this.loadPatients();
+    }
+
     return (
       <div className="content">
         <div className="container">
@@ -162,8 +113,8 @@ class ChatPage extends Component {
                   <h6 className="font-weight-bold mb-3 text-lg-left">Member</h6>
                   <div className="white z-depth-1 p-3 friend-list-scrollable">
                     <MDBListGroup className="friend-list">
-                      {this.state.friends.map((friend) => (
-                        <Friend key={friend.name} friend={friend} />
+                      {this.state.patientsDoctor?.map((friend) => (
+                        <Friend key={friend.id} friend={friend} thiz={this} />
                       ))}
                     </MDBListGroup>
                   </div>
@@ -175,26 +126,27 @@ class ChatPage extends Component {
                 >
                   <div className="scrollable-chat">
                     <MDBListGroup className="list-unstyled pl-3 pr-3">
-                      {this.state.messages.map((message) => (
-                        <ChatMessage
-                          key={message.author + message.when}
-                          message={message}
-                        />
+                      {this.state.messages?.map((message) => (
+                        <ChatMessage key={message.id} message={message} />
                       ))}
                     </MDBListGroup>
                   </div>
                   <div className="form-group basic-textarea">
                     <textarea
-                      className="form-control pl-2 my-0"
-                      id="exampleFormControlTextarea2"
+                      className="form-control pl-2 my-0 invisible"
+                      id="messageText"
                       rows="3"
                       placeholder="Type your message here..."
                     />
                     <MDBBtn
+                      id="sendMessageBtn"
                       color="info"
+                      onClick={() => {
+                        this.sendMessage();
+                      }}
                       rounded
                       size="sm"
-                      className="float-right mt-4"
+                      className="float-right mt-4 invisible"
                     >
                       Send
                     </MDBBtn>
@@ -210,16 +162,20 @@ class ChatPage extends Component {
 }
 
 const Friend = ({
-  friend: { name, avatar, message, when, toRespond, seen, active },
+  friend: { id, name, phone, when, toRespond, seen, active },
+  thiz,
 }) => (
   <MDBListGroupItem
     href="#!"
+    onClick={() => {
+      thiz.loadMessages(id);
+    }}
     className="d-flex justify-content-between p-2 border-light"
     style={{ backgroundColor: active ? "#eeeeee" : "" }}
   >
     <div style={{ fontSize: "0.95rem" }}>
       <strong>{name}</strong>
-      <p className="text-muted">{message}</p>
+      <p className="text-muted">{phone}</p>
     </div>
     <div>
       <p className="text-muted mb-0" style={{ fontSize: "0.75rem" }}>
@@ -242,19 +198,33 @@ const Friend = ({
   </MDBListGroupItem>
 );
 
-const ChatMessage = ({ message: { author, avatar, when, message } }) => (
+const ChatMessage = ({ message: { author, messageDate, messageText } }) => (
   <MDBCard>
     <MDBCardBody>
       <div>
         <strong className="primary-font">{author}</strong>
         <small className="pull-right text-muted">
-          <i className="far fa-clock" /> {when}
+          <i className="far fa-clock" /> {messageDate}
         </small>
       </div>
       <hr />
-      <p className="mb-0">{message}</p>
+      <p className="mb-0">{messageText}</p>
     </MDBCardBody>
   </MDBCard>
 );
 
-export default ChatPage;
+function mapStateToProps(state) {
+  const { user } = state.authentication;
+  const { patientsDoctor } = state.patientsDoctor;
+  const { message } = state.message;
+  const { messages } = state.messages;
+  return {
+    user,
+    patientsDoctor,
+    message,
+    messages,
+  };
+}
+
+//export default ChatPage;
+export default connect(mapStateToProps)(ChatPage);
