@@ -1,15 +1,19 @@
 /** @format */
 
-import { GET_PATIENTS_SUCCESS, GET_PATIENTS_FAIL, SET_MESSAGE } from "./types";
+import {
+  GET_MESSAGES_PATIENT_SUCCESS,
+  GET_MESSAGES_PATIENT_FAIL,
+  SET_MESSAGE,
+} from "./types";
 
 import PersonService from "../services/person.service";
 
-export const getPatients = () => (dispatch) => {
-  return PersonService.getPatients().then(
+export const getMessages = (idPerson, idPatient) => (dispatch) => {
+  return PersonService.getMessages(idPerson, idPatient).then(
     (data) => {
       dispatch({
-        type: GET_PATIENTS_SUCCESS,
-        payload: { patients: data.persons },
+        type: GET_MESSAGES_PATIENT_SUCCESS,
+        payload: { messages: data.messages },
       });
       return Promise.resolve();
     },
@@ -22,7 +26,7 @@ export const getPatients = () => (dispatch) => {
         error.toString();
 
       dispatch({
-        type: GET_PATIENTS_FAIL,
+        type: GET_MESSAGES_PATIENT_FAIL,
       });
 
       dispatch({
