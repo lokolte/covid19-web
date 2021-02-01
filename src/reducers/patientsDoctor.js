@@ -13,6 +13,7 @@ export default function (state = initialState, action) {
 
   switch (type) {
     case GET_PATIENTS_DOCTOR_SUCCESS:
+      console.log("getPatients reducer : ", payload.patientsDoctor);
       return {
         ...state,
         patientsDoctor: payload.patientsDoctor,

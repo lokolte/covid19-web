@@ -11,6 +11,7 @@ import PersonService from "../services/person.service";
 export const getPatients = (id) => (dispatch) => {
   return PersonService.getPatients(id).then(
     (data) => {
+      console.log("getPatients actions : ", data.patients);
       dispatch({
         type: GET_PATIENTS_DOCTOR_SUCCESS,
         payload: { patientsDoctor: data.patients },

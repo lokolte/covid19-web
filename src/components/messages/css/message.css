@@ -41,3 +41,17 @@
   margin-left: 10%;
   width: 89%;
 }
+
+.primary-font {
+  padding-right: 18px;
+}
+
+.cardMessage {
+  width: 650px;
+  margin-left: 250px;
+}
+
+.cardMessageReceiver {
+  width: 650px;
+  margin-right: 250px;
+}

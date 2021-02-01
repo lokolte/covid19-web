@@ -12,6 +12,7 @@ import PersonService from "../services/person.service";
 export const getMessages = (idPerson, idPatient) => (dispatch) => {
   return PersonService.getMessages(idPerson, idPatient).then(
     (data) => {
+      console.log("getMessages actions : ", data.messages);
       dispatch({
         type: GET_MESSAGES_PATIENT_SUCCESS,
         payload: { messages: data.messages },

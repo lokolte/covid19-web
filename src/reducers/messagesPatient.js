@@ -12,14 +12,15 @@ export default function (state = initialState, action) {
 
   switch (type) {
     case GET_MESSAGES_PATIENT_SUCCESS:
+      console.log("getMessages reducers : ", payload.messages);
       return {
         ...state,
-        messagesPatient: payload.patients,
+        messages: payload.messages,
       };
     case GET_MESSAGES_PATIENT_FAIL:
       return {
         ...state,
-        messagesPatient: null,
+        messages: null,
       };
     default:
       return state;

@@ -5,6 +5,7 @@ import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { getPatients } from "../../actions/patientsDoctor";
 import { getMessages, sendMessage } from "../../actions/messagesPatient";
+import PersonService from "../../services/person.service";
 
 import {
   MDBCard,
@@ -39,8 +40,19 @@ class ChatPage extends Component {
       this.setState({
         patientsDoctor: patientsDoctor,
       });
-      console.log("patients : ", this.state.patientsDoctor?.length);
     });
+  }
+
+  addClassName(data) {
+    let tmp = data;
+    let isReceiver = tmp["receiver"];
+    if (isReceiver) tmp["className"] = "cardMessageReceiver";
+    else tmp["className"] = "cardMessage";
+    return tmp;
+  }
+
+  processMessage(messages) {
+    return messages.map(this.addClassName);
   }
 
   loadMessages(patient) {
@@ -49,12 +61,14 @@ class ChatPage extends Component {
     document.getElementById("messageText").classList.remove("invisible");
     document.getElementById("sendMessageBtn").classList.remove("invisible");
 
-    dispatch(getMessages(localStorage.getItem("userId"), patient)).then(() => {
-      this.setState({
-        messages: messages,
-      });
-      console.log("messages : ", this.state.messages?.length);
-    });
+    PersonService.getMessages(localStorage.getItem("userId"), patient).then(
+      (data) => {
+        this.setState({
+          messages: this.processMessage(data.messages),
+        });
+      },
+      (error) => {}
+    );
   }
 
   sendMessage() {
@@ -66,7 +80,6 @@ class ChatPage extends Component {
       sendMessage(localStorage.getItem("userId"), this.state.idPatient, mensaje)
     ).then(() => {
       this.setState({});
-      console.log("messages : ", this.state.messages?.length);
     });
 
     if (this.state.messages == undefined) this.state.messages = [];
@@ -76,10 +89,21 @@ class ChatPage extends Component {
         {
           id: new Date().getTime(),
           messageText: mensaje,
-          messageDate: localStorage.getItem("userName"),
+          className: "cardMessage",
+          person: { name: localStorage.getItem("userName") },
         },
       ],
     });
+  }
+
+  getHora(fecha) {
+    if (fecha == null || fecha == undefined) {
+      let d = new Date();
+      return d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+    } else {
+      let hora = fecha.substr(11, 8);
+      return hora;
+    }
   }
 
   render() {
@@ -110,7 +134,9 @@ class ChatPage extends Component {
                   xl="4"
                   className="px-0 mb-4 mb-md-0 scrollable-friends-list"
                 >
-                  <h6 className="font-weight-bold mb-3 text-lg-left">Member</h6>
+                  <h6 className="font-weight-bold mb-3 text-lg-left">
+                    Pacientes
+                  </h6>
                   <div className="white z-depth-1 p-3 friend-list-scrollable">
                     <MDBListGroup className="friend-list">
                       {this.state.patientsDoctor?.map((friend) => (
@@ -127,7 +153,11 @@ class ChatPage extends Component {
                   <div className="scrollable-chat">
                     <MDBListGroup className="list-unstyled pl-3 pr-3">
                       {this.state.messages?.map((message) => (
-                        <ChatMessage key={message.id} message={message} />
+                        <ChatMessage
+                          key={message.id}
+                          message={message}
+                          thiz={this}
+                        />
                       ))}
                     </MDBListGroup>
                   </div>
@@ -198,13 +228,16 @@ const Friend = ({
   </MDBListGroupItem>
 );
 
-const ChatMessage = ({ message: { author, messageDate, messageText } }) => (
-  <MDBCard>
+const ChatMessage = ({
+  message: { person, messageDate, messageText, className },
+  thiz,
+}) => (
+  <MDBCard className={className}>
     <MDBCardBody>
       <div>
-        <strong className="primary-font">{author}</strong>
+        <strong className="primary-font">{person.name}</strong>
         <small className="pull-right text-muted">
-          <i className="far fa-clock" /> {messageDate}
+          <i className="far fa-clock" /> {thiz.getHora(messageDate)}
         </small>
       </div>
       <hr />
@@ -226,5 +259,4 @@ function mapStateToProps(state) {
   };
 }
 
-//export default ChatPage;
 export default connect(mapStateToProps)(ChatPage);
