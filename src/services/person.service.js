@@ -41,7 +41,7 @@ class PersonService {
       });
   }
 
-  getPatients(id) {
+  getPatientsFromDoctor(id) {
     return axios
       .get(API_URL + "/persons/" + id + "/patients", { headers: authHeader() })
       .then((response) => {

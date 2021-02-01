@@ -12,7 +12,6 @@ export default function (state = initialState, action) {
 
   switch (type) {
     case GET_MESSAGES_PATIENT_SUCCESS:
-      console.log("getMessages reducers : ", payload.messages);
       return {
         ...state,
         messages: payload.messages,
