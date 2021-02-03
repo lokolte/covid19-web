@@ -41,7 +41,6 @@ class Patients extends Component {
   }
 
   verDetalle(cell, row, rowIndex, formatExtraData) {
-    const answerId = this.state.patients?.filter((x) => x.id == row.id)[0];
     return <a href={"/patients/" + row.id + "/forms"}>Detalles</a>;
   }
 

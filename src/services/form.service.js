@@ -12,6 +12,14 @@ class FormService {
         return response.data;
       });
   }
+
+  getFormsFromPatient(personId) {
+    return axios
+      .get(API_URL + "/forms/" + personId, { headers: authHeader() })
+      .then((response) => {
+        return response.data;
+      });
+  }
 }
 
 export default new FormService();

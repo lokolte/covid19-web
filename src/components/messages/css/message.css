@@ -10,10 +10,6 @@
   border-bottom: 0;
 }
 
-.chat-room .friend-list .list-group-item.active {
-  background-color: #eeeeee;
-}
-
 .chat-room .avatar {
   height: 3rem;
   width: 3rem;
@@ -30,6 +26,8 @@
 .chat-room .scrollable-chat {
   height: 600px;
   overflow-y: scroll;
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 .chat-room .friend-list-scrollable {
@@ -47,11 +45,15 @@
 }
 
 .cardMessage {
-  width: 650px;
-  margin-left: 250px;
+  width: 700px;
+  margin-left: 200px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .cardMessageReceiver {
-  width: 650px;
-  margin-right: 250px;
+  width: 700px;
+  margin-right: 200px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }

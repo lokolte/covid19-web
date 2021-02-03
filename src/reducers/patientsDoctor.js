@@ -3,7 +3,6 @@
 import {
   GET_PATIENTS_DOCTOR_SUCCESS,
   GET_PATIENTS_DOCTOR_FAIL,
-  GET_PATIENT_SUCCESS,
 } from "../actions/types";
 
 const initialState = [];

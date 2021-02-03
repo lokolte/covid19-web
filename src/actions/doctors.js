@@ -5,7 +5,6 @@ import {
   GET_DOCTORS_FAIL,
   SET_MESSAGE,
   ASSIGN_DOCTOR_SUCCESS,
-  ASSIGN_DOCTOR_FAIL,
 } from "./types";
 
 import service from "../services/person.service";

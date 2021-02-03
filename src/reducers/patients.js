@@ -1,10 +1,6 @@
 /** @format */
 
-import {
-  GET_PATIENTS_SUCCESS,
-  GET_PATIENTS_FAIL,
-  GET_PATIENT_SUCCESS,
-} from "../actions/types";
+import { GET_PATIENTS_SUCCESS, GET_PATIENTS_FAIL } from "../actions/types";
 
 const initialState = [];
 

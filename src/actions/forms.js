@@ -35,3 +35,35 @@ export const getForms = () => (dispatch) => {
     }
   );
 };
+
+export const getFormsFromPatient = (personId) => (dispatch) => {
+  return FormService.getFormsFromPatient(personId).then(
+    (data) => {
+      dispatch({
+        type: GET_FORMS_SUCCESS,
+        payload: { forms: data.forms },
+      });
+
+      return Promise.resolve();
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      dispatch({
+        type: GET_FORMS_FAIL,
+      });
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+
+      return Promise.reject();
+    }
+  );
+};

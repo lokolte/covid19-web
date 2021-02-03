@@ -14,15 +14,6 @@ class Profile extends Component {
       return <Redirect to="/login" />;
     }
 
-    console.log("current user: ", currentUser);
-    let p = currentUser.account.person;
-    let name = p.name;
-    let lastname = p.lastname;
-    if (name == null || name == undefined) name = "";
-    if (lastname == null || lastname == undefined) lastname = "";
-    localStorage.setItem("userId", p.id);
-    localStorage.setItem("userName", name + " " + lastname);
-
     return (
       <div className="content">
         <div className="container">

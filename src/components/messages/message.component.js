@@ -5,7 +5,7 @@ import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { getPatients } from "../../actions/patientsDoctor";
 import { getMessages, sendMessage } from "../../actions/messagesPatient";
-import PersonService from "../../services/person.service";
+import { delayFunction } from "../../actions/generalActions";
 
 import {
   MDBCard,
@@ -31,79 +31,69 @@ class ChatPage extends Component {
       patientsDoctor: undefined,
       messages: undefined,
       idPatient: undefined,
+      isMessageLoading: false,
+      messageText: "",
     };
   }
 
   loadPatients() {
-    const { dispatch, patientsDoctor } = this.props;
-    dispatch(getPatients(localStorage.getItem("userId"))).then(() => {
+    const { dispatch, user, patientsDoctor } = this.props;
+    dispatch(getPatients(user.account.person.id)).then(() => {
       this.setState({
         patientsDoctor: patientsDoctor,
       });
     });
   }
 
-  addClassName(data) {
-    let tmp = data;
-    let isReceiver = tmp["receiver"];
-    if (isReceiver) tmp["className"] = "cardMessageReceiver";
-    else tmp["className"] = "cardMessage";
-    return tmp;
+  // esta funcion verifica que haya algo cargandose en el redux, si hay algo cargandose, entonces se hace setState para obligar a recargar el render
+  loadingMessages() {
+    const { messages } = this.props;
+    if (this.state.isMessageLoading) {
+      if (!!messages) {
+        delayFunction(() => {
+          this.setState({
+            messages: messages,
+            isMessageLoading: false,
+          });
+        });
+      }
+    }
   }
 
-  processMessage(messages) {
-    return messages.map(this.addClassName);
-  }
-
-  loadMessages(patient) {
-    const { dispatch, messages } = this.props;
-    this.state.idPatient = patient;
+  loadMessages(patientId) {
+    const { dispatch, user } = this.props;
+    this.setState({
+      idPatient: patientId,
+    });
     document.getElementById("messageText").classList.remove("invisible");
     document.getElementById("sendMessageBtn").classList.remove("invisible");
 
-    PersonService.getMessages(localStorage.getItem("userId"), patient).then(
-      (data) => {
-        this.setState({
-          messages: this.processMessage(data.messages),
-        });
-      },
-      (error) => {}
-    );
+    dispatch(getMessages(user.account.person.id, patientId)).then(() => {
+      this.setState({
+        isMessageLoading: true,
+      });
+    });
+  }
+
+  setMessageText(value) {
+    this.setState({
+      messageText: value,
+    });
   }
 
   sendMessage() {
-    const { dispatch } = this.props;
-    let mensaje = document.getElementById("messageText").value;
-    document.getElementById("messageText").value = "";
+    const { dispatch, user } = this.props;
 
     dispatch(
-      sendMessage(localStorage.getItem("userId"), this.state.idPatient, mensaje)
+      sendMessage(
+        user.account.person.id,
+        this.state.idPatient,
+        this.state.messageText
+      )
     ).then(() => {
-      this.setState({});
+      this.setMessageText("");
+      this.loadMessages(this.state.idPatient);
     });
-
-    if (this.state.messages == undefined) this.state.messages = [];
-    this.setState({
-      messages: [
-        ...this.state.messages,
-        {
-          id: new Date().getTime(),
-          messageText: mensaje,
-          className: "cardMessage",
-          person: { name: localStorage.getItem("userName") },
-        },
-      ],
-    });
-  }
-
-  getHora(fecha) {
-    if (fecha == null || fecha == undefined) {
-      let d = new Date();
-      return d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-    } else {
-      let hora = fecha.substr(11, 8);
-      return hora;
-    }
   }
 
   render() {
@@ -117,6 +107,25 @@ class ChatPage extends Component {
       this.loadPatients();
     }
 
+    this.loadingMessages();
+
+    const onHandleMessageText = (event) => {
+      this.setMessageText(event.target.value);
+    };
+
+    const loadMessageAux = (patientId) => {
+      this.loadMessages(patientId);
+    };
+    const getHora = (fecha) => {
+      if (fecha === null || fecha === undefined) {
+        let d = new Date();
+        return d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+      } else {
+        let hora = fecha.substr(11, 8);
+        return hora;
+      }
+    };
+
     return (
       <div className="content">
         <div className="container">
@@ -126,7 +135,7 @@ class ChatPage extends Component {
         </div>
 
         <div>
-          <MDBCard className="grey lighten-3 chat-room">
+          <MDBCard className="grey chat-room">
             <MDBCardBody>
               <MDBRow className="px-lg-2 px-2">
                 <MDBCol
@@ -137,10 +146,14 @@ class ChatPage extends Component {
                   <h6 className="font-weight-bold mb-3 text-lg-left">
                     Pacientes
                   </h6>
-                  <div className="white z-depth-1 p-3 friend-list-scrollable">
+                  <div className="friend-list-scrollable">
                     <MDBListGroup className="friend-list">
-                      {this.state.patientsDoctor?.map((friend) => (
-                        <Friend key={friend.id} friend={friend} thiz={this} />
+                      {this.state.patientsDoctor?.map((patient) => (
+                        <PatientRow
+                          key={patient.id}
+                          patient={patient}
+                          loadMessages={loadMessageAux}
+                        />
                       ))}
                     </MDBListGroup>
                   </div>
@@ -156,7 +169,7 @@ class ChatPage extends Component {
                         <ChatMessage
                           key={message.id}
                           message={message}
-                          thiz={this}
+                          getHora={getHora}
                         />
                       ))}
                     </MDBListGroup>
@@ -167,6 +180,8 @@ class ChatPage extends Component {
                       id="messageText"
                       rows="3"
                       placeholder="Type your message here..."
+                      value={this.state.messageText}
+                      onChange={onHandleMessageText}
                     />
                     <MDBBtn
                       id="sendMessageBtn"
@@ -191,17 +206,17 @@ class ChatPage extends Component {
   }
 }
 
-const Friend = ({
-  friend: { id, name, phone, when, toRespond, seen, active },
-  thiz,
+const PatientRow = ({
+  patient: { id, name, phone, when, toRespond, seen, active },
+  loadMessages,
 }) => (
   <MDBListGroupItem
     href="#!"
     onClick={() => {
-      thiz.loadMessages(id);
+      loadMessages(id);
     }}
-    className="d-flex justify-content-between p-2 border-light"
-    style={{ backgroundColor: active ? "#eeeeee" : "" }}
+    className="d-flex justify-content-between p-2 border border-light"
+    style={{ backgroundColor: "#E9E9E9" }}
   >
     <div style={{ fontSize: "0.95rem" }}>
       <strong>{name}</strong>
@@ -229,15 +244,15 @@ const Friend = ({
 );
 
 const ChatMessage = ({
-  message: { person, messageDate, messageText, className },
-  thiz,
+  message: { id, person, messageDate, messageText, receiver },
+  getHora,
 }) => (
-  <MDBCard className={className}>
+  <MDBCard className={receiver ? "cardMessageReceiver" : "cardMessage"}>
     <MDBCardBody>
       <div>
         <strong className="primary-font">{person.name}</strong>
         <small className="pull-right text-muted">
-          <i className="far fa-clock" /> {thiz.getHora(messageDate)}
+          <i className="far fa-clock" /> {getHora(messageDate)}
         </small>
       </div>
       <hr />
