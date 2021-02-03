@@ -13,7 +13,7 @@ export const getPatients = (id) => (dispatch) => {
     (data) => {
       dispatch({
         type: GET_PATIENTS_DOCTOR_SUCCESS,
-        payload: { patientsDoctor: data.patients },
+        payload: { patientsDoctor: data.persons },
       });
       return Promise.resolve();
     },
