@@ -49,11 +49,15 @@ class PersonService {
       });
   }
 
-  sendMessage(id, idPatient, message) {
+  sendMessage(idPerson, patientId, message) {
     return axios
       .post(
-        API_URL + "/persons/" + id + "/patients/" + idPatient + "/messages",
-        { messageText: message },
+        API_URL + "/messages",
+        {
+          personSenderId: idPerson,
+          personReceivedId: patientId,
+          messageText: message,
+        },
         { headers: authHeader() }
       )
       .then((response) => {
