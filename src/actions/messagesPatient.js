@@ -1,17 +1,21 @@
 /** @format */
 
-import { GET_FORMS_SUCCESS, GET_FORMS_FAIL, SET_MESSAGE } from "./types";
+import {
+  GET_MESSAGES_PATIENT_SUCCESS,
+  GET_MESSAGES_PATIENT_FAIL,
+  SEND_MESSAGE_PATIENT_SUCCESS,
+  SET_MESSAGE,
+} from "./types";
 
-import FormService from "../services/form.service";
+import PersonService from "../services/person.service";
 
-export const getForms = () => (dispatch) => {
-  return FormService.getPersonForms().then(
+export const getMessages = (idPerson, idPatient) => (dispatch) => {
+  return PersonService.getMessages(idPerson, idPatient).then(
     (data) => {
       dispatch({
-        type: GET_FORMS_SUCCESS,
-        payload: { forms: data.forms },
+        type: GET_MESSAGES_PATIENT_SUCCESS,
+        payload: { messages: data.messages },
       });
-
       return Promise.resolve();
     },
     (error) => {
@@ -23,7 +27,7 @@ export const getForms = () => (dispatch) => {
         error.toString();
 
       dispatch({
-        type: GET_FORMS_FAIL,
+        type: GET_MESSAGES_PATIENT_FAIL,
       });
 
       dispatch({
@@ -36,14 +40,12 @@ export const getForms = () => (dispatch) => {
   );
 };
 
-export const getFormsFromPatient = (personId) => (dispatch) => {
-  return FormService.getFormsFromPatient(personId).then(
+export const sendMessage = (idPerson, idPatient, mensaje) => (dispatch) => {
+  return PersonService.sendMessage(idPerson, idPatient, mensaje).then(
     (data) => {
       dispatch({
-        type: GET_FORMS_SUCCESS,
-        payload: { forms: data.forms },
+        type: SEND_MESSAGE_PATIENT_SUCCESS,
       });
-
       return Promise.resolve();
     },
     (error) => {
@@ -55,7 +57,7 @@ export const getFormsFromPatient = (personId) => (dispatch) => {
         error.toString();
 
       dispatch({
-        type: GET_FORMS_FAIL,
+        type: GET_MESSAGES_PATIENT_FAIL,
       });
 
       dispatch({

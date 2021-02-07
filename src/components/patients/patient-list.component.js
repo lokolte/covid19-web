@@ -41,7 +41,6 @@ class Patients extends Component {
   }
 
   verDetalle(cell, row, rowIndex, formatExtraData) {
-    const answerId = this.state.patients?.filter((x) => x.id == row.id)[0];
     return <a href={"/patients/" + row.id + "/forms"}>Detalles</a>;
   }
 
@@ -103,35 +102,35 @@ class Patients extends Component {
           <header className="jumbotron center-jumbotron">
             <h3 className="center">Consultas de Pacientes</h3>
           </header>
-        </div>
 
-        <div>
-          {this.state.patients ? (
-            <ToolkitProvider
-              bootstrap4
-              keyField="id"
-              data={this.state.patients}
-              columns={columns}
-              search={true}
-            >
-              {(props) => (
-                <div>
-                  <h6>Ingrese algo para filtrar los pacientes:</h6>
-                  <SearchBar text="Buscar" {...props.searchProps} />
-                  <ClearSearchButton text="Limpiar" {...props.searchProps} />
-                  <hr />
-                  <BootstrapTable
-                    className="dark"
-                    defaultSorted={defaultSorted}
-                    pagination={pagination}
-                    {...props.baseProps}
-                  />
-                </div>
-              )}
-            </ToolkitProvider>
-          ) : (
-            <></>
-          )}
+          <div>
+            {this.state.patients ? (
+              <ToolkitProvider
+                bootstrap4
+                keyField="id"
+                data={this.state.patients}
+                columns={columns}
+                search={true}
+              >
+                {(props) => (
+                  <div>
+                    <h6>Ingrese algo para filtrar los pacientes:</h6>
+                    <SearchBar text="Buscar" {...props.searchProps} />
+                    <ClearSearchButton text="Limpiar" {...props.searchProps} />
+                    <hr />
+                    <BootstrapTable
+                      className="dark"
+                      defaultSorted={defaultSorted}
+                      pagination={pagination}
+                      {...props.baseProps}
+                    />
+                  </div>
+                )}
+              </ToolkitProvider>
+            ) : (
+              <></>
+            )}
+          </div>
         </div>
       </div>
     );

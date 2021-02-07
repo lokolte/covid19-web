@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { getForms } from "../../actions/forms";
+import { getFormsFromPatient } from "../../actions/forms";
 // import FormItem from "./form-item.component";
 
 import "../../App.css";
@@ -23,34 +23,17 @@ class FormPatients extends Component {
       forms: undefined,
       currentPage: 1,
       sizePerPage: 10,
-      personId: undefined,
     };
-  }
-
-  componentDidMount() {
-    const { personId } = this.props.match.params;
-    this.state.persona = personId;
-    localStorage.setItem("personId", personId);
   }
 
   loadForms() {
     const { dispatch, forms } = this.props;
 
-    dispatch(getForms()).then(() => {
+    dispatch(getFormsFromPatient(this.props.match.params.personId)).then(() => {
       this.setState({
         forms: forms,
       });
     });
-  }
-
-  verDetalle(cell, row, rowIndex, formatExtraData) {
-    let url =
-      "/patients/" +
-      localStorage.getItem("personId") +
-      "/forms/" +
-      row.id +
-      "/answers";
-    return <a href={url}>Detalles</a>;
   }
 
   render() {
@@ -64,6 +47,16 @@ class FormPatients extends Component {
       this.loadForms();
     }
 
+    const verDetalle = (cell, row, rowIndex, formatExtraData) => {
+      let url =
+        "/patients/" +
+        this.props.match.params.personId +
+        "/forms/" +
+        row.id +
+        "/answers";
+      return <a href={url}>Detalles</a>;
+    };
+
     const columns = [
       { dataField: "title", text: "Título", sort: true },
       { dataField: "subtitle", text: "Subtítulo", sort: true },
@@ -73,7 +66,7 @@ class FormPatients extends Component {
         sort: false,
         isDummyField: true,
         csvExport: false,
-        formatter: this.verDetalle,
+        formatter: verDetalle,
       },
     ];
 
@@ -111,35 +104,35 @@ class FormPatients extends Component {
           <header className="jumbotron center-jumbotron">
             <h3 className="center">Formularios</h3>
           </header>
-        </div>
 
-        <div>
-          {this.state.forms ? (
-            <ToolkitProvider
-              bootstrap4
-              keyField="id"
-              data={this.state.forms}
-              columns={columns}
-              search={true}
-            >
-              {(props) => (
-                <div>
-                  <h6>Ingrese algo para filtrar los formularios:</h6>
-                  <SearchBar text="Buscar" {...props.searchProps} />
-                  <ClearSearchButton text="Limpiar" {...props.searchProps} />
-                  <hr />
-                  <BootstrapTable
-                    className="dark"
-                    defaultSorted={defaultSorted}
-                    pagination={pagination}
-                    {...props.baseProps}
-                  />
-                </div>
-              )}
-            </ToolkitProvider>
-          ) : (
-            <></>
-          )}
+          <div>
+            {this.state.forms ? (
+              <ToolkitProvider
+                bootstrap4
+                keyField="id"
+                data={this.state.forms}
+                columns={columns}
+                search={true}
+              >
+                {(props) => (
+                  <div>
+                    <h6>Ingrese algo para filtrar los formularios:</h6>
+                    <SearchBar text="Buscar" {...props.searchProps} />
+                    <ClearSearchButton text="Limpiar" {...props.searchProps} />
+                    <hr />
+                    <BootstrapTable
+                      className="dark"
+                      defaultSorted={defaultSorted}
+                      pagination={pagination}
+                      {...props.baseProps}
+                    />
+                  </div>
+                )}
+              </ToolkitProvider>
+            ) : (
+              <></>
+            )}
+          </div>
         </div>
       </div>
     );

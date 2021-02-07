@@ -1,10 +1,6 @@
 /** @format */
 
-import {
-  GET_ANSWERS_SUCCESS,
-  GET_ANSWER_SUCCESS,
-  GET_ANSWERS_FAIL,
-} from "../actions/types";
+import { GET_ANSWERS_SUCCESS, GET_ANSWERS_FAIL } from "../actions/types";
 
 const initialState = [];
 

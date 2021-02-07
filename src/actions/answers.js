@@ -12,8 +12,6 @@ export const getAnswers = (answerId) => (dispatch) => {
         payload: { answers: data.answers },
       });
 
-      console.log("se trajo algo?", data);
-
       return Promise.resolve();
     },
     (error) => {

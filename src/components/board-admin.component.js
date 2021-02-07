@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import "../App.css";
 
-import UserService from "../services/user.service";
+// import UserService from "../services/user.service";
 
 export default class BoardAdmin extends Component {
   constructor(props) {

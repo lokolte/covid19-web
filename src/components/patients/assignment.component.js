@@ -110,40 +110,40 @@ class Assignment extends Component {
           <header className="jumbotron center-jumbotron">
             <h3 className="center">Asignación</h3>
           </header>
-        </div>
 
-        <div>
-          {this.state.doctors ? (
-            <ToolkitProvider
-              bootstrap4
-              keyField="id"
-              data={this.state.doctors}
-              columns={columns}
-              search={true}
-            >
-              {(props) => (
-                <div>
-                  <h6>Ingrese algo para filtrar los medicos:</h6>
-                  <SearchBar text="Buscar" {...props.searchProps} />
-                  <ClearSearchButton text="Limpiar" {...props.searchProps} />
-                  <hr />
-                  <BootstrapTable
-                    className="dark"
-                    defaultSorted={defaultSorted}
-                    pagination={pagination}
-                    selectRow={selectRow}
-                    {...props.baseProps}
-                  />
-                </div>
-              )}
-            </ToolkitProvider>
-          ) : (
-            <></>
-          )}
+          <div>
+            {this.state.doctors ? (
+              <ToolkitProvider
+                bootstrap4
+                keyField="id"
+                data={this.state.doctors}
+                columns={columns}
+                search={true}
+              >
+                {(props) => (
+                  <div>
+                    <h6>Ingrese algo para filtrar los medicos:</h6>
+                    <SearchBar text="Buscar" {...props.searchProps} />
+                    <ClearSearchButton text="Limpiar" {...props.searchProps} />
+                    <hr />
+                    <BootstrapTable
+                      className="dark"
+                      defaultSorted={defaultSorted}
+                      pagination={pagination}
+                      selectRow={selectRow}
+                      {...props.baseProps}
+                    />
+                  </div>
+                )}
+              </ToolkitProvider>
+            ) : (
+              <></>
+            )}
+          </div>
+          <button type="button" onClick={this.saveAssignment}>
+            Guardar asignación
+          </button>
         </div>
-        <button type="button" onClick={this.saveAssignment}>
-          Guardar asignación
-        </button>
       </div>
     );
   }

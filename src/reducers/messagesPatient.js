@@ -1,6 +1,9 @@
 /** @format */
 
-import { GET_PATIENTS_SUCCESS, GET_PATIENTS_FAIL } from "../actions/types";
+import {
+  GET_MESSAGES_PATIENT_SUCCESS,
+  GET_MESSAGES_PATIENT_FAIL,
+} from "../actions/types";
 
 const initialState = [];
 
@@ -8,15 +11,15 @@ export default function (state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
-    case GET_PATIENTS_SUCCESS:
+    case GET_MESSAGES_PATIENT_SUCCESS:
       return {
         ...state,
-        patients: payload.patients,
+        messages: payload.messages,
       };
-    case GET_PATIENTS_FAIL:
+    case GET_MESSAGES_PATIENT_FAIL:
       return {
         ...state,
-        patients: null,
+        messages: null,
       };
     default:
       return state;

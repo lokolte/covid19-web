@@ -12,6 +12,7 @@ import Profile from "./components/profile.component";
 import BoardDoctor from "./components/board-doctor.component";
 import BoardAdmin from "./components/board-admin.component";
 import Navbar from "./components/sideBar/navbar.component";
+import ChatPage from "./components/messages/message.component";
 
 import Patients from "./components/patients/patient-list.component";
 import PatientsAssignment from "./components/patients/patients-assignment.component";
@@ -39,7 +40,7 @@ class App extends Component {
         <div>
           <Navbar />
 
-          <div className="container mt-3">
+          <div className="mt-3">
             <Switch>
               <Route exact path={["/", "/home"]} component={Home} />
               <Route exact path="/patients" component={Patients} />
@@ -48,6 +49,7 @@ class App extends Component {
               <Route path="/doctor" component={BoardDoctor} />
               <Route path="/admin" component={BoardAdmin} />
               <Route path="/forms" component={Forms} />
+              <Route path="/messages" component={ChatPage} />
               <Route path="/patients/:id/answers" component={Answers} />
               <Route
                 path="/patients/:personId/forms/:formId/answers"
