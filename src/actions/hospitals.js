@@ -13,7 +13,7 @@ export const getHospitals = () => (dispatch) => {
     (data) => {
       dispatch({
         type: GET_HOSPITALS_SUCCESS,
-        payload: { hospitals: data.hospitals },
+        payload: { hospitals: data },
       });
 
       return Promise.resolve();
