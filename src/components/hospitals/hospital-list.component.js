@@ -50,7 +50,9 @@ class Hospitals extends Component {
       this.state.selectedFile.name
     );
 
-    HospitalService.importarDatos(formData);
+    HospitalService.importarDatos(formData).then(
+      alert("Cargado Exitosamente!")
+    );
   };
 
   render() {
@@ -135,11 +137,16 @@ class Hospitals extends Component {
             )}
           </div>
           <br />
-          <div>
-            <h3>Cargar datos desde archivo</h3>
+          <div style={{ marginBottom: "25px" }}>
+            <h3>Importar datos de hospitales desde la web del MSPBS</h3>
             <div>
               <input type="file" onChange={this.onFileChange} />
-              <button onClick={this.onFileUpload}>Enviar</button>
+              <button
+                onClick={this.onFileUpload}
+                style={{ borderRadius: "3px", border: "1px solid #808080" }}
+              >
+                Enviar
+              </button>
             </div>
           </div>
         </div>
