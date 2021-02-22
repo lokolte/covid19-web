@@ -34,6 +34,13 @@ export const Sidebar_Data = [
     cNameAlt: "nav-text-alternative",
   },
   {
+    title: "Hospitales",
+    path: "/hospitals",
+    icon: <AiIcons.AiFillHome />,
+    cName: "nav-text",
+    cNameAlt: "nav-text-alternative",
+  },
+  {
     title: "Mensajes",
     path: "/messages",
     icon: <FaIcons.FaEnvelopeOpenText />,
