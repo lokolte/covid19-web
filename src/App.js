@@ -19,6 +19,7 @@ import PatientsAssignment from "./components/patients/patients-assignment.compon
 import Assignment from "./components/patients/assignment.component";
 import Forms from "./components/forms/form-list.component";
 import Hospitals from "./components/hospitals/hospital-list.component";
+import Doctors from "./components/doctors/doctor-list.component";
 import Answers from "./components/answers/answer.component";
 import FormPatients from "./components/patients/form.component";
 import AnswersForm from "./components/patients/answers.form.component";
@@ -53,6 +54,7 @@ class App extends Component {
               <Route path="/messages" component={ChatPage} />
               <Route path="/patients/:id/answers" component={Answers} />
               <Route path="/hospitals" component={Hospitals} />
+              <Route path="/doctors" component={Doctors} />
               <Route
                 path="/patients/:personId/forms/:formId/answers"
                 component={AnswersForm}
