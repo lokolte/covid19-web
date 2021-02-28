@@ -3,9 +3,11 @@
 import {
   GET_DOCTORS_SUCCESS,
   GET_DOCTORS_FAIL,
-  GET_ALL_DOCTORS_SUCCESS,
-  GET_ALL_DOCTORS_FAIL,
+  GET_DOCTOR_SUCCESS,
+  GET_DOCTOR_FAIL,
   SET_MESSAGE,
+  SAVE_DOCTOR_SUCCESS,
+  SAVE_DOCTOR_FAIL,
   ASSIGN_DOCTOR_SUCCESS,
 } from "./types";
 
@@ -64,6 +66,69 @@ export const getAllDoctors = () => (dispatch) => {
 
       dispatch({
         type: GET_DOCTORS_FAIL,
+      });
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+
+      return Promise.reject();
+    }
+  );
+};
+
+export const getDoctor = (id) => (dispatch) => {
+  return doctorService.getDoctor(id).then(
+    (data) => {
+      dispatch({
+        type: GET_DOCTOR_SUCCESS,
+        payload: { doctor: data },
+      });
+
+      return Promise.resolve();
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      dispatch({
+        type: GET_DOCTOR_FAIL,
+      });
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+
+      return Promise.reject();
+    }
+  );
+};
+
+export const save = (data) => (dispatch) => {
+  return doctorService.save(data).then(
+    (data) => {
+      dispatch({
+        type: SAVE_DOCTOR_SUCCESS,
+      });
+
+      return Promise.resolve();
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      dispatch({
+        type: SAVE_DOCTOR_FAIL,
       });
 
       dispatch({

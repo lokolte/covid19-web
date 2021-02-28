@@ -9,6 +9,7 @@ import patients from "./patients";
 import patientsDoctor from "./patientsDoctor";
 import doctors from "./doctors";
 import hospitals from "./hospitals";
+import doctor from "./doctor";
 import messages from "./messagesPatient";
 
 export default combineReducers({
@@ -21,4 +22,5 @@ export default combineReducers({
   messages,
   patientsDoctor,
   hospitals,
+  doctor,
 });

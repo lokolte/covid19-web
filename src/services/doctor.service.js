@@ -12,6 +12,18 @@ class DoctorService {
         return response.data;
       });
   }
+  getDoctor(id) {
+    return axios
+      .get(API_URL + "/accounts/doctors/" + id, { headers: authHeader() })
+      .then((response) => {
+        return response.data;
+      });
+  }
+  save(data) {
+    return axios.post(API_URL + "/accounts/doctors", data, {
+      headers: authHeader(),
+    });
+  }
   importarDatos(formData) {
     return axios.post(API_URL + "/accounts/doctors/import", formData, {
       headers: authHeader(),
