@@ -53,6 +53,18 @@ class Doctors extends Component {
     DoctorService.importarDatos(formData).then(alert("Cargado Exitosamente!"));
   };
 
+  downloadFile = () => {
+    DoctorService.download().then((data) => {
+      console.log("descargado : ", data);
+      //window.open(data.file);
+      var blob = new Blob([data], {
+        type: "application/vnd.ms-excel",
+      });
+      var url = URL.createObjectURL(blob);
+      var w = window.open(url);
+    });
+  };
+
   verDetalle(cell, row, rowIndex, formatExtraData) {
     return (
       <p>
@@ -136,6 +148,16 @@ class Doctors extends Component {
                     <h6>Ingrese algo para filtrar los doctores:</h6>
                     <SearchBar text="Buscar" {...props.searchProps} />
                     <ClearSearchButton text="Limpiar" {...props.searchProps} />
+                    <button
+                      type="button"
+                      onClick={this.downloadFile}
+                      style={{
+                        borderRadius: "3px",
+                        border: "1px solid #808080",
+                      }}
+                    >
+                      Descargar
+                    </button>
                     <hr />
                     <BootstrapTable
                       className="dark"

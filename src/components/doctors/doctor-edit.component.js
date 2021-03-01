@@ -137,7 +137,8 @@ class DoctorEdit extends Component {
 
     dispatch(save(data))
       .then(() => {
-        window.location("/doctors");
+        alert("Datos guardados exitosamente!");
+        window.location.href = "/doctors";
       })
       .catch(() => {
         this.setState({
@@ -156,14 +157,14 @@ class DoctorEdit extends Component {
     dispatch(getDoctor(id)).then(() => {
       this.setState({
         doctor: doctor,
-        name: doctor.name,
-        lastname: doctor.lastname,
-        email: doctor.email,
-        document: doctor.document,
-        address: doctor.address,
-        phone: doctor.phone,
-        latitude: doctor.latitude,
-        longitude: doctor.longitude,
+        name: doctor?.name,
+        lastname: doctor?.lastname,
+        email: doctor?.email,
+        document: doctor?.document,
+        address: doctor?.address,
+        phone: doctor?.phone,
+        latitude: doctor?.latitude,
+        longitude: doctor?.longitude,
       });
     });
   }

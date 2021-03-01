@@ -29,6 +29,13 @@ class DoctorService {
       headers: authHeader(),
     });
   }
+  download(id) {
+    return axios
+      .get(API_URL + "/accounts/doctors/export", { headers: authHeader() })
+      .then((response) => {
+        return response;
+      });
+  }
 }
 
 export default new DoctorService();
