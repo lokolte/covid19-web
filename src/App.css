@@ -61,3 +61,11 @@ body::-webkit-scrollbar-thumb {
 .titulo {
   text-align: center;
 }
+
+.navigation-bar {
+  margin-left: 18px;
+}
+
+.navigation-bar span {
+  margin-left: 4px;
+}

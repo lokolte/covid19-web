@@ -100,6 +100,10 @@ class FormPatients extends Component {
 
     return (
       <div className="content">
+        <div className="navigation-bar">
+          <a href="/patients">Pacientes </a>
+          <span>/ Formularios</span>
+        </div>
         <div className="container">
           <header className="jumbotron center-jumbotron">
             <h3 className="center">Formularios</h3>
