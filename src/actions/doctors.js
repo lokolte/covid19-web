@@ -141,6 +141,37 @@ export const save = (data) => (dispatch) => {
   );
 };
 
+export const saveHospitals = (id, data) => (dispatch) => {
+  return doctorService.saveHospitals(id, data).then(
+    (data) => {
+      dispatch({
+        type: SAVE_DOCTOR_SUCCESS,
+      });
+
+      return Promise.resolve();
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      dispatch({
+        type: SAVE_DOCTOR_FAIL,
+      });
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+
+      return Promise.reject();
+    }
+  );
+};
+
 export const saveAssignment = (idPerson, idDoctor) => (dispatch) => {
   return service.saveAssignment(idPerson, idDoctor).then(
     (data) => {

@@ -1,19 +1,19 @@
 /** @format */
 
 import {
-  GET_HOSPITALS_SUCCESS,
-  GET_HOSPITALS_FAIL,
+  GET_HOSPITALS_DOCTOR_SUCCESS,
+  GET_HOSPITALS_DOCTOR_FAIL,
   SET_MESSAGE,
 } from "./types";
 
 import HospitalService from "../services/hospitals.service";
 
-export const getHospitals = (idDoctor) => (dispatch) => {
-  return HospitalService.getHospitals(idDoctor).then(
+export const getHospitalsDoctor = (id) => (dispatch) => {
+  return HospitalService.getHospitalsDoctor(id).then(
     (data) => {
       dispatch({
-        type: GET_HOSPITALS_SUCCESS,
-        payload: { hospitals: data },
+        type: GET_HOSPITALS_DOCTOR_SUCCESS,
+        payload: { asignados: data },
       });
 
       return Promise.resolve();
@@ -27,7 +27,7 @@ export const getHospitals = (idDoctor) => (dispatch) => {
         error.toString();
 
       dispatch({
-        type: GET_HOSPITALS_FAIL,
+        type: GET_HOSPITALS_DOCTOR_FAIL,
       });
 
       dispatch({

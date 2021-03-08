@@ -13,6 +13,7 @@ import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.m
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import { API_URL } from "../../config/env.config";
 
 class Doctors extends Component {
   constructor(props) {
@@ -71,6 +72,10 @@ class Doctors extends Component {
         <a href={"/doctors/" + row.id + "/view"}>Ver</a>
         <span> </span>
         <a href={"/doctors/" + row.id + "/edit"}>Editar</a>
+        <span> </span>
+        <a href={"/doctors/" + row.id + "/asign-hospital"}>
+          Asignar hospitales
+        </a>
       </p>
     );
   }
@@ -85,6 +90,9 @@ class Doctors extends Component {
     if (!this.state.doctors) {
       this.loadDoctors();
     }
+
+    const jwt = JSON.parse(localStorage.getItem("user")).jwt;
+    const url = API_URL + "/accounts/doctors/export?jwt=" + jwt;
 
     const columns = [
       { dataField: "document", text: "Nro. Documento", sort: true },
@@ -148,16 +156,8 @@ class Doctors extends Component {
                     <h6>Ingrese algo para filtrar los doctores:</h6>
                     <SearchBar text="Buscar" {...props.searchProps} />
                     <ClearSearchButton text="Limpiar" {...props.searchProps} />
-                    <button
-                      type="button"
-                      onClick={this.downloadFile}
-                      style={{
-                        borderRadius: "3px",
-                        border: "1px solid #808080",
-                      }}
-                    >
-                      Descargar
-                    </button>
+
+                    <a href={url}>Descargar</a>
                     <hr />
                     <BootstrapTable
                       className="dark"

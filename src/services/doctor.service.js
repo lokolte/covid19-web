@@ -24,6 +24,15 @@ class DoctorService {
       headers: authHeader(),
     });
   }
+  saveHospitals(id, data) {
+    return axios.post(
+      API_URL + "/accounts/doctors/" + id + "/hospitals",
+      data,
+      {
+        headers: authHeader(),
+      }
+    );
+  }
   importarDatos(formData) {
     return axios.post(API_URL + "/accounts/doctors/import", formData, {
       headers: authHeader(),

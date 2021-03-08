@@ -22,6 +22,7 @@ import Hospitals from "./components/hospitals/hospital-list.component";
 import Doctors from "./components/doctors/doctor-list.component";
 import DoctorView from "./components/doctors/doctor-view.component";
 import DoctorEdit from "./components/doctors/doctor-edit.component";
+import AsignHospital from "./components/doctors/asign-hospital.component";
 import Answers from "./components/answers/answer.component";
 import FormPatients from "./components/patients/form.component";
 import AnswersForm from "./components/patients/answers.form.component";
@@ -58,6 +59,10 @@ class App extends Component {
               <Route path="/hospitals" component={Hospitals} />
               <Route path="/doctors/:id/view" component={DoctorView} />
               <Route path="/doctors/:id/edit" component={DoctorEdit} />
+              <Route
+                path="/doctors/:id/asign-hospital"
+                component={AsignHospital}
+              />
               <Route path="/doctors" component={Doctors} />
               <Route
                 path="/patients/:personId/forms/:formId/answers"
