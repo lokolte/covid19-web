@@ -25,12 +25,14 @@ class Profile extends Component {
   constructor(props) {
     super(props);
     this.save = this.save.bind(this);
+    this.loadDoctor = this.loadDoctor.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
     this.onChangeNewPassword = this.onChangeNewPassword.bind(this);
     this.onChangeNewPassword2 = this.onChangeNewPassword2.bind(this);
     this.onChangePasswordOption = this.onChangePasswordOption.bind(this);
 
     this.state = {
+      doctor: undefined,
       email: "",
       password: "",
       newpassword: "",
@@ -40,11 +42,30 @@ class Profile extends Component {
     };
   }
 
+  loadDoctor() {
+    var user = JSON.parse(localStorage.getItem("user"));
+    var person = user.account.person;
+    this.setState({
+      doctor: {
+        name: person.name,
+        lastname: person.lastname,
+        document: person.document,
+        phone: person.phone,
+        province: person.province,
+        address: person.address,
+      },
+    });
+  }
+
   onChangePasswordOption(e) {
-    console.log(this.state.changePassword);
     this.setState({
       changePassword: !this.state.changePassword,
     });
+    if (!this.state.changePassword) {
+      document.getElementById("cambiarPassword").style.display = "block";
+    } else {
+      document.getElementById("cambiarPassword").style.display = "none";
+    }
   }
 
   onChangePassword(e) {
@@ -89,6 +110,8 @@ class Profile extends Component {
           changePassword: false,
           loading: false,
         });
+        document.getElementById("cambiarPassword").style.display = "none";
+        document.getElementById("checkbox").checked = false;
       })
       .catch(() => {
         alert("Ocurrio un error al actualizar el password");
@@ -103,6 +126,10 @@ class Profile extends Component {
 
     if (!currentUser) {
       return <Redirect to="/login" />;
+    }
+
+    if (!this.state.doctor) {
+      this.loadDoctor();
     }
 
     return (
@@ -120,14 +147,33 @@ class Profile extends Component {
             }}
           >
             <p>
-              <strong>Token:</strong> {currentUser.jwt.substring(0, 20)} ...{" "}
-              {currentUser.jwt.substr(currentUser.jwt.length - 20)}
+              <strong>Nombre:</strong>{" "}
+              {this.state.doctor ? this.state.doctor.name : ""}
             </p>
             <p>
-              <strong>Id:</strong> {currentUser.account.id}
+              <strong>Apellido:</strong>{" "}
+              {this.state.doctor ? this.state.doctor.lastname : ""}
+            </p>
+            <p>
+              <strong>Número de Documento:</strong>{" "}
+              {this.state.doctor ? this.state.doctor.document : ""}
             </p>
             <p>
               <strong>Email:</strong> {currentUser.account.email}
+            </p>
+            <p>
+              <strong>Teléfono:</strong>{" "}
+              {this.state.doctor ? this.state.doctor.phone : ""}
+            </p>
+
+            <p>
+              <strong>Región:</strong>{" "}
+              {this.state.doctor ? this.state.doctor.province : ""}
+            </p>
+
+            <p>
+              <strong>Dirección:</strong>{" "}
+              {this.state.doctor ? this.state.doctor.address : ""}
             </p>
             <strong>Authorities:</strong>
             <ul>
@@ -137,6 +183,7 @@ class Profile extends Component {
             <div className="form-group">
               <label htmlFor="password">Cambiar Password</label>
               <Input
+                id="checkbox"
                 type="checkbox"
                 name="changePasswordOption"
                 value={this.state.changePassword}
@@ -144,53 +191,49 @@ class Profile extends Component {
               />
             </div>
 
-            <div className="form-group">
-              <label htmlFor="password">Password actual</label>
-              <Input
-                type="password"
-                className="form-control"
-                name="password"
-                disabled={!this.state.changePassword}
-                value={this.state.password}
-                onChange={this.onChangePassword}
-                validations={[required]}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="password">Ingrese el nuevo Password</label>
-              <Input
-                type="password"
-                className="form-control"
-                name="password"
-                disabled={!this.state.changePassword}
-                value={this.state.newpassword}
-                onChange={this.onChangeNewPassword}
-                validations={[required]}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="password">Confirme el nuevo Password</label>
-              <Input
-                type="password"
-                className="form-control"
-                name="password"
-                disabled={!this.state.changePassword}
-                value={this.state.newpassword2}
-                onChange={this.onChangeNewPassword2}
-                validations={[required]}
-              />
-            </div>
+            <div id="cambiarPassword" style={{ display: "none" }}>
+              <div className="form-group">
+                <label htmlFor="password">Password actual</label>
+                <Input
+                  type="password"
+                  className="form-control"
+                  name="password"
+                  value={this.state.password}
+                  onChange={this.onChangePassword}
+                  validations={[required]}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="password">Ingrese el nuevo Password</label>
+                <Input
+                  type="password"
+                  className="form-control"
+                  name="password"
+                  value={this.state.newpassword}
+                  onChange={this.onChangeNewPassword}
+                  validations={[required]}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="password">Confirme el nuevo Password</label>
+                <Input
+                  type="password"
+                  className="form-control"
+                  name="password"
+                  value={this.state.newpassword2}
+                  onChange={this.onChangeNewPassword2}
+                  validations={[required]}
+                />
+              </div>
 
-            <div className="form-group">
-              <button
-                className="btn btn-primary btn-block"
-                disabled={!this.state.changePassword}
-              >
-                {this.state.loading && (
-                  <span className="spinner-border spinner-border-sm"></span>
-                )}
-                <span>Cambiar Password</span>
-              </button>
+              <div className="form-group">
+                <button className="btn btn-primary btn-block">
+                  {this.state.loading && (
+                    <span className="spinner-border spinner-border-sm"></span>
+                  )}
+                  <span>Cambiar Password</span>
+                </button>
+              </div>
             </div>
           </Form>
         </div>
