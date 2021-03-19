@@ -104,6 +104,16 @@ class PersonService {
         return response.data;
       });
   }
+
+  changePassword(data) {
+    return axios
+      .post(API_URL + "/accounts/doctors/change-password", data, {
+        headers: authHeader(),
+      })
+      .then((response) => {
+        return response.data;
+      });
+  }
 }
 
 export default new PersonService();
