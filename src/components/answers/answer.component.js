@@ -85,6 +85,10 @@ class Answers extends Component {
 
     return (
       <div className="content">
+        <div className="navigation-bar">
+          <a href="/patients">Pacientes</a>
+          <span>/ Consultas</span>
+        </div>
         <div className="container">
           <header className="jumbotron center-jumbotron">
             <h3 className="center">Consultas</h3>

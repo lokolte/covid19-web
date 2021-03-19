@@ -46,7 +46,7 @@ class AnswersForm extends Component {
   }
 
   render() {
-    const { user: currentUser } = this.props;
+    const { user: currentUser, location } = this.props;
 
     if (!currentUser) {
       return <Redirect to="/login" />;
@@ -90,8 +90,19 @@ class AnswersForm extends Component {
 
     const { SearchBar, ClearSearchButton } = Search;
 
+    let path = location.pathname;
+    let tokens = path.split("/");
+    let id = tokens[2];
+
+    const urlForms = "/patients/" + id + "/forms";
+
     return (
       <div className="content">
+        <div className="navigation-bar">
+          <a href="/patients">Pacientes </a>
+          <a href={urlForms}>/ Formularios</a>
+          <span>/ Respuestas Formulario</span>
+        </div>
         <div className="container">
           <header className="jumbotron center-jumbotron">
             <h3 className="center">Respuestas Formulario</h3>
