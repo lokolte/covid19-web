@@ -23,6 +23,22 @@ class HospitalService {
     }
   }
 
+  getHospital(id) {
+    return axios
+      .get(API_URL + "/hospitals/" + id, {
+        headers: authHeader(),
+      })
+      .then((response) => {
+        return response.data;
+      });
+  }
+
+  save(data) {
+    return axios.post(API_URL + "/hospitals", data, {
+      headers: authHeader(),
+    });
+  }
+
   getHospitalsDoctor(id) {
     return axios
       .get(API_URL + "/accounts/doctors/" + id + "/hospitals", {

@@ -21,6 +21,14 @@ class PersonService {
       });
   }
 
+  getPatient(id) {
+    return axios
+      .get(API_URL + "/persons/patients/" + id, { headers: authHeader() })
+      .then((response) => {
+        return response.data;
+      });
+  }
+
   getAnswersForm(idForm, idPerson) {
     return axios
       .get(API_URL + "/persons/" + idPerson + "/forms/" + idForm + "/answers", {

@@ -3,8 +3,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { getForms } from "../../actions/forms";
-// import FormItem from "./form-item.component";
+import { getCoordinators } from "../../actions/coordinators";
+import DoctorService from "../../services/doctor.service";
 
 import "../../App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -13,27 +13,45 @@ import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.m
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import { API_URL } from "../../config/env.config";
 
-class Forms extends Component {
+class Coordinators extends Component {
   constructor(props) {
     super(props);
-    this.loadForms = this.loadForms.bind(this);
+    this.loadCoordinators = this.loadCoordinators.bind(this);
+    this.eliminar = this.eliminar.bind(this);
 
     this.state = {
-      forms: undefined,
+      coordinators: undefined,
       currentPage: 1,
       sizePerPage: 10,
+      selectedFile: null,
     };
   }
 
-  loadForms() {
-    const { dispatch, forms } = this.props;
+  loadCoordinators() {
+    const { dispatch, coordinators } = this.props;
 
-    dispatch(getForms()).then(() => {
+    dispatch(getCoordinators()).then(() => {
       this.setState({
-        forms: forms,
+        coordinators: coordinators,
       });
     });
+  }
+
+  eliminar(id) {
+    console.log("eliminar usuario : ", id);
+  }
+
+  verDetalle(cell, row, rowIndex, formatExtraData) {
+    return (
+      <p>
+        <a href={"/coordinators/" + row.id + "/view"}>Ver</a>
+        <span> </span>
+        <a href={"/coordinators/" + row.id + "/edit"}>Editar</a>
+        <span> </span>
+      </p>
+    );
   }
 
   render() {
@@ -43,13 +61,21 @@ class Forms extends Component {
       return <Redirect to="/login" />;
     }
 
-    if (!this.state.forms) {
-      this.loadForms();
+    if (!this.state.coordinators) {
+      this.loadCoordinators();
     }
 
     const columns = [
-      { dataField: "title", text: "Título", sort: true },
-      { dataField: "description", text: "Descripción", sort: true },
+      { dataField: "document", text: "Nro. Documento", sort: true },
+      { dataField: "name", text: "Nombre completo", sort: true },
+      {
+        dataField: "actions",
+        text: "Acciones",
+        sort: false,
+        isDummyField: true,
+        csvExport: false,
+        formatter: this.verDetalle,
+      },
     ];
 
     const defaultSorted = [
@@ -84,24 +110,23 @@ class Forms extends Component {
       <div className="content">
         <div className="container">
           <header className="jumbotron center-jumbotron">
-            <h3 className="center">Formularios</h3>
+            <h3 className="center">Coordinadores</h3>
           </header>
 
           <div>
-            {this.state.forms ? (
+            {this.state.coordinators ? (
               <ToolkitProvider
                 bootstrap4
                 keyField="id"
-                data={this.state.forms}
+                data={this.state.coordinators}
                 columns={columns}
                 search={true}
               >
                 {(props) => (
                   <div>
-                    <h6>Ingrese algo para filtrar los formularios:</h6>
+                    <h6>Ingrese algo para filtrar los coordinadores:</h6>
                     <SearchBar text="Buscar" {...props.searchProps} />
                     <ClearSearchButton text="Limpiar" {...props.searchProps} />
-                    <hr />
                     <BootstrapTable
                       className="dark"
                       defaultSorted={defaultSorted}
@@ -115,6 +140,7 @@ class Forms extends Component {
               <></>
             )}
           </div>
+          <br />
         </div>
       </div>
     );
@@ -122,13 +148,13 @@ class Forms extends Component {
 }
 function mapStateToProps(state) {
   const { user } = state.authentication;
-  const { forms } = state.forms;
+  const { coordinators } = state.coordinators;
   const { message } = state.message;
   return {
     user,
-    forms,
+    coordinators,
     message,
   };
 }
 
-export default connect(mapStateToProps)(Forms);
+export default connect(mapStateToProps)(Coordinators);

@@ -48,6 +48,13 @@ export const Sidebar_Data = [
     cNameAlt: "nav-text-alternative",
   },
   {
+    title: "Coordinadores",
+    path: "/coordinators",
+    icon: <IoIcons.IoIosPerson />,
+    cName: "nav-text",
+    cNameAlt: "nav-text-alternative",
+  },
+  {
     title: "Mensajes",
     path: "/messages",
     icon: <FaIcons.FaEnvelopeOpenText />,

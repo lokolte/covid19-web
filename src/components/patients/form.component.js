@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { getFormsFromPatient } from "../../actions/forms";
+import { getPatient } from "../../actions/patients";
 // import FormItem from "./form-item.component";
 
 import "../../App.css";
@@ -21,6 +22,8 @@ class FormPatients extends Component {
 
     this.state = {
       forms: undefined,
+      patient: undefined,
+      name: "",
       currentPage: 1,
       sizePerPage: 10,
     };
@@ -36,6 +39,20 @@ class FormPatients extends Component {
     });
   }
 
+  loadPatient() {
+    const { dispatch, patient, location } = this.props;
+
+    let path = location.pathname;
+    let tokens = path.split("/");
+    let id = tokens[2];
+
+    dispatch(getPatient(id)).then(() => {
+      this.setState({
+        patient: patient,
+      });
+    });
+  }
+
   render() {
     const { user: currentUser } = this.props;
 
@@ -45,6 +62,10 @@ class FormPatients extends Component {
 
     if (!this.state.forms) {
       this.loadForms();
+    }
+
+    if (!this.state.patient) {
+      this.loadPatient();
     }
 
     const verDetalle = (cell, row, rowIndex, formatExtraData) => {
@@ -105,6 +126,13 @@ class FormPatients extends Component {
             <h3 className="center">Formularios</h3>
           </header>
 
+          <p>
+            <strong>Paciente:</strong>{" "}
+            {this.state.patient
+              ? this.state.patient.name + " " + this.state.patient.lastname
+              : this.state.name}
+          </p>
+
           <div>
             {this.state.forms ? (
               <ToolkitProvider
@@ -141,11 +169,13 @@ class FormPatients extends Component {
 function mapStateToProps(state) {
   const { user } = state.authentication;
   const { forms } = state.forms;
+  const { patient } = state.patient;
   const { message } = state.message;
   return {
     user,
     forms,
     message,
+    patient,
   };
 }
 

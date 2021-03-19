@@ -18,6 +18,7 @@ class Hospitals extends Component {
   constructor(props) {
     super(props);
     this.loadHospitals = this.loadHospitals.bind(this);
+    this.delete = this.delete.bind(this);
 
     this.state = {
       hospitals: undefined,
@@ -55,6 +56,19 @@ class Hospitals extends Component {
     );
   };
 
+  delete() {
+    console.log("eliminar !!!!");
+  }
+
+  verDetalle(cell, row, rowIndex, formatExtraData) {
+    return (
+      <p>
+        <a href={"/hospitals/" + row.id + "/edit"}>Editar</a>
+        <span> </span>
+      </p>
+    );
+  }
+
   render() {
     const { user: currentUser } = this.props;
 
@@ -71,6 +85,14 @@ class Hospitals extends Component {
       { dataField: "type", text: "Tipo", sort: true },
       { dataField: "province.name", text: "Region", sort: true },
       { dataField: "district.name", text: "Distrito", sort: true },
+      {
+        dataField: "actions",
+        text: "Acciones",
+        sort: false,
+        isDummyField: true,
+        csvExport: false,
+        formatter: this.verDetalle,
+      },
     ];
 
     const defaultSorted = [

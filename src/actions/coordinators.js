@@ -1,22 +1,23 @@
 /** @format */
 
 import {
-  GET_PATIENTS_SUCCESS,
-  GET_PATIENTS_FAIL,
-  GET_PATIENT_SUCCESS,
-  GET_PATIENT_FAIL,
+  GET_COORDINATORS_SUCCESS,
+  GET_COORDINATORS_FAIL,
+  SAVE_DOCTOR_SUCCESS,
+  SAVE_DOCTOR_FAIL,
   SET_MESSAGE,
 } from "./types";
 
-import PersonService from "../services/person.service";
+import service from "../services/coordinator.service";
 
-export const getPatients = () => (dispatch) => {
-  return PersonService.getPatients().then(
+export const getCoordinators = () => (dispatch) => {
+  return service.getCoordinators().then(
     (data) => {
       dispatch({
-        type: GET_PATIENTS_SUCCESS,
-        payload: { patients: data.persons },
+        type: GET_COORDINATORS_SUCCESS,
+        payload: { coordinators: data },
       });
+
       return Promise.resolve();
     },
     (error) => {
@@ -28,7 +29,7 @@ export const getPatients = () => (dispatch) => {
         error.toString();
 
       dispatch({
-        type: GET_PATIENTS_FAIL,
+        type: GET_COORDINATORS_FAIL,
       });
 
       dispatch({
@@ -41,13 +42,13 @@ export const getPatients = () => (dispatch) => {
   );
 };
 
-export const getPatient = (id) => (dispatch) => {
-  return PersonService.getPatient(id).then(
+export const save = (data) => (dispatch) => {
+  return service.save(data).then(
     (data) => {
       dispatch({
-        type: GET_PATIENT_SUCCESS,
-        payload: { patient: data },
+        type: SAVE_DOCTOR_SUCCESS,
       });
+
       return Promise.resolve();
     },
     (error) => {
@@ -59,7 +60,7 @@ export const getPatient = (id) => (dispatch) => {
         error.toString();
 
       dispatch({
-        type: GET_PATIENT_FAIL,
+        type: SAVE_DOCTOR_FAIL,
       });
 
       dispatch({
