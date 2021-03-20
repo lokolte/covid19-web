@@ -39,6 +39,16 @@ class HospitalService {
     });
   }
 
+  delete(id) {
+    return axios
+      .delete(API_URL + "/hospitals/" + id, {
+        headers: authHeader(),
+      })
+      .then((response) => {
+        return response.data;
+      });
+  }
+
   getHospitalsDoctor(id) {
     return axios
       .get(API_URL + "/accounts/doctors/" + id + "/hospitals", {

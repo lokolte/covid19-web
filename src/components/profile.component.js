@@ -168,7 +168,7 @@ class Profile extends Component {
 
             <p>
               <strong>Región:</strong>{" "}
-              {this.state.doctor ? this.state.doctor.province : ""}
+              {this.state.doctor ? this.state.doctor.province.name : ""}
             </p>
 
             <p>

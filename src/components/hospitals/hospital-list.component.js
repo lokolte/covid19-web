@@ -6,6 +6,8 @@ import { Redirect } from "react-router-dom";
 import { getHospitals } from "../../actions/hospitals";
 import HospitalService from "../../services/hospitals.service";
 
+import { MDBListGroupItem, MDBBadge, MDBIcon } from "mdbreact";
+
 import "../../App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.css";
@@ -25,6 +27,7 @@ class Hospitals extends Component {
       currentPage: 1,
       sizePerPage: 10,
       selectedFile: null,
+      hospitalSeleccionado: null,
     };
   }
 
@@ -57,7 +60,40 @@ class Hospitals extends Component {
   };
 
   delete() {
-    console.log("eliminar !!!!");
+    HospitalService.delete(this.state.hospitalSeleccionado).then(
+      () => {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
+        this.loadHospitals();
+      },
+      () => {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
+        alert("Ocurrio un error al ejecutar la operación");
+      }
+    );
+  }
+
+  openPopup(id) {
+    this.setState({
+      hospitalSeleccionado: id,
+    });
+    var modal = document.getElementById("myModal");
+    var span = document.getElementsByClassName("close")[0];
+    modal.style.display = "block";
+    span.onclick = function () {
+      modal.style.display = "none";
+    };
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+  }
+
+  close() {
+    var modal = document.getElementById("myModal");
+    modal.style.display = "none";
   }
 
   verDetalle(cell, row, rowIndex, formatExtraData) {
@@ -65,12 +101,17 @@ class Hospitals extends Component {
       <p>
         <a href={"/hospitals/" + row.id + "/edit"}>Editar</a>
         <span> </span>
+        <ItemRow key={row.id} patient={row} onDelete={formatExtraData} />
       </p>
     );
   }
 
   render() {
     const { user: currentUser } = this.props;
+
+    const deleteHospital = (id) => {
+      this.openPopup(id);
+    };
 
     if (!currentUser) {
       return <Redirect to="/login" />;
@@ -91,6 +132,7 @@ class Hospitals extends Component {
         sort: false,
         isDummyField: true,
         csvExport: false,
+        formatExtraData: deleteHospital,
         formatter: this.verDetalle,
       },
     ];
@@ -171,11 +213,47 @@ class Hospitals extends Component {
               </button>
             </div>
           </div>
+          <div id="myModal" className="modal">
+            <div className="modal-content">
+              <span className="close">&times;</span>
+              <p>Esta seguro que desea eliminar el hospital ?</p>
+              <div>
+                <button
+                  onClick={this.delete}
+                  id="eliminarHospital"
+                  style={{ borderRadius: "3px", border: "1px solid #808080" }}
+                >
+                  Aceptar
+                </button>
+                <button
+                  onClick={this.close}
+                  style={{ borderRadius: "3px", border: "1px solid #808080" }}
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 }
+
+const ItemRow = ({
+  patient: { id, name, phone, when, toRespond, seen, active },
+  onDelete,
+}) => (
+  <a
+    href={"#!"}
+    onClick={() => {
+      onDelete(id);
+    }}
+  >
+    Eliminar
+  </a>
+);
+
 function mapStateToProps(state) {
   const { user } = state.authentication;
   const { hospitals } = state.hospitals;
