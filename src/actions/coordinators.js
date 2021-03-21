@@ -72,3 +72,34 @@ export const save = (data) => (dispatch) => {
     }
   );
 };
+
+export const create = (data) => (dispatch) => {
+  return service.create(data).then(
+    (data) => {
+      dispatch({
+        type: SAVE_DOCTOR_SUCCESS,
+      });
+
+      return Promise.resolve();
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      dispatch({
+        type: SAVE_DOCTOR_FAIL,
+      });
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+
+      return Promise.reject();
+    }
+  );
+};

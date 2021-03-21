@@ -122,3 +122,7 @@ body::-webkit-scrollbar-thumb {
   width: 30%;
   margin-left: 50px;
 }
+
+.addBtn {
+  margin-left: 12px;
+}

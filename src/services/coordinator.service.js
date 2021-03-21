@@ -17,6 +17,11 @@ class CoordinatorService {
       headers: authHeader(),
     });
   }
+  create(data) {
+    return axios.post(API_URL + "/coordinators/new", data, {
+      headers: authHeader(),
+    });
+  }
 }
 
 export default new CoordinatorService();

@@ -3,46 +3,41 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { getPatients } from "../../actions/patients";
+import { getQuestions } from "../../actions/questions";
+// import FormItem from "./form-item.component";
 
 import "../../App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.css";
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 
-class PatientsAssignment extends Component {
+class Questions extends Component {
   constructor(props) {
     super(props);
-
-    this.loadPatients = this.loadPatients.bind(this);
-
-    this.verDetalle = this.verDetalle.bind(this);
+    this.loadQuestions = this.loadQuestions.bind(this);
 
     this.state = {
-      patients: undefined,
+      questions: undefined,
       currentPage: 1,
       sizePerPage: 10,
-      content: "Este es el home page",
     };
   }
 
-  loadPatients() {
-    const { dispatch, patients } = this.props;
+  loadQuestions() {
+    const { dispatch, location, questions } = this.props;
 
-    dispatch(getPatients()).then(() => {
+    let path = location.pathname;
+    let tokens = path.split("/");
+    let id = tokens[2];
+
+    dispatch(getQuestions(id)).then(() => {
       this.setState({
-        patients: patients,
+        questions: questions,
       });
     });
-  }
-
-  verDetalle(cell, row, rowIndex, formatExtraData) {
-    const answerId = this.state.patients?.filter((x) => x.id == row.id)[0];
-    return <a href={"/patients/" + row.id + "/assignment"}>{row.doctor}</a>;
   }
 
   render() {
@@ -52,21 +47,14 @@ class PatientsAssignment extends Component {
       return <Redirect to="/login" />;
     }
 
-    if (!this.state.patients) {
-      this.loadPatients();
+    if (!this.state.questions) {
+      this.loadQuestions();
     }
 
     const columns = [
-      { dataField: "name", text: "Nombre", sort: true },
-      { dataField: "phone", text: "Telefono", sort: true },
-      {
-        dataField: "actions",
-        text: "Medico asignado",
-        sort: false,
-        isDummyField: true,
-        csvExport: false,
-        formatter: this.verDetalle,
-      },
+      { dataField: "title", text: "Título", sort: true },
+      { dataField: "subtitle", text: "Subtítulo", sort: true },
+      { dataField: "type", text: "Tipo Respuesta", sort: true },
     ];
 
     const defaultSorted = [
@@ -100,26 +88,26 @@ class PatientsAssignment extends Component {
     return (
       <div className="content">
         <div className="navigation-bar">
-          <span>Pacientes</span>
+          <a href="/forms">Formularios </a>
+          <span> / Preguntas</span>
         </div>
-
         <div className="container">
           <header className="jumbotron center-jumbotron">
-            <h3 className="center">Asignación de Pacientes</h3>
+            <h3 className="center">Preguntas</h3>
           </header>
 
           <div>
-            {this.state.patients ? (
+            {this.state.questions ? (
               <ToolkitProvider
                 bootstrap4
                 keyField="id"
-                data={this.state.patients}
+                data={this.state.questions}
                 columns={columns}
                 search={true}
               >
                 {(props) => (
                   <div>
-                    <h6>Ingrese algo para filtrar los pacientes:</h6>
+                    <h6>Ingrese algo para filtrar las preguntas:</h6>
                     <SearchBar text="Buscar" {...props.searchProps} />
                     <ClearSearchButton text="Limpiar" {...props.searchProps} />
                     <hr />
@@ -141,16 +129,15 @@ class PatientsAssignment extends Component {
     );
   }
 }
-
 function mapStateToProps(state) {
   const { user } = state.authentication;
-  const { patients } = state.patients;
+  const { questions } = state.questions;
   const { message } = state.message;
   return {
     user,
-    patients,
+    questions,
     message,
   };
 }
 
-export default connect(mapStateToProps)(PatientsAssignment);
+export default connect(mapStateToProps)(Questions);

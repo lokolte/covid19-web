@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { getFormsFromPatient } from "../../actions/forms";
 import { getPatient } from "../../actions/patients";
-// import FormItem from "./form-item.component";
 
 import "../../App.css";
 import "bootstrap/dist/css/bootstrap.min.css";

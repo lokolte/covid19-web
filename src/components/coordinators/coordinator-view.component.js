@@ -45,6 +45,10 @@ class CoordinatorView extends Component {
 
     return (
       <div className="content">
+        <div className="navigation-bar">
+          <a href="/coordinators">Coordinadores </a>
+          <span>/ Datos de la Cuenta</span>
+        </div>
         <div className="container">
           <header className="jumbotron">
             <h3 className="titulo">Datos de la Cuenta</h3>

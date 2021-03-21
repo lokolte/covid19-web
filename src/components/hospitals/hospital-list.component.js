@@ -64,7 +64,7 @@ class Hospitals extends Component {
       () => {
         var modal = document.getElementById("myModal");
         modal.style.display = "none";
-        this.loadHospitals();
+        window.location.reload();
       },
       () => {
         var modal = document.getElementById("myModal");
@@ -122,7 +122,7 @@ class Hospitals extends Component {
     }
 
     const columns = [
-      { dataField: "id", text: "Id", sort: true },
+      { dataField: "code", text: "Código", sort: true },
       { dataField: "type", text: "Tipo", sort: true },
       { dataField: "province.name", text: "Region", sort: true },
       { dataField: "district.name", text: "Distrito", sort: true },
@@ -167,6 +167,10 @@ class Hospitals extends Component {
 
     return (
       <div className="content">
+        <div className="navigation-bar">
+          <span>Hospitales</span>
+        </div>
+
         <div className="container">
           <header className="jumbotron center-jumbotron">
             <h3 className="center">Hospitales</h3>
@@ -186,6 +190,9 @@ class Hospitals extends Component {
                     <h6>Ingrese algo para filtrar los hospitales:</h6>
                     <SearchBar text="Buscar" {...props.searchProps} />
                     <ClearSearchButton text="Limpiar" {...props.searchProps} />
+                    <a className="addBtn" href="/hospitals/new">
+                      Agregar
+                    </a>
                     <hr />
                     <BootstrapTable
                       className="dark"

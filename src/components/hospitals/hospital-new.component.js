@@ -7,7 +7,6 @@ import Input from "react-validation/build/input";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { getHospital } from "../../actions/hospitals";
 import { save } from "../../actions/hospitals";
 
 import "../../App.css";
@@ -22,10 +21,9 @@ const required = (value) => {
   }
 };
 
-class HospitalEdit extends Component {
+class HospitalAdd extends Component {
   constructor(props) {
     super(props);
-    this.loadHospital = this.loadHospital.bind(this);
     this.save = this.save.bind(this);
     this.onChangeName = this.onChangeName.bind(this);
     this.onChangePhone = this.onChangePhone.bind(this);
@@ -91,10 +89,9 @@ class HospitalEdit extends Component {
 
     this.form.validateAll();
 
-    const { dispatch, history } = this.props;
+    const { dispatch } = this.props;
 
     let data = {
-      id: this.state.hospital.id,
       name: this.state.name,
       phone: this.state.phone,
       address: this.state.address,
@@ -115,26 +112,6 @@ class HospitalEdit extends Component {
       });
   }
 
-  loadHospital() {
-    const { dispatch, hospital, location } = this.props;
-
-    let path = location.pathname;
-    let tokens = path.split("/");
-    let id = tokens[2];
-
-    dispatch(getHospital(id)).then(() => {
-      this.setState({
-        hospital: hospital,
-        code: hospital?.code,
-        name: hospital?.name,
-        area: hospital?.area,
-        phone: hospital?.phone,
-        address: hospital?.address,
-        director: hospital?.director,
-      });
-    });
-  }
-
   render() {
     const { user: currentUser } = this.props;
 
@@ -142,15 +119,11 @@ class HospitalEdit extends Component {
       return <Redirect to="/login" />;
     }
 
-    if (!this.state.hospital) {
-      this.loadHospital();
-    }
-
     return (
       <div className="content">
         <div className="navigation-bar">
           <a href="/hospitals">Hospitales </a>
-          <span>/ Datos del Hospital</span>
+          <span>/ Agregar Hospital</span>
         </div>
         <div className="container">
           <header className="jumbotron">
@@ -286,4 +259,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(withRouter(HospitalEdit));
+export default connect(mapStateToProps)(withRouter(HospitalAdd));

@@ -16,6 +16,7 @@ import doctor from "./doctor";
 import messages from "./messagesPatient";
 import coordinators from "./coordinators";
 import provinces from "./provinces";
+import questions from "./questions";
 
 export default combineReducers({
   authentication,
@@ -33,4 +34,5 @@ export default combineReducers({
   coordinators,
   provinces,
   patient,
+  questions,
 });

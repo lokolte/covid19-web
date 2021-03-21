@@ -36,6 +36,14 @@ class Forms extends Component {
     });
   }
 
+  verDetalle(cell, row, rowIndex, formatExtraData) {
+    return (
+      <p>
+        <a href={"/forms/" + row.id + "/answers"}>Ver</a>
+      </p>
+    );
+  }
+
   render() {
     const { user: currentUser } = this.props;
 
@@ -50,6 +58,14 @@ class Forms extends Component {
     const columns = [
       { dataField: "title", text: "Título", sort: true },
       { dataField: "description", text: "Descripción", sort: true },
+      {
+        dataField: "actions",
+        text: "Acciones",
+        sort: false,
+        isDummyField: true,
+        csvExport: false,
+        formatter: this.verDetalle,
+      },
     ];
 
     const defaultSorted = [
@@ -82,6 +98,9 @@ class Forms extends Component {
 
     return (
       <div className="content">
+        <div className="navigation-bar">
+          <span>Formularios</span>
+        </div>
         <div className="container">
           <header className="jumbotron center-jumbotron">
             <h3 className="center">Formularios</h3>

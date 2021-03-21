@@ -7,10 +7,9 @@ import Input from "react-validation/build/input";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { getDoctor } from "../../actions/doctors";
 import { getProvinces } from "../../actions/provinces";
 import { isEmail } from "validator";
-import { save } from "../../actions/doctors";
+import { create } from "../../actions/coordinators";
 
 import "../../App.css";
 
@@ -34,13 +33,11 @@ const email = (value) => {
   }
 };
 
-class CoordinatorEdit extends Component {
+class CoordinatorAdd extends Component {
   constructor(props) {
     super(props);
-    this.loadData = this.loadData.bind(this);
     this.loadProvinces = this.loadProvinces.bind(this);
     this.save = this.save.bind(this);
-    this.handleChange = this.handleChange.bind(this);
     this.onChangeName = this.onChangeName.bind(this);
     this.onChangeLastName = this.onChangeLastName.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
@@ -49,6 +46,11 @@ class CoordinatorEdit extends Component {
     this.onChangeAddress = this.onChangeAddress.bind(this);
     this.onChangeLatitude = this.onChangeLatitude.bind(this);
     this.onChangeLongitude = this.onChangeLongitude.bind(this);
+    this.onChangeProvince = this.onChangeProvince.bind(this);
+    this.onChangeSex = this.onChangeSex.bind(this);
+    this.onChangeBirthDate = this.onChangeBirthDate.bind(this);
+    this.onChangePassword = this.onChangePassword.bind(this);
+    this.onChangePassword2 = this.onChangePassword2.bind(this);
 
     this.state = {
       email: "",
@@ -62,8 +64,12 @@ class CoordinatorEdit extends Component {
       loading: false,
       doctor: undefined,
       provinces: undefined,
-      provinceId: undefined,
-      seleccionado: undefined,
+      provinceSelected: undefined,
+      sexList: ["MASCULINO", "FEMENINO"],
+      sexSelected: "MASCULINO", // Por defecto
+      birthDate: undefined,
+      password: undefined,
+      password2: undefined,
     };
   }
 
@@ -91,6 +97,25 @@ class CoordinatorEdit extends Component {
     });
   }
 
+  onChangePassword(e) {
+    this.setState({
+      password: e.target.value,
+    });
+  }
+
+  onChangePassword2(e) {
+    this.setState({
+      password2: e.target.value,
+    });
+  }
+
+  onChangeBirthDate(e) {
+    console.log("birthDate : ", e.target.value);
+    this.setState({
+      birthDate: e.target.value,
+    });
+  }
+
   onChangePhone(e) {
     this.setState({
       phone: e.target.value,
@@ -115,8 +140,12 @@ class CoordinatorEdit extends Component {
     });
   }
 
-  handleChange(e) {
-    this.setState({ seleccionado: e.target.value });
+  onChangeProvince(e) {
+    this.setState({ provinceSelected: e.target.value });
+  }
+
+  onChangeSex(e) {
+    this.setState({ sexSelected: e.target.value });
   }
 
   save(e) {
@@ -128,10 +157,9 @@ class CoordinatorEdit extends Component {
 
     this.form.validateAll();
 
-    const { dispatch, history } = this.props;
+    const { dispatch } = this.props;
 
     let data = {
-      id: this.state.doctor.id,
       name: this.state.name,
       lastname: this.state.lastname,
       email: this.state.email,
@@ -140,46 +168,24 @@ class CoordinatorEdit extends Component {
       address: this.state.address,
       latitude: this.state.latitude,
       longitude: this.state.longitude,
-      birthDate: this.state.doctor.birthDate,
-      sex: this.state.doctor.sex,
-      status: this.state.doctor.status,
-      province: this.state.seleccionado,
+      birthDate: this.state.birthDate,
+      sex: this.state.sexSelected,
+      province: this.state.provinceSelected,
+      password: this.state.password,
+      password2: this.state.password2,
     };
 
-    dispatch(save(data))
+    dispatch(create(data))
       .then(() => {
         alert("Datos guardados exitosamente!");
         window.location.href = "/coordinators";
       })
       .catch(() => {
+        alert("Ocurrio un error");
         this.setState({
           loading: false,
         });
       });
-  }
-
-  loadData() {
-    const { dispatch, doctor, location } = this.props;
-
-    let path = location.pathname;
-    let tokens = path.split("/");
-    let id = tokens[2];
-
-    dispatch(getDoctor(id)).then(() => {
-      this.setState({
-        doctor: doctor,
-        name: doctor?.name,
-        lastname: doctor?.lastname,
-        email: doctor?.email,
-        document: doctor?.document,
-        address: doctor?.address,
-        phone: doctor?.phone,
-        latitude: doctor?.latitude,
-        longitude: doctor?.longitude,
-        provinceId: doctor?.provinceId,
-      });
-      this.loadProvinces();
-    });
   }
 
   loadProvinces() {
@@ -200,8 +206,8 @@ class CoordinatorEdit extends Component {
       return <Redirect to="/login" />;
     }
 
-    if (!this.state.doctor) {
-      this.loadData();
+    if (!this.state.provinces) {
+      this.loadProvinces();
     }
 
     var Data = [],
@@ -211,15 +217,17 @@ class CoordinatorEdit extends Component {
             {X?.id} - {X?.name}
           </option>
         );
+      },
+      MakeItem2 = function (X) {
+        return <option value={X}>{X}</option>;
       };
 
     return (
       <div className="content">
         <div className="navigation-bar">
-          <a href="/coordinators">Coordinadores </a>
-          <span>/ Datos de la Cuenta</span>
+          <a href="/coordinators">Coordinadores</a>
+          <span>/ Agregar Coordinador</span>
         </div>
-
         <div className="container">
           <header className="jumbotron">
             <h3 className="titulo">Datos de la Cuenta</h3>
@@ -278,6 +286,18 @@ class CoordinatorEdit extends Component {
             </div>
 
             <div className="form-group">
+              <label htmlFor="birthDate">Fecha de nacimiento</label>
+              <Input
+                type="date"
+                className="form-control"
+                name="birthDate"
+                value={this.state.birthDate}
+                onChange={this.onChangeBirthDate}
+                validations={[required]}
+              />
+            </div>
+
+            <div className="form-group">
               <label htmlFor="email">Correo</label>
               <Input
                 type="text"
@@ -322,6 +342,24 @@ class CoordinatorEdit extends Component {
             </div>
 
             <div className="form-group">
+              <label htmlFor="sex">Sexo</label>
+              <select id="sex" name="sex" onChange={this.onChangeSex}>
+                {this.state.sexList?.map(MakeItem2)}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="provinces">Región</label>
+              <select
+                id="provinces"
+                name="provinces"
+                onChange={this.onChangeProvince}
+              >
+                {this.state.provinces?.map(MakeItem)}
+              </select>
+            </div>
+
+            <div className="form-group">
               <label htmlFor="latitude">Latitud</label>
               <Input
                 type="text"
@@ -354,14 +392,24 @@ class CoordinatorEdit extends Component {
             </div>
 
             <div className="form-group">
-              <label htmlFor="provinces">Región</label>
-              <select
-                id="provinces"
-                name="provinces"
-                onChange={this.handleChange}
-              >
-                {this.state.provinces?.map(MakeItem)}
-              </select>
+              <label htmlFor="password">Password</label>
+              <Input
+                type="password"
+                className="form-control"
+                name="password"
+                onChange={this.onChangePassword}
+                validations={[required]}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password2">Confirmar Password</label>
+              <Input
+                type="password"
+                className="form-control"
+                name="password2"
+                onChange={this.onChangePassword2}
+                validations={[required]}
+              />
             </div>
 
             <div className="form-group">
@@ -384,13 +432,11 @@ class CoordinatorEdit extends Component {
 
 function mapStateToProps(state) {
   const { user } = state.authentication;
-  const { doctor } = state.doctor;
   const { provinces } = state.provinces;
   return {
     user,
-    doctor,
     provinces,
   };
 }
 
-export default connect(mapStateToProps)(withRouter(CoordinatorEdit));
+export default connect(mapStateToProps)(withRouter(CoordinatorAdd));

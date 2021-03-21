@@ -98,9 +98,12 @@ class Patients extends Component {
 
     return (
       <div className="content">
+        <div className="navigation-bar">
+          <span>Pacientes</span>
+        </div>
         <div className="container">
           <header className="jumbotron center-jumbotron">
-            <h3 className="center">Consultas de Pacientes</h3>
+            <h3 className="center">Pacientes</h3>
           </header>
 
           <div>

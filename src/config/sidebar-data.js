@@ -20,7 +20,7 @@ export const Sidebar_Data = [
     cNameAlt: "nav-text-alternative",
   },
   {
-    title: "Consultas",
+    title: "Respuestas",
     path: "/patients",
     icon: <IoIcons.IoIosPaper />,
     cName: "nav-text",

@@ -18,11 +18,14 @@ import Patients from "./components/patients/patient-list.component";
 import PatientsAssignment from "./components/patients/patients-assignment.component";
 import Assignment from "./components/patients/assignment.component";
 import Forms from "./components/forms/form-list.component";
+import Questions from "./components/forms/question-list.component";
 import Hospitals from "./components/hospitals/hospital-list.component";
 import HospitalEdit from "./components/hospitals/hospital-edit.component";
+import HospitalAdd from "./components/hospitals/hospital-new.component";
 import Doctors from "./components/doctors/doctor-list.component";
 import DoctorView from "./components/doctors/doctor-view.component";
 import DoctorEdit from "./components/doctors/doctor-edit.component";
+import DoctorAdd from "./components/doctors/doctor-new.component";
 import AsignHospital from "./components/doctors/asign-hospital.component";
 import Answers from "./components/answers/answer.component";
 import FormPatients from "./components/patients/form.component";
@@ -30,6 +33,7 @@ import AnswersForm from "./components/patients/answers.form.component";
 import Coordinators from "./components/coordinators/coordinator-list.component";
 import CoordinatorView from "./components/coordinators/coordinator-view.component";
 import CoordinatorEdit from "./components/coordinators/coordinator-edit.component";
+import CoordinatorAdd from "./components/coordinators/coordinator-new.component";
 
 import { clearMessage } from "./actions/message";
 
@@ -57,17 +61,22 @@ class App extends Component {
               <Route exact path="/profile" component={Profile} />
               <Route path="/doctor" component={BoardDoctor} />
               <Route path="/admin" component={BoardAdmin} />
+              <Route path="/forms/:id/answers" component={Questions} />
               <Route path="/forms" component={Forms} />
               <Route path="/messages" component={ChatPage} />
               <Route path="/patients/:id/answers" component={Answers} />
               <Route path="/hospitals/:id/edit" component={HospitalEdit} />
+              <Route path="/hospitals/new" component={HospitalAdd} />
               <Route path="/hospitals" component={Hospitals} />
               <Route path="/doctors/:id/view" component={DoctorView} />
               <Route path="/doctors/:id/edit" component={DoctorEdit} />
+              <Route path="/doctors/new" component={DoctorAdd} />
               <Route
                 path="/coordinators/:id/edit"
                 component={CoordinatorEdit}
               />
+              <Route path="/coordinators/new" component={CoordinatorAdd} />
+
               <Route
                 path="/coordinators/:id/view"
                 component={CoordinatorView}

@@ -24,6 +24,20 @@ class DoctorService {
       headers: authHeader(),
     });
   }
+  create(data) {
+    return axios.post(API_URL + "/accounts/doctors/new", data, {
+      headers: authHeader(),
+    });
+  }
+  delete(id) {
+    return axios
+      .delete(API_URL + "/accounts/person/" + id, {
+        headers: authHeader(),
+      })
+      .then((response) => {
+        return response.data;
+      });
+  }
   saveHospitals(id, data) {
     return axios.post(
       API_URL + "/accounts/doctors/" + id + "/hospitals",
