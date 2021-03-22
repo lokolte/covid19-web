@@ -42,6 +42,13 @@ class ChatPage extends Component {
       this.setState({
         patientsDoctor: patientsDoctor,
       });
+      if (
+        this.state.patientsDoctor != undefined &&
+        this.state.patientsDoctor.length == 0
+      ) {
+        document.getElementById("sinMensajes").style.display = "block";
+        document.getElementById("messages").style.display = "none";
+      }
     });
   }
 
@@ -134,7 +141,11 @@ class ChatPage extends Component {
           </header>
         </div>
 
-        <div>
+        <div id="sinMensajes" style={{ display: "none" }}>
+          <h4 className="center">No tiene mensajes</h4>
+        </div>
+
+        <div id="messages">
           <MDBCard className="grey chat-room">
             <MDBCardBody>
               <MDBRow className="px-lg-2 px-2">
