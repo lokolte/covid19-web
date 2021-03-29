@@ -26,14 +26,24 @@ class Navbar extends Component {
     };
   }
 
+  isDoctor() {
+    //user.account.role.name === "PROFESIONAL_MEDICO";
+    return true;
+  }
+
+  isAdmin() {
+    //user.account.role.name === "ADMIN",
+    return true;
+  }
+
   componentDidMount() {
     const user = this.props.user;
 
     if (user) {
       this.setState({
         currentUser: user,
-        showDoctorBoard: user.account.role.name === "PROFESIONAL_MEDICO",
-        showAdminBoard: user.account.role.name === "ADMIN",
+        showDoctorBoard: this.isDoctor(),
+        showAdminBoard: this.isAdmin(),
         sidebar: false,
       });
     }

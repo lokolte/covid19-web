@@ -132,6 +132,11 @@ class Profile extends Component {
       this.loadDoctor();
     }
 
+    let user = localStorage.getItem("user");
+    let data = JSON.parse(user);
+    let listRoles = data.account.roles;
+    const items = listRoles.map((role) => <li>{role.name}</li>);
+
     return (
       <div className="content">
         <div className="container">
@@ -176,9 +181,7 @@ class Profile extends Component {
               {this.state.doctor ? this.state.doctor.address : ""}
             </p>
             <strong>Authorities:</strong>
-            <ul>
-              <li>{currentUser.account.role.name}</li>
-            </ul>
+            <ul>{items}</ul>
 
             <div className="form-group">
               <label htmlFor="password">Cambiar Password</label>

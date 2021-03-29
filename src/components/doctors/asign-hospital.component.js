@@ -142,7 +142,7 @@ class AsignHospital extends Component {
       this.loadAsignado();
     }
 
-    var Data = ["this", "example", "isnt", "funny"],
+    var Data = [],
       MakeItem = function (X) {
         return (
           <option value={X?.id}>
