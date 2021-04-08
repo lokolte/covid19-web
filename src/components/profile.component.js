@@ -140,11 +140,10 @@ class Profile extends Component {
     return (
       <div className="content">
         <div className="container">
-          <header className="jumbotron">
-            <h3>
-              <strong>{currentUser.account.email}</strong> Profile
-            </h3>
+          <header className="jumbotron center-jumbotron">
+            <h3 className="center">Perfil</h3>
           </header>
+
           <Form
             onSubmit={this.save}
             ref={(c) => {

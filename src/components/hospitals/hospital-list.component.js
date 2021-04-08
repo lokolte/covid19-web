@@ -124,7 +124,7 @@ class Hospitals extends Component {
     const columns = [
       { dataField: "code", text: "Código", sort: true },
       { dataField: "type", text: "Tipo", sort: true },
-      { dataField: "province.name", text: "Region", sort: true },
+      { dataField: "district.province.name", text: "Region", sort: true },
       { dataField: "district.name", text: "Distrito", sort: true },
       {
         dataField: "actions",
