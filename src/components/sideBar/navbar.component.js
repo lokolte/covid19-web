@@ -27,13 +27,21 @@ class Navbar extends Component {
   }
 
   isDoctor() {
-    //user.account.role.name === "PROFESIONAL_MEDICO";
-    return true;
+    const user = this.props.user;
+    for (let role in user.account.roles) {
+      let r = user.account.roles[role];
+      if (r.name == "PROFESIONAL_MEDICO") return true;
+    }
+    return false;
   }
 
   isAdmin() {
-    //user.account.role.name === "ADMIN",
-    return true;
+    const user = this.props.user;
+    for (let role in user.account.roles) {
+      let r = user.account.roles[role];
+      if (r.name == "ADMIN") return true;
+    }
+    return false;
   }
 
   componentDidMount() {

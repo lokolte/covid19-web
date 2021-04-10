@@ -8,6 +8,9 @@ import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { save } from "../../actions/hospitals";
+import { getProvinces } from "../../actions/provinces";
+import { getDistricts } from "../../actions/districts";
+import { delayFunction } from "../../actions/generalActions";
 
 import "../../App.css";
 
@@ -31,6 +34,13 @@ class HospitalAdd extends Component {
     this.onChangeCode = this.onChangeCode.bind(this);
     this.onChangeDirector = this.onChangeDirector.bind(this);
     this.onChangeArea = this.onChangeArea.bind(this);
+    this.onChangeLatitude = this.onChangeLatitude.bind(this);
+    this.onChangeLongitude = this.onChangeLongitude.bind(this);
+    this.handleChangeProvince = this.handleChangeProvince.bind(this);
+    this.handleChangeDistrict = this.handleChangeDistrict.bind(this);
+    this.loadProvinces = this.loadProvinces.bind(this);
+    this.loadDistricts = this.loadDistricts.bind(this);
+    this.loadingDistricts = this.loadingDistricts.bind(this);
 
     this.state = {
       code: "",
@@ -40,7 +50,16 @@ class HospitalAdd extends Component {
       area: "",
       director: "",
       loading: false,
+      longitude: 0.0,
+      loading: false,
       hospital: undefined,
+      provinces: undefined,
+      provinceId: undefined,
+      provinceSelected: undefined,
+      districts: undefined,
+      districtId: undefined,
+      districtSelected: undefined,
+      isLoadingDistricts: false,
     };
   }
 
@@ -80,6 +99,18 @@ class HospitalAdd extends Component {
     });
   }
 
+  onChangeLatitude(e) {
+    this.setState({
+      latitude: e.target.value,
+    });
+  }
+
+  onChangeLongitude(e) {
+    this.setState({
+      longitude: e.target.value,
+    });
+  }
+
   save(e) {
     e.preventDefault();
 
@@ -98,6 +129,8 @@ class HospitalAdd extends Component {
       code: this.state.code,
       director: this.state.director,
       area: this.state.area,
+      latitude: this.state.latitude,
+      longitude: this.state.longitude,
     };
 
     dispatch(save(data))
@@ -112,12 +145,74 @@ class HospitalAdd extends Component {
       });
   }
 
+  handleChangeProvince(e) {
+    this.setState({ provinceSelected: e.target.value });
+    this.loadDistricts(e.target.value);
+  }
+
+  handleChangeDistrict(e) {
+    this.setState({ districtSelected: e.target.value });
+  }
+
+  loadProvinces() {
+    const { dispatch, provinces } = this.props;
+
+    dispatch(getProvinces()).then(() => {
+      this.setState({
+        provinces: provinces,
+      });
+      if (provinces != undefined) {
+        let idProvince = provinces[0].id;
+        this.loadDistricts(idProvince);
+      }
+    });
+  }
+
+  loadingDistricts() {
+    const { districts } = this.props;
+    if (this.state.isLoadingDistricts) {
+      if (!!districts) {
+        delayFunction(() => {
+          this.setState({
+            districts: districts,
+            isLoadingDistricts: false,
+          });
+        });
+      }
+    }
+  }
+
+  loadDistricts(idProvince) {
+    const { dispatch, districts } = this.props;
+    console.log("cargar distritos de ", idProvince);
+
+    dispatch(getDistricts(idProvince)).then(() => {
+      this.setState({
+        isLoadingDistricts: true,
+      });
+    });
+  }
+
   render() {
     const { user: currentUser } = this.props;
 
     if (!currentUser) {
       return <Redirect to="/login" />;
     }
+
+    if (!this.state.provinces) {
+      this.loadProvinces();
+    }
+
+    this.loadingDistricts();
+
+    var MakeItem = function (X) {
+      return (
+        <option value={X?.id}>
+          {X?.id} - {X?.name}
+        </option>
+      );
+    };
 
     return (
       <div className="content">
@@ -233,6 +328,52 @@ class HospitalAdd extends Component {
             </div>
 
             <div className="form-group">
+              <label htmlFor="provinces">Región</label>
+              <select
+                id="provinces"
+                name="provinces"
+                onChange={this.handleChangeProvince}
+              >
+                {this.state.provinces?.map(MakeItem)}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="districts">Distrito</label>
+              <select
+                id="districts"
+                name="districts"
+                onChange={this.handleChangeDistrict}
+              >
+                {this.state.districts?.map(MakeItem)}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="latitude">Latitud</label>
+              <Input
+                type="text"
+                className="form-control"
+                name="latitude"
+                value={this.state.latitude}
+                onChange={this.onChangeLatitude}
+                validations={[required]}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="longitude">Longitud</label>
+              <Input
+                type="text"
+                className="form-control"
+                name="longitude"
+                value={this.state.longitude}
+                onChange={this.onChangeLongitude}
+                validations={[required]}
+              />
+            </div>
+
+            <div className="form-group">
               <button
                 className="btn btn-primary btn-block"
                 disabled={this.state.loading}
@@ -253,9 +394,13 @@ class HospitalAdd extends Component {
 function mapStateToProps(state) {
   const { user } = state.authentication;
   const { hospital } = state.hospital;
+  const { provinces } = state.provinces;
+  const { districts } = state.districts;
   return {
     user,
     hospital,
+    provinces,
+    districts,
   };
 }
 
