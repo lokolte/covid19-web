@@ -11,6 +11,7 @@ import { getHospital } from "../../actions/hospitals";
 import { getProvinces } from "../../actions/provinces";
 import { getDistricts } from "../../actions/districts";
 import { save } from "../../actions/hospitals";
+import { delayFunction } from "../../actions/generalActions";
 
 import "../../App.css";
 
@@ -41,6 +42,7 @@ class HospitalEdit extends Component {
     this.handleChangeDistrict = this.handleChangeDistrict.bind(this);
     this.loadProvinces = this.loadProvinces.bind(this);
     this.loadDistricts = this.loadDistricts.bind(this);
+    this.loadingDistricts = this.loadingDistricts.bind(this);
 
     this.state = {
       code: "",
@@ -59,6 +61,7 @@ class HospitalEdit extends Component {
       districts: undefined,
       districtId: undefined,
       districtSelected: undefined,
+      isLoadingDistricts: false,
     };
   }
 
@@ -131,6 +134,7 @@ class HospitalEdit extends Component {
       area: this.state.area,
       latitude: this.state.latitude,
       longitude: this.state.longitude,
+      district: this.state.districtSelected,
     };
 
     dispatch(save(data))
@@ -163,9 +167,12 @@ class HospitalEdit extends Component {
         director: hospital?.director,
         latitude: hospital?.location?.latitude,
         longitude: hospital?.location?.longitude,
+        district: hospital?.district?.id,
       });
       let idProvince = hospital?.district?.province.id;
-      this.loadProvinces(idProvince);
+      let idDistrict = hospital?.district?.id;
+      console.log("provincia : ", idProvince);
+      this.loadProvinces(idProvince, idDistrict);
     });
   }
 
@@ -178,7 +185,7 @@ class HospitalEdit extends Component {
     this.setState({ districtSelected: e.target.value });
   }
 
-  loadProvinces(idProvince) {
+  loadProvinces(idProvince, idDistrict) {
     const { dispatch, provinces } = this.props;
 
     dispatch(getProvinces()).then(() => {
@@ -189,26 +196,37 @@ class HospitalEdit extends Component {
         if (idProvince == null) {
           idProvince = provinces[0].id;
         }
-        console.log("provincia : ", idProvince);
-        this.loadDistricts(idProvince);
+        this.loadDistricts(idProvince, idDistrict);
         document.getElementById("provinces").value = idProvince;
       }
     });
   }
 
-  loadDistricts(idProvince) {
-    const { dispatch, districts } = this.props;
-    console.log("cargar distritos de ", idProvince);
+  loadingDistricts() {
+    const { districts } = this.props;
+    if (this.state.isLoadingDistricts) {
+      if (!!districts) {
+        delayFunction(() => {
+          this.setState({
+            districts: districts,
+            isLoadingDistricts: false,
+          });
+          document.getElementById(
+            "districts"
+          ).value = this.state.districtSelected;
+        });
+      }
+    }
+  }
+
+  loadDistricts(idProvince, idDistrict) {
+    const { dispatch } = this.props;
 
     dispatch(getDistricts(idProvince)).then(() => {
       this.setState({
-        districts: districts,
+        isLoadingDistricts: true,
+        districtSelected: idDistrict,
       });
-      //document.getElementById("provinces").value = districts[0].id;
-      if (districts != undefined) {
-        console.log("distrito : ", districts[0].id);
-        //document.getElementById("provinces").value = this.state.provinceId;
-      }
     });
   }
 
@@ -222,6 +240,8 @@ class HospitalEdit extends Component {
     if (!this.state.hospital) {
       this.loadHospital();
     }
+
+    this.loadingDistricts();
 
     var MakeItem = function (X) {
       return (

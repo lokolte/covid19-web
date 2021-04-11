@@ -11,6 +11,7 @@ export const Sidebar_Data = [
     icon: <AiIcons.AiFillHome />,
     cName: "nav-text",
     cNameAlt: "nav-text-alternative",
+    roles: ["ADMIN", "PROFESIONAL_MEDICO", "COORDINADOR"],
   },
   {
     title: "Formularios",
@@ -18,6 +19,7 @@ export const Sidebar_Data = [
     icon: <IoIcons.IoIosPaper />,
     cName: "nav-text",
     cNameAlt: "nav-text-alternative",
+    roles: ["ADMIN", "PROFESIONAL_MEDICO", "COORDINADOR"],
   },
   {
     title: "Respuestas",
@@ -25,6 +27,7 @@ export const Sidebar_Data = [
     icon: <IoIcons.IoIosPaper />,
     cName: "nav-text",
     cNameAlt: "nav-text-alternative",
+    roles: ["ADMIN", "PROFESIONAL_MEDICO"],
   },
   {
     title: "Pacientes",
@@ -32,6 +35,7 @@ export const Sidebar_Data = [
     icon: <IoIcons.IoIosPerson />,
     cName: "nav-text",
     cNameAlt: "nav-text-alternative",
+    roles: ["ADMIN", "COORDINADOR"],
   },
   {
     title: "Hospitales",
@@ -39,6 +43,7 @@ export const Sidebar_Data = [
     icon: <AiIcons.AiFillHome />,
     cName: "nav-text",
     cNameAlt: "nav-text-alternative",
+    roles: ["ADMIN", "PROFESIONAL_MEDICO", "COORDINADOR"],
   },
   {
     title: "Usuarios",
@@ -46,6 +51,7 @@ export const Sidebar_Data = [
     icon: <IoIcons.IoIosPerson />,
     cName: "nav-text",
     cNameAlt: "nav-text-alternative",
+    roles: ["ADMIN", "COORDINADOR"],
   },
   {
     title: "Coordinadores",
@@ -53,6 +59,7 @@ export const Sidebar_Data = [
     icon: <IoIcons.IoIosPerson />,
     cName: "nav-text",
     cNameAlt: "nav-text-alternative",
+    roles: ["ADMIN"],
   },
   {
     title: "Mensajes",
@@ -60,6 +67,7 @@ export const Sidebar_Data = [
     icon: <FaIcons.FaEnvelopeOpenText />,
     cName: "nav-text",
     cNameAlt: "nav-text-alternative",
+    roles: ["ADMIN", "PROFESIONAL_MEDICO", "COORDINADOR"],
   },
   {
     title: "Support",
@@ -67,5 +75,6 @@ export const Sidebar_Data = [
     icon: <IoIcons.IoMdHelpCircle />,
     cName: "nav-text",
     cNameAlt: "nav-text-alternative",
+    roles: ["ADMIN", "PROFESIONAL_MEDICO", "COORDINADOR"],
   },
 ];

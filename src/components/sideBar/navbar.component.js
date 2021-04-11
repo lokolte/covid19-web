@@ -3,7 +3,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as FaIcons from "react-icons/fa";
-import * as AiIcons from "react-icons/ai";
 import { IconContext } from "react-icons";
 import { Link } from "react-router-dom";
 import "./css/NavBar.css";
@@ -11,6 +10,7 @@ import "../../App.css";
 
 import SideBarItem from "./sidebar-item.component";
 import { logout } from "../../actions/auth";
+import { isDoctor, isAdmin } from "../../actions/generalActions";
 
 class Navbar extends Component {
   constructor(props) {
@@ -26,32 +26,14 @@ class Navbar extends Component {
     };
   }
 
-  isDoctor() {
-    const user = this.props.user;
-    for (let role in user.account.roles) {
-      let r = user.account.roles[role];
-      if (r.name == "PROFESIONAL_MEDICO") return true;
-    }
-    return false;
-  }
-
-  isAdmin() {
-    const user = this.props.user;
-    for (let role in user.account.roles) {
-      let r = user.account.roles[role];
-      if (r.name == "ADMIN") return true;
-    }
-    return false;
-  }
-
   componentDidMount() {
     const user = this.props.user;
 
     if (user) {
       this.setState({
         currentUser: user,
-        showDoctorBoard: this.isDoctor(),
-        showAdminBoard: this.isAdmin(),
+        showDoctorBoard: isDoctor(user.account.roles),
+        showAdminBoard: isAdmin(user.account.roles),
         sidebar: false,
       });
     }
@@ -74,6 +56,10 @@ class Navbar extends Component {
     } = this.state;
 
     const showSidebar = () => this.setSidebar(!sidebar);
+
+    if (currentUser != undefined) {
+      console.log("currentUser : ", currentUser.account.roles);
+    }
 
     return (
       <>
@@ -149,7 +135,10 @@ class Navbar extends Component {
                   sidebar ? "nav-menu-items" : "nav-menu-items-centered"
                 }
               >
-                <SideBarItem active={sidebar} />
+                <SideBarItem
+                  active={sidebar}
+                  roles={currentUser.account.roles}
+                />
               </ul>
             </nav>
           ) : (

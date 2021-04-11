@@ -131,6 +131,7 @@ class HospitalAdd extends Component {
       area: this.state.area,
       latitude: this.state.latitude,
       longitude: this.state.longitude,
+      district: this.state.districtSelected,
     };
 
     dispatch(save(data))
@@ -151,6 +152,7 @@ class HospitalAdd extends Component {
   }
 
   handleChangeDistrict(e) {
+    console.log("distrito seleccionado : ", e.target.value);
     this.setState({ districtSelected: e.target.value });
   }
 
@@ -176,6 +178,7 @@ class HospitalAdd extends Component {
           this.setState({
             districts: districts,
             isLoadingDistricts: false,
+            districtSelected: districts[0].id,
           });
         });
       }
@@ -183,8 +186,7 @@ class HospitalAdd extends Component {
   }
 
   loadDistricts(idProvince) {
-    const { dispatch, districts } = this.props;
-    console.log("cargar distritos de ", idProvince);
+    const { dispatch } = this.props;
 
     dispatch(getDistricts(idProvince)).then(() => {
       this.setState({

@@ -8,7 +8,7 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
 import { connect } from "react-redux";
-import { login } from "../actions/auth";
+import { login, sendEmail } from "../actions/auth";
 import { isEmail } from "validator";
 
 import "../App.css";
@@ -39,6 +39,7 @@ class Login extends Component {
     this.handleLogin = this.handleLogin.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
+    this.resetPassword = this.resetPassword.bind(this);
 
     this.state = {
       email: "",
@@ -85,6 +86,17 @@ class Login extends Component {
         loading: false,
       });
     }
+  }
+
+  resetPassword(e) {
+    const { dispatch } = this.props;
+    dispatch(sendEmail(this.state.email))
+      .then(() => {
+        alert("Se te ha enviado un correo electrónico");
+      })
+      .catch(() => {
+        alert("Error al mandar el correo electrónico");
+      });
   }
 
   render() {
@@ -144,6 +156,10 @@ class Login extends Component {
                 <span>Login</span>
               </button>
             </div>
+
+            <a href="#" onClick={this.resetPassword}>
+              Recuperar contraseña
+            </a>
 
             {message && (
               <div className="form-group">
