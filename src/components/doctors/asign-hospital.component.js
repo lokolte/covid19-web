@@ -154,7 +154,7 @@ class AsignHospital extends Component {
     return (
       <div className="content">
         <div className="navigation-bar">
-          <a href="/doctors">Doctores </a>
+          <a href="/doctors">Médicos </a>
           <span>/ Asignación de hospitales</span>
         </div>
         <div className="container">

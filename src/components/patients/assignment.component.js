@@ -126,7 +126,7 @@ class Assignment extends Component {
               >
                 {(props) => (
                   <div>
-                    <h6>Ingrese algo para filtrar los medicos:</h6>
+                    <h6>Buscar:</h6>
                     <SearchBar text="Buscar" {...props.searchProps} />
                     <ClearSearchButton text="Limpiar" {...props.searchProps} />
                     <hr />

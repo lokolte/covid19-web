@@ -196,7 +196,7 @@ class Hospitals extends Component {
               >
                 {(props) => (
                   <div>
-                    <h6>Ingrese algo para filtrar los hospitales:</h6>
+                    <h6>Buscar:</h6>
                     <SearchBar text="Buscar" {...props.searchProps} />
                     <ClearSearchButton text="Limpiar" {...props.searchProps} />
                     <a className="addBtn" href="/hospitals/new">
@@ -274,7 +274,7 @@ class Hospitals extends Component {
               >
                 {(props) => (
                   <div>
-                    <h6>Ingrese algo para filtrar los hospitales:</h6>
+                    <h6>Buscar:</h6>
                     <SearchBar text="Buscar" {...props.searchProps} />
                     <ClearSearchButton text="Limpiar" {...props.searchProps} />
                     <hr />

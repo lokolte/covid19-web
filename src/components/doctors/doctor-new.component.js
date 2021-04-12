@@ -226,7 +226,7 @@ class DoctorAdd extends Component {
     return (
       <div className="content">
         <div className="navigation-bar">
-          <a href="/doctors">Doctores</a>
+          <a href="/doctors">Médicos</a>
           <span>/ Agregar médico</span>
         </div>
         <div className="container">

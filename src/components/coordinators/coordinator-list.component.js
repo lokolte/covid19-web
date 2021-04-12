@@ -166,7 +166,7 @@ class Coordinators extends Component {
               >
                 {(props) => (
                   <div>
-                    <h6>Ingrese algo para filtrar los coordinadores:</h6>
+                    <h6>Buscar:</h6>
                     <SearchBar text="Buscar" {...props.searchProps} />
                     <ClearSearchButton text="Limpiar" {...props.searchProps} />
                     <a className="addBtn" href="/coordinators/new">

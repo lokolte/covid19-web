@@ -182,12 +182,12 @@ class Doctors extends Component {
     return (
       <div className="content">
         <div className="navigation-bar">
-          <span>Doctores</span>
+          <span>Médicos</span>
         </div>
 
         <div className="container">
           <header className="jumbotron center-jumbotron">
-            <h3 className="center">Doctores</h3>
+            <h3 className="center">Médicos</h3>
           </header>
 
           <div>
@@ -201,7 +201,7 @@ class Doctors extends Component {
               >
                 {(props) => (
                   <div>
-                    <h6>Ingrese algo para filtrar los doctores:</h6>
+                    <h6>Buscar:</h6>
                     <SearchBar text="Buscar" {...props.searchProps} />
                     <ClearSearchButton text="Limpiar" {...props.searchProps} />
 

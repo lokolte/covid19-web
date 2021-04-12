@@ -46,7 +46,7 @@ export const Sidebar_Data = [
     roles: ["ADMIN", "PROFESIONAL_MEDICO", "COORDINADOR"],
   },
   {
-    title: "Usuarios",
+    title: "Médicos",
     path: "/doctors",
     icon: <IoIcons.IoIosPerson />,
     cName: "nav-text",

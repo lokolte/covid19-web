@@ -99,11 +99,11 @@ class Patients extends Component {
     return (
       <div className="content">
         <div className="navigation-bar">
-          <span>Pacientes</span>
+          <span>Respuestas</span>
         </div>
         <div className="container">
           <header className="jumbotron center-jumbotron">
-            <h3 className="center">Pacientes</h3>
+            <h3 className="center">Respuestas</h3>
           </header>
 
           <div>
@@ -117,7 +117,7 @@ class Patients extends Component {
               >
                 {(props) => (
                   <div>
-                    <h6>Ingrese algo para filtrar los pacientes:</h6>
+                    <h6>Buscar:</h6>
                     <SearchBar text="Buscar" {...props.searchProps} />
                     <ClearSearchButton text="Limpiar" {...props.searchProps} />
                     <hr />

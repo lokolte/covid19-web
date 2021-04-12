@@ -119,7 +119,7 @@ class PatientsAssignment extends Component {
               >
                 {(props) => (
                   <div>
-                    <h6>Ingrese algo para filtrar los pacientes:</h6>
+                    <h6>Buscar:</h6>
                     <SearchBar text="Buscar" {...props.searchProps} />
                     <ClearSearchButton text="Limpiar" {...props.searchProps} />
                     <hr />

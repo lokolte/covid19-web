@@ -267,7 +267,7 @@ class DoctorEdit extends Component {
     return (
       <div className="content">
         <div className="navigation-bar">
-          <a href="/doctors">Doctores</a>
+          <a href="/doctors">Médicos</a>
           <span>/ Datos de la Cuenta</span>
         </div>
         <div className="container">
