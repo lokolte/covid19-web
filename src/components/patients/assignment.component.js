@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { getDoctors } from "../../actions/doctors";
 import { saveAssignment } from "../../actions/doctors";
+import { isDoctor, isAdmin, isCoordinator } from "../../actions/generalActions";
 
 import "../../App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -53,6 +54,13 @@ class Assignment extends Component {
 
     if (!currentUser) {
       return <Redirect to="/login" />;
+    }
+
+    if (
+      !isAdmin(currentUser.account.roles) &&
+      !isDoctor(currentUser.account.roles)
+    ) {
+      return <Redirect to="/home" />;
     }
 
     if (!this.state.doctors) {

@@ -8,6 +8,7 @@ import "./App.css";
 
 import Login from "./components/login.component";
 import Home from "./components/home.component";
+import SendEmail from "./components/send.email.component";
 import ResetPassword from "./components/reset.password.component";
 import Profile from "./components/profile.component";
 import BoardDoctor from "./components/board-doctor.component";
@@ -59,6 +60,7 @@ class App extends Component {
               <Route exact path={["/", "/home"]} component={Home} />
               <Route exact path="/patients" component={Patients} />
               <Route exact path="/login" component={Login} />
+              <Route exact path="/send-email" component={SendEmail} />
               <Route path="/reset-password/:token" component={ResetPassword} />
               <Route exact path="/profile" component={Profile} />
               <Route path="/doctor" component={BoardDoctor} />

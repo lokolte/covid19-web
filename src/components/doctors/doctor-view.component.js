@@ -5,6 +5,7 @@ import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { getDoctor } from "../../actions/doctors";
+import { isDoctor, isAdmin, isCoordinator } from "../../actions/generalActions";
 
 import "../../App.css";
 
@@ -37,6 +38,13 @@ class DoctorView extends Component {
 
     if (!currentUser) {
       return <Redirect to="/login" />;
+    }
+
+    if (
+      !isAdmin(currentUser.account.roles) &&
+      !isCoordinator(currentUser.account.roles)
+    ) {
+      return <Redirect to="/home" />;
     }
 
     if (!this.state.doctor) {

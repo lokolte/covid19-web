@@ -56,9 +56,6 @@ class ResetPassword extends Component {
     let tokens = path.split("/");
     let token = tokens[2];
 
-    console.log("cambiar password : ", this.state.password);
-    console.log("cambiar password : ", this.state.password2);
-
     dispatch(resetPassword(token, this.state.password, this.state.password2))
       .then(() => {
         alert("Contraseña cambiada exitosamente");

@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { getAllDoctors } from "../../actions/doctors";
 import DoctorService from "../../services/doctor.service";
+import { isDoctor, isAdmin, isCoordinator } from "../../actions/generalActions";
 
 import "../../App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -124,6 +125,13 @@ class Doctors extends Component {
 
     if (!currentUser) {
       return <Redirect to="/login" />;
+    }
+
+    if (
+      !isAdmin(currentUser.account.roles) &&
+      !isCoordinator(currentUser.account.roles)
+    ) {
+      return <Redirect to="/home" />;
     }
 
     if (!this.state.doctors) {

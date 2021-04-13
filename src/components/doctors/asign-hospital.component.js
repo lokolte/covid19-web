@@ -10,6 +10,7 @@ import { withRouter } from "react-router";
 import { getHospitals } from "../../actions/hospitals";
 import { getHospitalsDoctor } from "../../actions/hospitals-doctor";
 import { saveHospitals } from "../../actions/doctors";
+import { isDoctor, isAdmin, isCoordinator } from "../../actions/generalActions";
 
 import "../../App.css";
 import "./style.css";
@@ -132,6 +133,13 @@ class AsignHospital extends Component {
 
     if (!currentUser) {
       return <Redirect to="/login" />;
+    }
+
+    if (
+      !isAdmin(currentUser.account.roles) &&
+      !isCoordinator(currentUser.account.roles)
+    ) {
+      return <Redirect to="/home" />;
     }
 
     if (!this.state.hospitals) {

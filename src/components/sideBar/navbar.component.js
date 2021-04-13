@@ -75,29 +75,6 @@ class Navbar extends Component {
             <Link to={"/"} className="navbar-brand">
               Salud Total
             </Link>
-            <div className="navbar-nav mr-auto">
-              <li className="nav-item">
-                <Link to={"/home"} className="nav-link">
-                  Home
-                </Link>
-              </li>
-
-              {showDoctorBoard && (
-                <li className="nav-item">
-                  <Link to={"/doctor"} className="nav-link">
-                    Panel del Médico
-                  </Link>
-                </li>
-              )}
-
-              {showAdminBoard && (
-                <li className="nav-item">
-                  <Link to={"/admin"} className="nav-link">
-                    Panel Administrador
-                  </Link>
-                </li>
-              )}
-            </div>
 
             {currentUser ? (
               <div className="navbar-nav ml-auto">

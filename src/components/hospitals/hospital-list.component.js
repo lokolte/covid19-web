@@ -143,9 +143,6 @@ class Hospitals extends Component {
       },
     ];
 
-    let test = isAdmin(currentUser.account.roles) ? "es admin" : "no es admin";
-    console.log("roles : ", test);
-
     const defaultSorted = [
       {
         dataField: "orderLevel",
@@ -174,7 +171,8 @@ class Hospitals extends Component {
 
     const { SearchBar, ClearSearchButton } = Search;
 
-    return isAdmin(currentUser.account.roles) ? (
+    return isAdmin(currentUser.account.roles) ||
+      isCoordinator(currentUser.account.roles) ? (
       <div className="content">
         <div className="navigation-bar">
           <span>Hospitales</span>
