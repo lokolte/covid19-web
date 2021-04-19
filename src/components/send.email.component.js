@@ -54,6 +54,7 @@ class SendEmail extends Component {
     dispatch(sendEmail(this.state.email))
       .then(() => {
         alert("Se te ha enviado un correo electrónico");
+        window.location.href = "/login";
       })
       .catch(() => {
         alert("Error al mandar el correo electrónico");
