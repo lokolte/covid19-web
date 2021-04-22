@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { getCoordinators } from "../../actions/coordinators";
 import DoctorService from "../../services/doctor.service";
+import { isDoctor, isAdmin, isCoordinator } from "../../actions/generalActions";
 
 import "../../App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -95,6 +96,10 @@ class Coordinators extends Component {
       return <Redirect to="/login" />;
     }
 
+    if (!isAdmin(currentUser.account.roles)) {
+      return <Redirect to="/home" />;
+    }
+
     if (!this.state.coordinators) {
       this.loadCoordinators();
     }
@@ -166,7 +171,7 @@ class Coordinators extends Component {
               >
                 {(props) => (
                   <div>
-                    <h6>Ingrese algo para filtrar los coordinadores:</h6>
+                    <h6>Buscar:</h6>
                     <SearchBar text="Buscar" {...props.searchProps} />
                     <ClearSearchButton text="Limpiar" {...props.searchProps} />
                     <a className="addBtn" href="/coordinators/new">

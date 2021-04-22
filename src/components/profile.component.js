@@ -132,14 +132,18 @@ class Profile extends Component {
       this.loadDoctor();
     }
 
+    let user = localStorage.getItem("user");
+    let data = JSON.parse(user);
+    let listRoles = data.account.roles;
+    const items = listRoles.map((role) => <li>{role.name}</li>);
+
     return (
       <div className="content">
         <div className="container">
-          <header className="jumbotron">
-            <h3>
-              <strong>{currentUser.account.email}</strong> Profile
-            </h3>
+          <header className="jumbotron center-jumbotron">
+            <h3 className="center">Perfil</h3>
           </header>
+
           <Form
             onSubmit={this.save}
             ref={(c) => {
@@ -168,7 +172,7 @@ class Profile extends Component {
 
             <p>
               <strong>Región:</strong>{" "}
-              {this.state.doctor ? this.state.doctor.province.name : ""}
+              {this.state.doctor ? this.state.doctor.province?.name : ""}
             </p>
 
             <p>
@@ -176,9 +180,7 @@ class Profile extends Component {
               {this.state.doctor ? this.state.doctor.address : ""}
             </p>
             <strong>Authorities:</strong>
-            <ul>
-              <li>{currentUser.account.role.name}</li>
-            </ul>
+            <ul>{items}</ul>
 
             <div className="form-group">
               <label htmlFor="password">Cambiar Password</label>

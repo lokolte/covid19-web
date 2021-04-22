@@ -10,6 +10,7 @@ import { withRouter } from "react-router";
 import { getHospitals } from "../../actions/hospitals";
 import { getHospitalsDoctor } from "../../actions/hospitals-doctor";
 import { saveHospitals } from "../../actions/doctors";
+import { isDoctor, isAdmin, isCoordinator } from "../../actions/generalActions";
 
 import "../../App.css";
 import "./style.css";
@@ -134,6 +135,13 @@ class AsignHospital extends Component {
       return <Redirect to="/login" />;
     }
 
+    if (
+      !isAdmin(currentUser.account.roles) &&
+      !isCoordinator(currentUser.account.roles)
+    ) {
+      return <Redirect to="/home" />;
+    }
+
     if (!this.state.hospitals) {
       this.loadHospitals();
     }
@@ -142,7 +150,7 @@ class AsignHospital extends Component {
       this.loadAsignado();
     }
 
-    var Data = ["this", "example", "isnt", "funny"],
+    var Data = [],
       MakeItem = function (X) {
         return (
           <option value={X?.id}>
@@ -154,7 +162,7 @@ class AsignHospital extends Component {
     return (
       <div className="content">
         <div className="navigation-bar">
-          <a href="/doctors">Doctores </a>
+          <a href="/doctors">Médicos </a>
           <span>/ Asignación de hospitales</span>
         </div>
         <div className="container">

@@ -10,8 +10,11 @@ import { withRouter } from "react-router";
 import { getDoctor } from "../../actions/doctors";
 import { isEmail } from "validator";
 import { save } from "../../actions/doctors";
+import { getRoles } from "../../actions/roles";
+import { isDoctor, isAdmin, isCoordinator } from "../../actions/generalActions";
 
 import "../../App.css";
+import asignados from "../../reducers/asignados";
 
 const required = (value) => {
   if (!value) {
@@ -46,6 +49,9 @@ class DoctorEdit extends Component {
     this.onChangeAddress = this.onChangeAddress.bind(this);
     this.onChangeLatitude = this.onChangeLatitude.bind(this);
     this.onChangeLongitude = this.onChangeLongitude.bind(this);
+    this.loadRoles = this.loadRoles.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleChange2 = this.handleChange2.bind(this);
 
     this.state = {
       email: "",
@@ -58,6 +64,10 @@ class DoctorEdit extends Component {
       longitude: 0.0,
       loading: false,
       doctor: undefined,
+      roles: undefined,
+      asignados: [],
+      seleccionado: undefined,
+      desSeleccionado: undefined,
     };
   }
 
@@ -109,6 +119,20 @@ class DoctorEdit extends Component {
     });
   }
 
+  loadRoles() {
+    const { dispatch, location, roles } = this.props;
+
+    let path = location.pathname;
+    let tokens = path.split("/");
+    let id = tokens[2];
+
+    dispatch(getRoles(id)).then(() => {
+      this.setState({
+        roles: roles,
+      });
+    });
+  }
+
   save(e) {
     e.preventDefault();
 
@@ -133,6 +157,7 @@ class DoctorEdit extends Component {
       birthDate: this.state.doctor.birthDate,
       sex: this.state.doctor.sex,
       status: this.state.doctor.status,
+      roles: this.state.asignados,
     };
 
     dispatch(save(data))
@@ -165,8 +190,56 @@ class DoctorEdit extends Component {
         phone: doctor?.phone,
         latitude: doctor?.latitude,
         longitude: doctor?.longitude,
+        asignados: doctor?.roles,
       });
     });
+  }
+
+  addItem = () => {
+    if (this.state.asignados == undefined) {
+      this.setState({ asignados: [] });
+    }
+    var idSeleccionado = this.state.seleccionado;
+    if (idSeleccionado == undefined) return;
+    var itemSeleccionado = null;
+    var reduced = this.state.roles.reduce(function (filtered, item) {
+      if (item.id == idSeleccionado) {
+        itemSeleccionado = item;
+      } else {
+        filtered.push(item);
+      }
+      return filtered;
+    }, []);
+    if (itemSeleccionado == null) return;
+    this.setState({ roles: reduced });
+    this.setState({ asignados: [...this.state.asignados, itemSeleccionado] });
+    document.getElementById("roles").selectedIndex = -1;
+  };
+
+  removeItem = () => {
+    var idSeleccionado = this.state.desSeleccionado;
+    if (idSeleccionado == undefined) return;
+    var itemSeleccionado = null;
+    var reduced = this.state.asignados.reduce(function (filtered, item) {
+      if (item.id == idSeleccionado) {
+        itemSeleccionado = item;
+      } else {
+        filtered.push(item);
+      }
+      return filtered;
+    }, []);
+    if (itemSeleccionado == null) return;
+    this.setState({ asignados: reduced });
+    this.setState({ roles: [...this.state.roles, itemSeleccionado] });
+    document.getElementById("asignados").selectedIndex = -1;
+  };
+
+  handleChange(e) {
+    this.setState({ seleccionado: e.target.value });
+  }
+
+  handleChange2(e) {
+    this.setState({ desSeleccionado: e.target.value });
   }
 
   render() {
@@ -176,14 +249,33 @@ class DoctorEdit extends Component {
       return <Redirect to="/login" />;
     }
 
+    if (
+      !isAdmin(currentUser.account.roles) &&
+      !isCoordinator(currentUser.account.roles)
+    ) {
+      return <Redirect to="/home" />;
+    }
+
     if (!this.state.doctor) {
       this.loadDoctor();
     }
 
+    if (!this.state.roles) {
+      this.loadRoles();
+    }
+
+    var MakeItem = function (X) {
+      return (
+        <option value={X?.id}>
+          {X?.id} - {X?.name}
+        </option>
+      );
+    };
+
     return (
       <div className="content">
         <div className="navigation-bar">
-          <a href="/doctors">Doctores</a>
+          <a href="/doctors">Médicos</a>
           <span>/ Datos de la Cuenta</span>
         </div>
         <div className="container">
@@ -319,6 +411,61 @@ class DoctorEdit extends Component {
               />
             </div>
 
+            <div class="Row">
+              <div class="Column">
+                <label for="roles">Roles Disponibles</label> <br />
+                <select
+                  size="5"
+                  id="roles"
+                  name="roles"
+                  className="selectHospitals"
+                  onChange={this.handleChange}
+                >
+                  {this.state.roles?.map(MakeItem)}
+                </select>
+              </div>
+
+              <div class="Column">
+                <button
+                  type="button"
+                  onClick={this.addItem}
+                  style={{
+                    borderRadius: "3px",
+                    border: "1px solid #808080",
+                    marginTop: "92px",
+                    marginBottom: "32px",
+                    marginLeft: "132px",
+                  }}
+                >
+                  &gt; &gt;
+                </button>
+                <br />
+                <button
+                  type="button"
+                  onClick={this.removeItem}
+                  style={{
+                    borderRadius: "3px",
+                    border: "1px solid #808080",
+                    marginLeft: "132px",
+                  }}
+                >
+                  &lt; &lt;
+                </button>
+              </div>
+              <div class="Column">
+                <label for="asignados">Roles Asignados</label> <br />
+                <select
+                  size="5"
+                  id="asignados"
+                  name="asignados"
+                  onChange={this.handleChange2}
+                  className="selectHospitals"
+                >
+                  {this.state.asignados?.map(MakeItem)}
+                </select>
+              </div>
+            </div>
+
             <div className="form-group">
               <button
                 className="btn btn-primary btn-block"
@@ -340,9 +487,11 @@ class DoctorEdit extends Component {
 function mapStateToProps(state) {
   const { user } = state.authentication;
   const { doctor } = state.doctor;
+  const { roles } = state.roles;
   return {
     user,
     doctor,
+    roles,
   };
 }
 

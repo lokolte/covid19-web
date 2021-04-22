@@ -15,6 +15,16 @@ class ProvinceService {
         return response.data;
       });
   }
+  
+  getDistricts(id) {
+    return axios
+      .get(API_URL + "/provinces/" + id + "/districts", {
+        headers: authHeader(),
+      })
+      .then((response) => {
+        return response.data;
+      });
+  }
 }
 
 export default new ProvinceService();

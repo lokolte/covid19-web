@@ -11,6 +11,7 @@ import { getDoctor } from "../../actions/doctors";
 import { getProvinces } from "../../actions/provinces";
 import { isEmail } from "validator";
 import { create } from "../../actions/doctors";
+import { isDoctor, isAdmin, isCoordinator } from "../../actions/generalActions";
 
 import "../../App.css";
 
@@ -207,6 +208,13 @@ class DoctorAdd extends Component {
       return <Redirect to="/login" />;
     }
 
+    if (
+      !isAdmin(currentUser.account.roles) &&
+      !isCoordinator(currentUser.account.roles)
+    ) {
+      return <Redirect to="/home" />;
+    }
+
     if (!this.state.provinces) {
       this.loadProvinces();
     }
@@ -226,7 +234,7 @@ class DoctorAdd extends Component {
     return (
       <div className="content">
         <div className="navigation-bar">
-          <a href="/doctors">Doctores</a>
+          <a href="/doctors">Médicos</a>
           <span>/ Agregar médico</span>
         </div>
         <div className="container">

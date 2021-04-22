@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { getPatients } from "../../actions/patients";
+import { isDoctor, isAdmin, isCoordinator } from "../../actions/generalActions";
 
 import "../../App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -49,6 +50,13 @@ class Patients extends Component {
 
     if (!currentUser) {
       return <Redirect to="/login" />;
+    }
+
+    if (
+      !isAdmin(currentUser.account.roles) &&
+      !isDoctor(currentUser.account.roles)
+    ) {
+      return <Redirect to="/home" />;
     }
 
     if (!this.state.patients) {
@@ -99,11 +107,11 @@ class Patients extends Component {
     return (
       <div className="content">
         <div className="navigation-bar">
-          <span>Pacientes</span>
+          <span>Respuestas</span>
         </div>
         <div className="container">
           <header className="jumbotron center-jumbotron">
-            <h3 className="center">Pacientes</h3>
+            <h3 className="center">Respuestas</h3>
           </header>
 
           <div>
@@ -117,7 +125,7 @@ class Patients extends Component {
               >
                 {(props) => (
                   <div>
-                    <h6>Ingrese algo para filtrar los pacientes:</h6>
+                    <h6>Buscar:</h6>
                     <SearchBar text="Buscar" {...props.searchProps} />
                     <ClearSearchButton text="Limpiar" {...props.searchProps} />
                     <hr />

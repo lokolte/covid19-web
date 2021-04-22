@@ -10,6 +10,7 @@ import { withRouter } from "react-router";
 import { getProvinces } from "../../actions/provinces";
 import { isEmail } from "validator";
 import { create } from "../../actions/coordinators";
+import { isDoctor, isAdmin, isCoordinator } from "../../actions/generalActions";
 
 import "../../App.css";
 
@@ -204,6 +205,10 @@ class CoordinatorAdd extends Component {
 
     if (!currentUser) {
       return <Redirect to="/login" />;
+    }
+
+    if (!isAdmin(currentUser.account.roles)) {
+      return <Redirect to="/home" />;
     }
 
     if (!this.state.provinces) {

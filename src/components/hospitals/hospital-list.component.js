@@ -5,8 +5,7 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { getHospitals } from "../../actions/hospitals";
 import HospitalService from "../../services/hospitals.service";
-
-import { MDBListGroupItem, MDBBadge, MDBIcon } from "mdbreact";
+import { isCoordinator, isAdmin } from "../../actions/generalActions";
 
 import "../../App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -121,10 +120,17 @@ class Hospitals extends Component {
       this.loadHospitals();
     }
 
-    const columns = [
+    const columnsDoctor = [
       { dataField: "code", text: "Código", sort: true },
       { dataField: "type", text: "Tipo", sort: true },
-      { dataField: "province.name", text: "Region", sort: true },
+      { dataField: "district.province.name", text: "Region", sort: true },
+      { dataField: "district.name", text: "Distrito", sort: true },
+    ];
+
+    const columnsAdmin = [
+      { dataField: "code", text: "Código", sort: true },
+      { dataField: "type", text: "Tipo", sort: true },
+      { dataField: "district.province.name", text: "Region", sort: true },
       { dataField: "district.name", text: "Distrito", sort: true },
       {
         dataField: "actions",
@@ -165,7 +171,8 @@ class Hospitals extends Component {
 
     const { SearchBar, ClearSearchButton } = Search;
 
-    return (
+    return isAdmin(currentUser.account.roles) ||
+      isCoordinator(currentUser.account.roles) ? (
       <div className="content">
         <div className="navigation-bar">
           <span>Hospitales</span>
@@ -182,12 +189,12 @@ class Hospitals extends Component {
                 bootstrap4
                 keyField="id"
                 data={this.state.hospitals}
-                columns={columns}
+                columns={columnsAdmin}
                 search={true}
               >
                 {(props) => (
                   <div>
-                    <h6>Ingrese algo para filtrar los hospitales:</h6>
+                    <h6>Buscar:</h6>
                     <SearchBar text="Buscar" {...props.searchProps} />
                     <ClearSearchButton text="Limpiar" {...props.searchProps} />
                     <a className="addBtn" href="/hospitals/new">
@@ -240,6 +247,47 @@ class Hospitals extends Component {
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    ) : (
+      <div className="content">
+        <div className="navigation-bar">
+          <span>Hospitales</span>
+        </div>
+
+        <div className="container">
+          <header className="jumbotron center-jumbotron">
+            <h3 className="center">Hospitales</h3>
+          </header>
+
+          <div>
+            {this.state.hospitals ? (
+              <ToolkitProvider
+                bootstrap4
+                keyField="id"
+                data={this.state.hospitals}
+                columns={columnsDoctor}
+                search={true}
+              >
+                {(props) => (
+                  <div>
+                    <h6>Buscar:</h6>
+                    <SearchBar text="Buscar" {...props.searchProps} />
+                    <ClearSearchButton text="Limpiar" {...props.searchProps} />
+                    <hr />
+                    <BootstrapTable
+                      className="dark"
+                      defaultSorted={defaultSorted}
+                      pagination={pagination}
+                      {...props.baseProps}
+                    />
+                  </div>
+                )}
+              </ToolkitProvider>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </div>

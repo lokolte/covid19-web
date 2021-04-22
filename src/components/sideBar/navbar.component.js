@@ -3,7 +3,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as FaIcons from "react-icons/fa";
-import * as AiIcons from "react-icons/ai";
 import { IconContext } from "react-icons";
 import { Link } from "react-router-dom";
 import "./css/NavBar.css";
@@ -11,6 +10,7 @@ import "../../App.css";
 
 import SideBarItem from "./sidebar-item.component";
 import { logout } from "../../actions/auth";
+import { isDoctor, isAdmin } from "../../actions/generalActions";
 
 class Navbar extends Component {
   constructor(props) {
@@ -32,8 +32,8 @@ class Navbar extends Component {
     if (user) {
       this.setState({
         currentUser: user,
-        showDoctorBoard: user.account.role.name === "PROFESIONAL_MEDICO",
-        showAdminBoard: user.account.role.name === "ADMIN",
+        showDoctorBoard: isDoctor(user.account.roles),
+        showAdminBoard: isAdmin(user.account.roles),
         sidebar: false,
       });
     }
@@ -57,6 +57,10 @@ class Navbar extends Component {
 
     const showSidebar = () => this.setSidebar(!sidebar);
 
+    if (currentUser != undefined) {
+      console.log("currentUser : ", currentUser.account.roles);
+    }
+
     return (
       <>
         <IconContext.Provider value={{ color: "#fff" }}>
@@ -71,29 +75,6 @@ class Navbar extends Component {
             <Link to={"/"} className="navbar-brand">
               Salud Total
             </Link>
-            <div className="navbar-nav mr-auto">
-              <li className="nav-item">
-                <Link to={"/home"} className="nav-link">
-                  Home
-                </Link>
-              </li>
-
-              {showDoctorBoard && (
-                <li className="nav-item">
-                  <Link to={"/doctor"} className="nav-link">
-                    Panel del Médico
-                  </Link>
-                </li>
-              )}
-
-              {showAdminBoard && (
-                <li className="nav-item">
-                  <Link to={"/admin"} className="nav-link">
-                    Panel Administrador
-                  </Link>
-                </li>
-              )}
-            </div>
 
             {currentUser ? (
               <div className="navbar-nav ml-auto">
@@ -131,7 +112,10 @@ class Navbar extends Component {
                   sidebar ? "nav-menu-items" : "nav-menu-items-centered"
                 }
               >
-                <SideBarItem active={sidebar} />
+                <SideBarItem
+                  active={sidebar}
+                  roles={currentUser.account.roles}
+                />
               </ul>
             </nav>
           ) : (
