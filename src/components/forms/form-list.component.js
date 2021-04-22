@@ -57,7 +57,7 @@ class Forms extends Component {
 
     const columns = [
       { dataField: "title", text: "Título", sort: true },
-      { dataField: "description", text: "Descripción", sort: true },
+      { dataField: "subtitle", text: "Descripción", sort: true },
       {
         dataField: "actions",
         text: "Acciones",
