@@ -4,8 +4,8 @@ import { GET_ROLES_SUCCESS, GET_ROLES_FAIL, SET_MESSAGE } from "./types";
 
 import service from "../services/role.service";
 
-export const getRoles = (accountId) => (dispatch) => {
-  return service.get(accountId).then(
+export const getRoles = (idPerson) => (dispatch) => {
+  return service.get(idPerson).then(
     (data) => {
       dispatch({
         type: GET_ROLES_SUCCESS,

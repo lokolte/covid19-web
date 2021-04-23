@@ -5,10 +5,10 @@ import authHeader from "./auth-header";
 import { API_URL } from "../config/env.config";
 
 class RoleService {
-  get(accountId) {
-    if (accountId != null && accountId != undefined) {
+  get(idPerson) {
+    if (idPerson != null && idPerson != undefined) {
       return axios
-        .get(API_URL + "/roles?accountId=" + accountId, {
+        .get(API_URL + "/roles?idPerson=" + idPerson, {
           headers: authHeader(),
         })
         .then((response) => {
