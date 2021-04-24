@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { getPatients } from "../../actions/patientsDoctor";
 import { getMessages, sendMessage } from "../../actions/messagesPatient";
 import { delayFunction } from "../../actions/generalActions";
+import { isDoctor } from "../../actions/generalActions";
 
 import {
   MDBCard,
@@ -67,13 +68,22 @@ class ChatPage extends Component {
     }
   }
 
-  loadMessages(patientId) {
+  loadMessages(patientId, idDoctor) {
     const { dispatch, user } = this.props;
     this.setState({
       idPatient: patientId,
     });
-    document.getElementById("messageText").classList.remove("invisible");
-    document.getElementById("sendMessageBtn").classList.remove("invisible");
+
+    if (isDoctor(user.account.roles) && idDoctor === user.account.person.id) {
+      document.getElementById("messageText").classList.remove("invisible");
+      document.getElementById("sendMessageBtn").classList.remove("invisible");
+    } else if (
+      !document.getElementById("messageText").classList.contains("invisible") &&
+      !document.getElementById("sendMessageBtn").classList.contains("invisible")
+    ) {
+      document.getElementById("messageText").classList.add("invisible");
+      document.getElementById("sendMessageBtn").classList.add("invisible");
+    }
 
     dispatch(getMessages(user.account.person.id, patientId)).then(() => {
       this.setState({
@@ -120,8 +130,8 @@ class ChatPage extends Component {
       this.setMessageText(event.target.value);
     };
 
-    const loadMessageAux = (patientId) => {
-      this.loadMessages(patientId);
+    const loadMessageAux = (patientId, idDoctor) => {
+      this.loadMessages(patientId, idDoctor);
     };
     const getHora = (fecha) => {
       if (fecha === null || fecha === undefined) {
@@ -162,6 +172,7 @@ class ChatPage extends Component {
                       {this.state.patientsDoctor?.map((patient) => (
                         <PatientRow
                           key={patient.id}
+                          idDoctor={patient.idDoctor}
                           patient={patient}
                           loadMessages={loadMessageAux}
                         />
@@ -218,13 +229,13 @@ class ChatPage extends Component {
 }
 
 const PatientRow = ({
-  patient: { id, name, phone, when, toRespond, seen, active },
+  patient: { id, name, phone, idDoctor, when, toRespond, seen, active },
   loadMessages,
 }) => (
   <MDBListGroupItem
     href="#!"
     onClick={() => {
-      loadMessages(id);
+      loadMessages(id, idDoctor);
     }}
     className="d-flex justify-content-between p-2 border border-light"
     style={{ backgroundColor: "#E9E9E9" }}
