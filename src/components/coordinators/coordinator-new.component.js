@@ -235,7 +235,11 @@ class CoordinatorAdd extends Component {
         </div>
         <div className="container">
           <header className="jumbotron">
-            <h3 className="titulo">Datos de la Cuenta</h3>
+            <h3 className="titulo">Agregar Coordinador</h3>
+            <h5 className="titulo">
+              *Esta función es válida para crear nuevos usuarios COORDINADOR que
+              no existan en el sistema, incluso con rol de médico.
+            </h5>
           </header>
 
           <Form

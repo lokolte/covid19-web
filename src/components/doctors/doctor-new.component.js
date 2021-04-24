@@ -239,7 +239,11 @@ class DoctorAdd extends Component {
         </div>
         <div className="container">
           <header className="jumbotron">
-            <h3 className="titulo">Datos de la Cuenta</h3>
+            <h3 className="titulo">Agregar Médico</h3>
+            <h5 className="titulo">
+              *Esta función es válida para crear nuevos usuarios MÉDICOS que no
+              existan en el sistema, incluso con rol de coordinador.
+            </h5>
           </header>
 
           <Form

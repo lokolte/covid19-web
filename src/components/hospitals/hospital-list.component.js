@@ -175,12 +175,12 @@ class Hospitals extends Component {
       isCoordinator(currentUser.account.roles) ? (
       <div className="content">
         <div className="navigation-bar">
-          <span>Hospitales</span>
+          <span>Centros Asistenciales</span>
         </div>
 
         <div className="container">
           <header className="jumbotron center-jumbotron">
-            <h3 className="center">Hospitales</h3>
+            <h3 className="center">Centros Asistenciales</h3>
           </header>
 
           <div>
@@ -216,7 +216,9 @@ class Hospitals extends Component {
           </div>
           <br />
           <div style={{ marginBottom: "25px" }}>
-            <h3>Importar datos de hospitales desde la web del MSPBS</h3>
+            <h3>
+              Importar datos de Centros Asistenciales desde la web del MSPBS
+            </h3>
             <div>
               <input type="file" onChange={this.onFileChange} />
               <button
@@ -230,7 +232,7 @@ class Hospitals extends Component {
           <div id="myModal" className="modal">
             <div className="modal-content">
               <span className="close">&times;</span>
-              <p>Esta seguro que desea eliminar el hospital ?</p>
+              <p>Esta seguro que desea eliminar el Centro Asistencial?</p>
               <div>
                 <button
                   onClick={this.delete}
@@ -253,12 +255,12 @@ class Hospitals extends Component {
     ) : (
       <div className="content">
         <div className="navigation-bar">
-          <span>Hospitales</span>
+          <span>Centros Asistenciales</span>
         </div>
 
         <div className="container">
           <header className="jumbotron center-jumbotron">
-            <h3 className="center">Hospitales</h3>
+            <h3 className="center">Centros Asistenciales</h3>
           </header>
 
           <div>
