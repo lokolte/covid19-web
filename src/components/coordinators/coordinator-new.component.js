@@ -380,7 +380,6 @@ class CoordinatorAdd extends Component {
                     : this.state.latitude
                 }
                 onChange={this.onChangeLatitude}
-                validations={[required]}
               />
             </div>
 
@@ -396,7 +395,6 @@ class CoordinatorAdd extends Component {
                     : this.state.longitude
                 }
                 onChange={this.onChangeLongitude}
-                validations={[required]}
               />
             </div>
 
