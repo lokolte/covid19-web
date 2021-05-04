@@ -11,7 +11,7 @@ export default class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      content: "Este es el home page",
+      content: "",
     };
   }
 
