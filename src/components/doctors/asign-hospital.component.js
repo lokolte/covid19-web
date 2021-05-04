@@ -13,7 +13,6 @@ import { saveHospitals } from "../../actions/doctors";
 import { isDoctor, isAdmin, isCoordinator } from "../../actions/generalActions";
 
 import "../../App.css";
-import "./style.css";
 
 class AsignHospital extends Component {
   constructor(props) {
@@ -159,25 +158,27 @@ class AsignHospital extends Component {
         );
       };
 
-    return (
-      <div className="content">
-        <div className="navigation-bar">
-          <a href="/doctors">Médicos </a>
-          <span>/ Asignación de hospitales</span>
-        </div>
-        <div className="container">
-          <header className="jumbotron">
-            <h3 className="titulo">Asignación de hospitales</h3>
-          </header>
+    var widthScreen = window.screen.width;
 
-          <Form
-            onSubmit={this.save}
-            ref={(c) => {
-              this.form = c;
-            }}
-          >
-            <div class="Row">
-              <div class="Column">
+    if (widthScreen < 600) {
+      return (
+        <div className="content">
+          <div className="navigation-bar">
+            <a href="/doctors">Médicos </a>
+            <span>/ Asignación de hospitales</span>
+          </div>
+          <div className="container">
+            <header className="jumbotron">
+              <h3 className="titulo">Asignación de hospitales</h3>
+            </header>
+
+            <Form
+              onSubmit={this.save}
+              ref={(c) => {
+                this.form = c;
+              }}
+            >
+              <div>
                 <label for="hospitals">Hospitales</label> <br />
                 <select
                   size="15"
@@ -189,16 +190,15 @@ class AsignHospital extends Component {
                   {this.state.hospitals?.map(MakeItem)}
                 </select>
               </div>
-
-              <div class="Column">
+              <div>
                 <button
                   type="button"
                   onClick={this.addItem}
                   style={{
                     borderRadius: "3px",
                     border: "1px solid #808080",
-                    marginTop: "92px",
-                    marginBottom: "32px",
+                    marginTop: "12px",
+                    marginBottom: "12px",
                     marginLeft: "132px",
                   }}
                 >
@@ -211,41 +211,132 @@ class AsignHospital extends Component {
                   style={{
                     borderRadius: "3px",
                     border: "1px solid #808080",
+                    marginBottom: "12px",
                     marginLeft: "132px",
                   }}
                 >
                   &lt; &lt;
                 </button>
               </div>
-              <div class="Column">
+              <div>
                 <label for="asignados">Hospitales Asignados</label> <br />
                 <select
                   size="15"
                   id="asignados"
                   name="asignados"
-                  onChange={this.handleChange2}
                   className="selectHospitals"
+                  onChange={this.handleChange2}
                 >
                   {this.state.asignados?.map(MakeItem)}
                 </select>
               </div>
-            </div>
-
-            <div className="form-group">
-              <button
-                className="btn btn-primary btn-block"
-                disabled={this.state.loading}
-              >
-                {this.state.loading && (
-                  <span className="spinner-border spinner-border-sm"></span>
-                )}
-                <span>Guardar datos</span>
-              </button>
-            </div>
-          </Form>
+              <div className="form-group">
+                <button
+                  className="btn btn-primary btn-block"
+                  disabled={this.state.loading}
+                >
+                  {this.state.loading && (
+                    <span className="spinner-border spinner-border-sm"></span>
+                  )}
+                  <span>Guardar datos</span>
+                </button>
+              </div>
+            </Form>
+          </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className="content">
+          <div className="navigation-bar">
+            <a href="/doctors">Médicos </a>
+            <span>/ Asignación de hospitales</span>
+          </div>
+          <div className="container">
+            <header className="jumbotron">
+              <h3 className="titulo">Asignación de hospitales</h3>
+            </header>
+
+            <Form
+              onSubmit={this.save}
+              ref={(c) => {
+                this.form = c;
+              }}
+            >
+              <div class="Row">
+                <div class="Column">
+                  <label for="hospitals">Hospitales</label> <br />
+                  <select
+                    size="15"
+                    id="hospitals"
+                    name="hospitals"
+                    className="selectHospitals"
+                    onChange={this.handleChange}
+                  >
+                    {this.state.hospitals?.map(MakeItem)}
+                  </select>
+                </div>
+
+                <div class="Column">
+                  <button
+                    type="button"
+                    onClick={this.addItem}
+                    style={{
+                      borderRadius: "3px",
+                      border: "1px solid #808080",
+                      marginTop: "92px",
+                      marginBottom: "32px",
+                      marginLeft: "132px",
+                    }}
+                  >
+                    &gt; &gt;
+                  </button>
+                  <br />
+                  <button
+                    type="button"
+                    onClick={this.removeItem}
+                    style={{
+                      borderRadius: "3px",
+                      border: "1px solid #808080",
+                      marginLeft: "132px",
+                    }}
+                  >
+                    &lt; &lt;
+                  </button>
+                </div>
+                <div class="Column">
+                  <label for="asignados">Hospitales Asignados</label> <br />
+                  <select
+                    size="15"
+                    id="asignados"
+                    name="asignados"
+                    onChange={this.handleChange2}
+                    className="selectHospitals"
+                    style={{
+                      marginLeft: "12px",
+                    }}
+                  >
+                    {this.state.asignados?.map(MakeItem)}
+                  </select>
+                </div>
+              </div>
+
+              <div className="form-group">
+                <button
+                  className="btn btn-primary btn-block"
+                  disabled={this.state.loading}
+                >
+                  {this.state.loading && (
+                    <span className="spinner-border spinner-border-sm"></span>
+                  )}
+                  <span>Guardar datos</span>
+                </button>
+              </div>
+            </Form>
+          </div>
+        </div>
+      );
+    }
   }
 }
 

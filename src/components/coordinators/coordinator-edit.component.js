@@ -301,227 +301,464 @@ class CoordinatorEdit extends Component {
         );
       };
 
-    return (
-      <div className="content">
-        <div className="navigation-bar">
-          <a href="/coordinators">Coordinadores </a>
-          <span>/ Datos de la Cuenta</span>
-        </div>
+    var widthScreen = window.screen.width;
 
-        <div className="container">
-          <header className="jumbotron">
-            <h3 className="titulo">Datos de la Cuenta</h3>
-          </header>
+    if (widthScreen < 600) {
+      return (
+        <div className="content">
+          <div className="navigation-bar">
+            <a href="/coordinators">Coordinadores </a>
+            <span>/ Datos de la Cuenta</span>
+          </div>
 
-          <Form
-            onSubmit={this.save}
-            ref={(c) => {
-              this.form = c;
-            }}
-          >
-            <div className="form-group">
-              <label htmlFor="name">Nombre</label>
-              <Input
-                type="text"
-                className="form-control"
-                name="name"
-                value={
-                  this.state.doctor ? this.state.doctor.name : this.state.name
-                }
-                onChange={this.onChangeName}
-                validations={[required]}
-              />
-            </div>
+          <div className="container">
+            <header className="jumbotron">
+              <h3 className="titulo">Datos de la Cuenta</h3>
+            </header>
 
-            <div className="form-group">
-              <label htmlFor="lastname">Apellido</label>
-              <Input
-                type="text"
-                className="form-control"
-                name="lastname"
-                value={
-                  this.state.doctor
-                    ? this.state.doctor.lastname
-                    : this.state.lastname
-                }
-                onChange={this.onChangeLastName}
-                validations={[required]}
-              />
-            </div>
+            <Form
+              onSubmit={this.save}
+              ref={(c) => {
+                this.form = c;
+              }}
+            >
+              <div className="form-group">
+                <label htmlFor="name">Nombre</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="name"
+                  value={
+                    this.state.doctor ? this.state.doctor.name : this.state.name
+                  }
+                  onChange={this.onChangeName}
+                  validations={[required]}
+                />
+              </div>
 
-            <div className="form-group">
-              <label htmlFor="document">Número de Documento</label>
-              <Input
-                type="text"
-                className="form-control"
-                name="document"
-                value={
-                  this.state.doctor
-                    ? this.state.doctor.document
-                    : this.state.document
-                }
-                onChange={this.onChangeDocument}
-                validations={[required]}
-              />
-            </div>
+              <div className="form-group">
+                <label htmlFor="lastname">Apellido</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="lastname"
+                  value={
+                    this.state.doctor
+                      ? this.state.doctor.lastname
+                      : this.state.lastname
+                  }
+                  onChange={this.onChangeLastName}
+                  validations={[required]}
+                />
+              </div>
 
-            <div className="form-group">
-              <label htmlFor="email">Correo</label>
-              <Input
-                type="text"
-                className="form-control"
-                name="email"
-                value={
-                  this.state.doctor ? this.state.doctor.email : this.state.email
-                }
-                onChange={this.onChangeEmail}
-                validations={[required, email]}
-              />
-            </div>
+              <div className="form-group">
+                <label htmlFor="document">Número de Documento</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="document"
+                  value={
+                    this.state.doctor
+                      ? this.state.doctor.document
+                      : this.state.document
+                  }
+                  onChange={this.onChangeDocument}
+                  validations={[required]}
+                />
+              </div>
 
-            <div className="form-group">
-              <label htmlFor="phone">Teléfono</label>
-              <Input
-                type="text"
-                className="form-control"
-                name="phone"
-                value={
-                  this.state.doctor ? this.state.doctor.phone : this.state.phone
-                }
-                onChange={this.onChangePhone}
-                validations={[required]}
-              />
-            </div>
+              <div className="form-group">
+                <label htmlFor="email">Correo</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="email"
+                  value={
+                    this.state.doctor
+                      ? this.state.doctor.email
+                      : this.state.email
+                  }
+                  onChange={this.onChangeEmail}
+                  validations={[required, email]}
+                />
+              </div>
 
-            <div className="form-group">
-              <label htmlFor="address">Dirección</label>
-              <Input
-                type="text"
-                className="form-control"
-                name="address"
-                value={
-                  this.state.doctor
-                    ? this.state.doctor.address
-                    : this.state.address
-                }
-                onChange={this.onChangeAddress}
-                validations={[required]}
-              />
-            </div>
+              <div className="form-group">
+                <label htmlFor="phone">Teléfono</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="phone"
+                  value={
+                    this.state.doctor
+                      ? this.state.doctor.phone
+                      : this.state.phone
+                  }
+                  onChange={this.onChangePhone}
+                  validations={[required]}
+                />
+              </div>
 
-            <div className="form-group">
-              <label htmlFor="latitude">Latitud</label>
-              <Input
-                type="text"
-                className="form-control"
-                name="latitude"
-                value={
-                  this.state.doctor
-                    ? this.state.doctor.latitude
-                    : this.state.latitude
-                }
-                onChange={this.onChangeLatitude}
-                validations={[required]}
-              />
-            </div>
+              <div className="form-group">
+                <label htmlFor="address">Dirección</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="address"
+                  value={
+                    this.state.doctor
+                      ? this.state.doctor.address
+                      : this.state.address
+                  }
+                  onChange={this.onChangeAddress}
+                  validations={[required]}
+                />
+              </div>
 
-            <div className="form-group">
-              <label htmlFor="longitude">Longitud</label>
-              <Input
-                type="text"
-                className="form-control"
-                name="longitude"
-                value={
-                  this.state.doctor
-                    ? this.state.doctor.longitude
-                    : this.state.longitude
-                }
-                onChange={this.onChangeLongitude}
-                validations={[required]}
-              />
-            </div>
+              <div className="form-group">
+                <label htmlFor="latitude">Latitud</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="latitude"
+                  value={
+                    this.state.doctor
+                      ? this.state.doctor.latitude
+                      : this.state.latitude
+                  }
+                  onChange={this.onChangeLatitude}
+                  validations={[required]}
+                />
+              </div>
 
-            <div className="form-group">
-              <label htmlFor="provinces">Región</label>
-              <select
-                id="provinces"
-                name="provinces"
-                onChange={this.handleChange}
-              >
-                {this.state.provinces?.map(MakeItem)}
-              </select>
-            </div>
+              <div className="form-group">
+                <label htmlFor="longitude">Longitud</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="longitude"
+                  value={
+                    this.state.doctor
+                      ? this.state.doctor.longitude
+                      : this.state.longitude
+                  }
+                  onChange={this.onChangeLongitude}
+                  validations={[required]}
+                />
+              </div>
 
-            <div class="Row">
-              <div class="Column">
-                <label for="roles">Roles Disponibles</label> <br />
+              <div className="form-group">
+                <label htmlFor="provinces">Región</label>
                 <select
-                  size="5"
-                  id="roles"
-                  name="roles"
-                  className="selectHospitals"
-                  onChange={this.handleChange1}
+                  id="provinces"
+                  name="provinces"
+                  onChange={this.handleChange}
                 >
-                  {this.state.roles?.map(MakeItem)}
+                  {this.state.provinces?.map(MakeItem)}
                 </select>
               </div>
 
-              <div class="Column">
+              <div>
+                <div>
+                  <label for="roles">Roles Disponibles</label> <br />
+                  <select
+                    size="5"
+                    id="roles"
+                    name="roles"
+                    className="selectHospitals"
+                    onChange={this.handleChange1}
+                  >
+                    {this.state.roles?.map(MakeItem)}
+                  </select>
+                </div>
+
+                <div>
+                  <button
+                    type="button"
+                    onClick={this.addItem}
+                    style={{
+                      borderRadius: "3px",
+                      border: "1px solid #808080",
+                      marginTop: "12px",
+                      marginBottom: "12px",
+                      marginLeft: "132px",
+                    }}
+                  >
+                    &gt; &gt;
+                  </button>
+                  <br />
+                  <button
+                    type="button"
+                    onClick={this.removeItem}
+                    style={{
+                      borderRadius: "3px",
+                      border: "1px solid #808080",
+                      marginLeft: "132px",
+                    }}
+                  >
+                    &lt; &lt;
+                  </button>
+                </div>
+                <div>
+                  <label for="asignados">Roles Asignados</label> <br />
+                  <select
+                    size="5"
+                    id="asignados"
+                    name="asignados"
+                    onChange={this.handleChange2}
+                    className="selectHospitals"
+                    style={{
+                      marginBottom: "12px",
+                    }}
+                  >
+                    {this.state.asignados?.map(MakeItem)}
+                  </select>
+                </div>
+              </div>
+
+              <div className="form-group">
                 <button
-                  type="button"
-                  onClick={this.addItem}
-                  style={{
-                    borderRadius: "3px",
-                    border: "1px solid #808080",
-                    marginTop: "92px",
-                    marginBottom: "32px",
-                    marginLeft: "132px",
-                  }}
+                  className="btn btn-primary btn-block"
+                  disabled={this.state.loading}
                 >
-                  &gt; &gt;
-                </button>
-                <br />
-                <button
-                  type="button"
-                  onClick={this.removeItem}
-                  style={{
-                    borderRadius: "3px",
-                    border: "1px solid #808080",
-                    marginLeft: "132px",
-                  }}
-                >
-                  &lt; &lt;
+                  {this.state.loading && (
+                    <span className="spinner-border spinner-border-sm"></span>
+                  )}
+                  <span>Guardar datos</span>
                 </button>
               </div>
-              <div class="Column">
-                <label for="asignados">Roles Asignados</label> <br />
+            </Form>
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="content">
+          <div className="navigation-bar">
+            <a href="/coordinators">Coordinadores </a>
+            <span>/ Datos de la Cuenta</span>
+          </div>
+
+          <div className="container">
+            <header className="jumbotron">
+              <h3 className="titulo">Datos de la Cuenta</h3>
+            </header>
+
+            <Form
+              onSubmit={this.save}
+              ref={(c) => {
+                this.form = c;
+              }}
+            >
+              <div className="form-group">
+                <label htmlFor="name">Nombre</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="name"
+                  value={
+                    this.state.doctor ? this.state.doctor.name : this.state.name
+                  }
+                  onChange={this.onChangeName}
+                  validations={[required]}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="lastname">Apellido</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="lastname"
+                  value={
+                    this.state.doctor
+                      ? this.state.doctor.lastname
+                      : this.state.lastname
+                  }
+                  onChange={this.onChangeLastName}
+                  validations={[required]}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="document">Número de Documento</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="document"
+                  value={
+                    this.state.doctor
+                      ? this.state.doctor.document
+                      : this.state.document
+                  }
+                  onChange={this.onChangeDocument}
+                  validations={[required]}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="email">Correo</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="email"
+                  value={
+                    this.state.doctor
+                      ? this.state.doctor.email
+                      : this.state.email
+                  }
+                  onChange={this.onChangeEmail}
+                  validations={[required, email]}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="phone">Teléfono</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="phone"
+                  value={
+                    this.state.doctor
+                      ? this.state.doctor.phone
+                      : this.state.phone
+                  }
+                  onChange={this.onChangePhone}
+                  validations={[required]}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="address">Dirección</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="address"
+                  value={
+                    this.state.doctor
+                      ? this.state.doctor.address
+                      : this.state.address
+                  }
+                  onChange={this.onChangeAddress}
+                  validations={[required]}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="latitude">Latitud</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="latitude"
+                  value={
+                    this.state.doctor
+                      ? this.state.doctor.latitude
+                      : this.state.latitude
+                  }
+                  onChange={this.onChangeLatitude}
+                  validations={[required]}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="longitude">Longitud</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="longitude"
+                  value={
+                    this.state.doctor
+                      ? this.state.doctor.longitude
+                      : this.state.longitude
+                  }
+                  onChange={this.onChangeLongitude}
+                  validations={[required]}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="provinces">Región</label>
                 <select
-                  size="5"
-                  id="asignados"
-                  name="asignados"
-                  onChange={this.handleChange2}
-                  className="selectHospitals"
+                  id="provinces"
+                  name="provinces"
+                  onChange={this.handleChange}
                 >
-                  {this.state.asignados?.map(MakeItem)}
+                  {this.state.provinces?.map(MakeItem)}
                 </select>
               </div>
-            </div>
 
-            <div className="form-group">
-              <button
-                className="btn btn-primary btn-block"
-                disabled={this.state.loading}
-              >
-                {this.state.loading && (
-                  <span className="spinner-border spinner-border-sm"></span>
-                )}
-                <span>Guardar datos</span>
-              </button>
-            </div>
-          </Form>
+              <div class="Row">
+                <div class="Column">
+                  <label for="roles">Roles Disponibles</label> <br />
+                  <select
+                    size="5"
+                    id="roles"
+                    name="roles"
+                    className="selectHospitals"
+                    onChange={this.handleChange1}
+                  >
+                    {this.state.roles?.map(MakeItem)}
+                  </select>
+                </div>
+
+                <div class="Column">
+                  <button
+                    type="button"
+                    onClick={this.addItem}
+                    style={{
+                      borderRadius: "3px",
+                      border: "1px solid #808080",
+                      marginTop: "92px",
+                      marginBottom: "32px",
+                      marginLeft: "132px",
+                    }}
+                  >
+                    &gt; &gt;
+                  </button>
+                  <br />
+                  <button
+                    type="button"
+                    onClick={this.removeItem}
+                    style={{
+                      borderRadius: "3px",
+                      border: "1px solid #808080",
+                      marginLeft: "132px",
+                    }}
+                  >
+                    &lt; &lt;
+                  </button>
+                </div>
+                <div class="Column">
+                  <label for="asignados">Roles Asignados</label> <br />
+                  <select
+                    size="5"
+                    id="asignados"
+                    name="asignados"
+                    onChange={this.handleChange2}
+                    className="selectHospitals"
+                  >
+                    {this.state.asignados?.map(MakeItem)}
+                  </select>
+                </div>
+              </div>
+
+              <div className="form-group">
+                <button
+                  className="btn btn-primary btn-block"
+                  disabled={this.state.loading}
+                >
+                  {this.state.loading && (
+                    <span className="spinner-border spinner-border-sm"></span>
+                  )}
+                  <span>Guardar datos</span>
+                </button>
+              </div>
+            </Form>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 

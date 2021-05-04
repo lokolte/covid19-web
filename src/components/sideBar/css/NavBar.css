@@ -26,13 +26,38 @@
 }
 
 .nav-menu.active {
-  width: 25vh;
+  width: 30vh;
   display: flex;
   position: fixed;
   top: 0;
   margin-top: var(--standart-size);
   left: 0;
   transition: 450ms;
+  z-index: 999;
+}
+
+@media screen and (max-height: 700px) and (min-width: 800px) {
+  .nav-menu.active {
+    width: 45vh;
+  }
+}
+
+@media screen and (max-height: 600px) and (min-width: 800px) {
+  .nav-menu.active {
+    width: 50vh;
+  }
+}
+
+@media screen and (max-height: 500px) and (min-width: 800px) {
+  .nav-menu.active {
+    width: 55vh;
+  }
+}
+
+@media screen and (max-height: 400px) and (min-width: 800px) {
+  .nav-menu.active {
+    width: 60vh;
+  }
 }
 
 .nav-menu.inactive {
@@ -115,4 +140,12 @@
 
 span {
   margin-left: 16px;
+}
+
+@media screen and (max-width: 600px) {
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
 }

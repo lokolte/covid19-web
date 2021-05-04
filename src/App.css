@@ -130,3 +130,32 @@ h4.center {
 .addBtn {
   margin-left: 12px;
 }
+
+.Row {
+  display: table;
+  width: 80%;
+  table-layout: fixed;
+  border-spacing: 10px;
+  overflow: auto;
+  white-space: nowrap;
+}
+.Column {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.selectHospitals {
+  width: 90%;
+}
+
+@media screen and (min-width: 600px) {
+  .selectHospitals {
+    width: 250px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .selectHospitals {
+    width: 350px;
+  }
+}
