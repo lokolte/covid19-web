@@ -12,7 +12,23 @@ class FormService {
         return response.data;
       });
   }
-  
+
+  getForm(id) {
+    return axios
+      .get(API_URL + "/forms?idForm=" + id, { headers: authHeader() })
+      .then((response) => {
+        return response.data;
+      });
+  }
+
+  create(data) {
+    return axios
+      .post(API_URL + "/forms/save", data, { headers: authHeader() })
+      .then((response) => {
+        return response;
+      });
+  }
+
   getQuestions(id) {
     return axios
       .get(API_URL + "/forms/" + id + "/questions", { headers: authHeader() })
@@ -26,6 +42,48 @@ class FormService {
       .get(API_URL + "/forms/" + personId, { headers: authHeader() })
       .then((response) => {
         return response.data;
+      });
+  }
+
+  getItems(idForm) {
+    if (idForm == null || idForm == undefined) {
+      return axios
+        .get(API_URL + "/forms/items", { headers: authHeader() })
+        .then((response) => {
+          return response.data;
+        });
+    } else {
+      return axios
+        .get(API_URL + "/forms/items?idForm=" + idForm, {
+          headers: authHeader(),
+        })
+        .then((response) => {
+          return response.data;
+        });
+    }
+  }
+
+  getItem(id) {
+    return axios
+      .get(API_URL + "/forms/items/" + id, { headers: authHeader() })
+      .then((response) => {
+        return response.data;
+      });
+  }
+
+  saveItem(data) {
+    return axios
+      .post(API_URL + "/forms/items", data, { headers: authHeader() })
+      .then((response) => {
+        return response;
+      });
+  }
+
+  saveItem(id, data) {
+    return axios
+      .put(API_URL + "/forms/items/" + id, data, { headers: authHeader() })
+      .then((response) => {
+        return response;
       });
   }
 }

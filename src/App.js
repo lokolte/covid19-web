@@ -20,6 +20,11 @@ import Patients from "./components/patients/patient-list.component";
 import PatientsAssignment from "./components/patients/patients-assignment.component";
 import Assignment from "./components/patients/assignment.component";
 import Forms from "./components/forms/form-list.component";
+import FormsAdd from "./components/forms/forms-new.component";
+import FormsEdit from "./components/forms/forms-edit.component";
+import ItemList from "./components/forms/item-list.component";
+import ItemAdd from "./components/forms/item-new.component";
+import ItemEdit from "./components/forms/item-edit.component";
 import Questions from "./components/forms/question-list.component";
 import Hospitals from "./components/hospitals/hospital-list.component";
 import HospitalEdit from "./components/hospitals/hospital-edit.component";
@@ -66,7 +71,12 @@ class App extends Component {
               <Route path="/doctor" component={BoardDoctor} />
               <Route path="/admin" component={BoardAdmin} />
               <Route path="/forms/:id/answers" component={Questions} />
+              <Route path="/forms/new" component={FormsAdd} />
+              <Route path="/forms/:id/edit" component={FormsEdit} />
               <Route path="/forms" component={Forms} />
+              <Route path="/items/new" component={ItemAdd} />
+              <Route path="/items/:id/edit" component={ItemEdit} />
+              <Route path="/items" component={ItemList} />
               <Route path="/messages" component={ChatPage} />
               <Route path="/patients/:id/answers" component={Answers} />
               <Route path="/hospitals/:id/edit" component={HospitalEdit} />

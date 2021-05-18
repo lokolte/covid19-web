@@ -3,8 +3,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { getForms } from "../../actions/forms";
-// import FormItem from "./form-item.component";
+import { getItems } from "../../actions/items";
 
 import "../../App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -14,24 +13,24 @@ import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 
-class Forms extends Component {
+class ItemList extends Component {
   constructor(props) {
     super(props);
     this.loadForms = this.loadForms.bind(this);
 
     this.state = {
-      forms: undefined,
+      items: undefined,
       currentPage: 1,
       sizePerPage: 10,
     };
   }
 
   loadForms() {
-    const { dispatch, forms } = this.props;
+    const { dispatch, items } = this.props;
 
-    dispatch(getForms()).then(() => {
+    dispatch(getItems()).then(() => {
       this.setState({
-        forms: forms,
+        items: items,
       });
     });
   }
@@ -39,9 +38,7 @@ class Forms extends Component {
   verDetalle(cell, row, rowIndex, formatExtraData) {
     return (
       <p>
-        <a href={"/forms/" + row.id + "/answers"}>Ver</a>
-        <span> </span>
-        <a href={"/forms/" + row.id + "/edit"}>Editar</a>
+        <a href={"/items/" + row.id + "/edit"}>Editar</a>
       </p>
     );
   }
@@ -53,13 +50,14 @@ class Forms extends Component {
       return <Redirect to="/login" />;
     }
 
-    if (!this.state.forms) {
+    if (!this.state.items) {
       this.loadForms();
     }
 
     const columns = [
       { dataField: "title", text: "Título", sort: true },
-      { dataField: "subtitle", text: "Descripción", sort: true },
+      { dataField: "subtitle", text: "Subtítulo", sort: true },
+      { dataField: "type", text: "Tipo Respuesta", sort: true },
       {
         dataField: "actions",
         text: "Acciones",
@@ -101,19 +99,19 @@ class Forms extends Component {
     return (
       <div className="content">
         <div className="navigation-bar">
-          <span>Formularios</span>
+          <span>Preguntas</span>
         </div>
         <div className="container">
           <header className="jumbotron center-jumbotron">
-            <h3 className="center">Formularios</h3>
+            <h3 className="center">Preguntas</h3>
           </header>
 
           <div>
-            {this.state.forms ? (
+            {this.state.items ? (
               <ToolkitProvider
                 bootstrap4
                 keyField="id"
-                data={this.state.forms}
+                data={this.state.items}
                 columns={columns}
                 search={true}
               >
@@ -122,7 +120,7 @@ class Forms extends Component {
                     <h6>Buscar:</h6>
                     <SearchBar text="Buscar" {...props.searchProps} />
                     <ClearSearchButton text="Limpiar" {...props.searchProps} />
-                    <a className="addBtn" href="/forms/new">
+                    <a className="addBtn" href="/items/new">
                       Agregar
                     </a>
                     <hr />
@@ -146,13 +144,13 @@ class Forms extends Component {
 }
 function mapStateToProps(state) {
   const { user } = state.authentication;
-  const { forms } = state.forms;
+  const { items } = state.items;
   const { message } = state.message;
   return {
     user,
-    forms,
+    items,
     message,
   };
 }
 
-export default connect(mapStateToProps)(Forms);
+export default connect(mapStateToProps)(ItemList);

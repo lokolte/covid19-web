@@ -22,6 +22,14 @@ export const Sidebar_Data = [
     roles: ["ADMIN", "PROFESIONAL_MEDICO", "COORDINADOR"],
   },
   {
+    title: "Preguntas",
+    path: "/items",
+    icon: <IoIcons.IoIosPaper />,
+    cName: "nav-text",
+    cNameAlt: "nav-text-alternative",
+    roles: ["ADMIN"],
+  },
+  {
     title: "Centros Asistenciales",
     path: "/hospitals",
     icon: <AiIcons.AiFillHome />,
