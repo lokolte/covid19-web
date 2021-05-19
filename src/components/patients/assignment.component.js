@@ -115,7 +115,7 @@ class Assignment extends Component {
     return (
       <div className="content">
         <div className="navigation-bar">
-          <a href="/patients">Pacientes </a>
+          <a href="/assign-patients">Pacientes </a>
           <span>/ Asignación</span>
         </div>
         <div className="container">

@@ -77,7 +77,7 @@ class FormPatients extends Component {
 
     const verDetalle = (cell, row, rowIndex, formatExtraData) => {
       let url =
-        "/patients/" +
+        "/answers/" +
         this.props.match.params.personId +
         "/forms/" +
         row.id +
@@ -129,7 +129,7 @@ class FormPatients extends Component {
     return (
       <div className="content">
         <div className="navigation-bar">
-          <a href="/patients">Pacientes </a>
+          <a href="/answers">Respuestas </a>
           <span>/ Formularios</span>
         </div>
         <div className="container">

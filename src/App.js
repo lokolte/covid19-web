@@ -63,7 +63,7 @@ class App extends Component {
           <div className="mt-3">
             <Switch>
               <Route exact path={["/", "/home"]} component={Home} />
-              <Route exact path="/patients" component={Patients} />
+              <Route exact path="/answers" component={Patients} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/send-email" component={SendEmail} />
               <Route path="/reset-password/:token" component={ResetPassword} />
@@ -103,13 +103,10 @@ class App extends Component {
               />
               <Route path="/doctors" component={Doctors} />
               <Route
-                path="/patients/:personId/forms/:formId/answers"
+                path="/answers/:personId/forms/:formId/answers"
                 component={AnswersForm}
               />
-              <Route
-                path="/patients/:personId/forms"
-                component={FormPatients}
-              />
+              <Route path="/answers/:personId/forms" component={FormPatients} />
               <Route
                 exact
                 path="/assign-patients"

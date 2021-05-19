@@ -32,6 +32,7 @@ class ChatPage extends Component {
       patientsDoctor: undefined,
       messages: undefined,
       idPatient: undefined,
+      idDoctor: undefined,
       isMessageLoading: false,
       messageText: "",
     };
@@ -72,6 +73,7 @@ class ChatPage extends Component {
     const { dispatch, user } = this.props;
     this.setState({
       idPatient: patientId,
+      idDoctor: idDoctor,
     });
 
     if (isDoctor(user.account.roles) && idDoctor === user.account.person.id) {
@@ -109,7 +111,7 @@ class ChatPage extends Component {
       )
     ).then(() => {
       this.setMessageText("");
-      this.loadMessages(this.state.idPatient);
+      this.loadMessages(this.state.idPatient, this.state.idDoctor);
     });
   }
 
@@ -209,7 +211,7 @@ class ChatPage extends Component {
                       id="sendMessageBtn"
                       color="info"
                       onClick={() => {
-                        this.sendMessage();
+                        this.sendMessage(this.state.idPatient);
                       }}
                       rounded
                       size="sm"

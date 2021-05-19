@@ -42,7 +42,7 @@ class Patients extends Component {
   }
 
   verDetalle(cell, row, rowIndex, formatExtraData) {
-    return <a href={"/patients/" + row.id + "/forms"}>Detalles</a>;
+    return <a href={"/answers/" + row.id + "/forms"}>Detalles</a>;
   }
 
   render() {

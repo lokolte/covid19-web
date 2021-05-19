@@ -63,7 +63,7 @@ export const Sidebar_Data = [
   },
   {
     title: "Respuestas",
-    path: "/patients",
+    path: "/answers",
     icon: <IoIcons.IoIosPaper />,
     cName: "nav-text",
     cNameAlt: "nav-text-alternative",

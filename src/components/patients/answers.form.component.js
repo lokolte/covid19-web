@@ -127,12 +127,12 @@ class AnswersForm extends Component {
     let tokens = path.split("/");
     let id = tokens[2];
 
-    const urlForms = "/patients/" + id + "/forms";
+    const urlForms = "/answers/" + id + "/forms";
 
     return (
       <div className="content">
         <div className="navigation-bar">
-          <a href="/patients">Pacientes </a>
+          <a href="/answers">Respuestas </a>
           <a href={urlForms}>/ Formularios</a>
           <span>/ Respuestas Formulario</span>
         </div>

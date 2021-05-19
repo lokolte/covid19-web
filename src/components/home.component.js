@@ -10,9 +10,6 @@ import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.m
 export default class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      content: "",
-    };
   }
 
   render() {
@@ -20,8 +17,30 @@ export default class Home extends Component {
       <div className="content">
         <div className="container">
           <header className="jumbotron center-jumbotron">
-            <h3 className="center">{this.state.content}</h3>
+            <h3 className="center">Presentación de la aplicación</h3>
           </header>
+          <div>
+            <p>
+              Uno de los sectores más vulnerables de la población ante la
+              pandemia del COVID-19 son las personas portadoras de enfermedades
+              crónicas. La mayoría de estos pacientes requieren especialistas en
+              hospitales referenciados. Identificar y georreferenciar a estos
+              pacientes es fundamental para la Salud Pública. Este trabajo tiene
+              el objetivo de desarrollar, implementar y evaluar una aplicación
+              para dispositivos móviles para detectar y realizar el seguimiento
+              georreferenciado por parte del Ministerio de Salud Pública y
+              Bienestar Social (MSPyBS) de Paraguay a pacientes portadores de
+              enfermedades crónicas con riesgo de COVID-19. La utilización de la
+              aplicación tiene potencial para beneficiar a los pacientes
+              crónicos en cuanto a posibilidad de acceder a la medicación y
+              conseguir una atención primaria por parte de especialistas sin
+              necesidad de movilizarse a los centros de salud.
+            </p>
+            <p>
+              Para descargar la aplicación haga click{" "}
+              <a href="/assets/app-release.apk">aquí.</a>
+            </p>
+          </div>
         </div>
       </div>
     );
