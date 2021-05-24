@@ -46,6 +46,10 @@ class PatientsAssignment extends Component {
     return <a href={"/patients/" + row.id + "/assignment"}>{row.doctor}</a>;
   }
 
+  verFormularios(cell, row, rowIndex, formatExtraData) {
+    return <a href={"/patients/" + row.id + "/forms"}>Formularios</a>;
+  }
+
   render() {
     const { user: currentUser } = this.props;
 
@@ -74,6 +78,14 @@ class PatientsAssignment extends Component {
         isDummyField: true,
         csvExport: false,
         formatter: this.verDetalle,
+      },
+      {
+        dataField: "actions",
+        text: "Formularios",
+        sort: false,
+        isDummyField: true,
+        csvExport: false,
+        formatter: this.verFormularios,
       },
     ];
 

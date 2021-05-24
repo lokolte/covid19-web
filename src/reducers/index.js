@@ -22,6 +22,7 @@ import questions from "./questions";
 import items from "./items";
 import item from "./item";
 import roles from "./roles";
+import formsPatient from "./formsPatient";
 
 export default combineReducers({
   authentication,
@@ -45,4 +46,5 @@ export default combineReducers({
   items,
   item,
   roles,
+  formsPatient,
 });

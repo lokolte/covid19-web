@@ -150,14 +150,48 @@ class DoctorAdd extends Component {
     this.setState({ sexSelected: e.target.value });
   }
 
+  isFormValid() {
+    if (this.state.name == undefined || this.state.name.trim() == "") {
+      return false;
+    }
+    if (this.state.lastname == undefined || this.state.lastname.trim() == "") {
+      return false;
+    }
+
+    if (this.state.document == undefined || this.state.document.trim() == "") {
+      return false;
+    }
+    if (this.state.email == undefined || this.state.email.trim() == "") {
+      return false;
+    }
+    if (this.state.birthDate == undefined || this.state.birthDate == null) {
+      return false;
+    }
+    if (this.state.phone == undefined || this.state.phone.trim() == "") {
+      return false;
+    }
+    if (this.state.address == undefined || this.state.address.trim() == "") {
+      return false;
+    }
+
+    if (
+      this.state.sexSelected == undefined ||
+      this.state.sexSelected.trim() == ""
+    ) {
+      return false;
+    }
+
+    return true;
+  }
+
   save(e) {
     e.preventDefault();
+    this.form.validateAll();
+    if (!this.isFormValid()) return;
 
     this.setState({
       loading: true,
     });
-
-    this.form.validateAll();
 
     const { dispatch } = this.props;
 
@@ -253,7 +287,9 @@ class DoctorAdd extends Component {
             }}
           >
             <div className="form-group">
-              <label htmlFor="name">Nombre</label>
+              <label htmlFor="name">
+                Nombre <span class="required">*</span>
+              </label>
               <Input
                 type="text"
                 className="form-control"
@@ -267,7 +303,9 @@ class DoctorAdd extends Component {
             </div>
 
             <div className="form-group">
-              <label htmlFor="lastname">Apellido</label>
+              <label htmlFor="lastname">
+                Apellido <span class="required">*</span>
+              </label>
               <Input
                 type="text"
                 className="form-control"
@@ -283,7 +321,9 @@ class DoctorAdd extends Component {
             </div>
 
             <div className="form-group">
-              <label htmlFor="document">Número de Documento</label>
+              <label htmlFor="document">
+                Número de Documento <span class="required">*</span>
+              </label>
               <Input
                 type="text"
                 className="form-control"
@@ -299,7 +339,9 @@ class DoctorAdd extends Component {
             </div>
 
             <div className="form-group">
-              <label htmlFor="birthDate">Fecha de nacimiento</label>
+              <label htmlFor="birthDate">
+                Fecha de nacimiento <span class="required">*</span>
+              </label>
               <Input
                 type="date"
                 className="form-control"
@@ -311,7 +353,9 @@ class DoctorAdd extends Component {
             </div>
 
             <div className="form-group">
-              <label htmlFor="email">Correo</label>
+              <label htmlFor="email">
+                Correo <span class="required">*</span>
+              </label>
               <Input
                 type="text"
                 className="form-control"
@@ -325,7 +369,9 @@ class DoctorAdd extends Component {
             </div>
 
             <div className="form-group">
-              <label htmlFor="phone">Teléfono</label>
+              <label htmlFor="phone">
+                Teléfono <span class="required">*</span>
+              </label>
               <Input
                 type="text"
                 className="form-control"
@@ -339,7 +385,9 @@ class DoctorAdd extends Component {
             </div>
 
             <div className="form-group">
-              <label htmlFor="address">Dirección</label>
+              <label htmlFor="address">
+                Dirección <span class="required">*</span>
+              </label>
               <Input
                 type="text"
                 className="form-control"
@@ -355,7 +403,9 @@ class DoctorAdd extends Component {
             </div>
 
             <div className="form-group">
-              <label htmlFor="sex">Sexo</label>
+              <label htmlFor="sex">
+                Sexo <span class="required">*</span>
+              </label>
               <select id="sex" name="sex" onChange={this.onChangeSex}>
                 {this.state.sexList?.map(MakeItem2)}
               </select>
@@ -405,7 +455,9 @@ class DoctorAdd extends Component {
             </div>
 
             <div className="form-group">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">
+                Password <span class="required">*</span>
+              </label>
               <Input
                 type="password"
                 className="form-control"
@@ -415,7 +467,9 @@ class DoctorAdd extends Component {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="password2">Confirmar Password</label>
+              <label htmlFor="password2">
+                Confirmar Password <span class="required">*</span>
+              </label>
               <Input
                 type="password"
                 className="form-control"

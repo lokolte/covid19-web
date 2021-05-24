@@ -121,14 +121,14 @@ class Hospitals extends Component {
     }
 
     const columnsDoctor = [
-      { dataField: "code", text: "Código", sort: true },
+      { dataField: "name", text: "Nombre", sort: true },
       { dataField: "type", text: "Tipo", sort: true },
       { dataField: "district.province.name", text: "Region", sort: true },
       { dataField: "district.name", text: "Distrito", sort: true },
     ];
 
     const columnsAdmin = [
-      { dataField: "code", text: "Código", sort: true },
+      { dataField: "name", text: "Nombre", sort: true },
       { dataField: "type", text: "Tipo", sort: true },
       { dataField: "district.province.name", text: "Region", sort: true },
       { dataField: "district.name", text: "Distrito", sort: true },

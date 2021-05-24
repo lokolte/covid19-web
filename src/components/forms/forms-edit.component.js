@@ -31,6 +31,7 @@ class FormsEdit extends Component {
     this.onChangeTitle = this.onChangeTitle.bind(this);
     this.onChangeSubtitle = this.onChangeSubtitle.bind(this);
     this.onChangeOrderLevel = this.onChangeOrderLevel.bind(this);
+    this.onChangeDefault = this.onChangeDefault.bind(this);
     this.loadItems = this.loadItems.bind(this);
     this.handleChange1 = this.handleChange1.bind(this);
     this.handleChange2 = this.handleChange2.bind(this);
@@ -41,6 +42,7 @@ class FormsEdit extends Component {
       orderLevel: 0,
       type: "CHECK",
       form: undefined,
+      isDefault: undefined,
       seleccionado: undefined,
       items: undefined,
       asignados: [],
@@ -64,6 +66,12 @@ class FormsEdit extends Component {
   onChangeOrderLevel(e) {
     this.setState({
       orderLevel: e.target.value,
+    });
+  }
+
+  onChangeDefault(e) {
+    this.setState({
+      isDefault: !this.state.isDefault,
     });
   }
 
@@ -128,7 +136,13 @@ class FormsEdit extends Component {
         subtitle: form?.subtitle,
         orderLevel: form?.orderLevel,
         asignados: form?.itemsForm,
+        isDefault: form?.default,
       });
+      if (form?.default) {
+        setTimeout(function () {
+          document.getElementById("isDefault").checked = true;
+        }, 2000);
+      }
     });
   }
 
@@ -146,14 +160,27 @@ class FormsEdit extends Component {
     });
   }
 
+  isFormValid() {
+    if (this.state.title == undefined || this.state.title.trim() == "") {
+      return false;
+    }
+    if (this.state.subtitle == undefined || this.state.subtitle.trim() == "") {
+      return false;
+    }
+    if (this.state.orderLevel == undefined) {
+      return false;
+    }
+    return true;
+  }
+
   save(e) {
     e.preventDefault();
+    this.form.validateAll();
+    if (!this.isFormValid()) return;
 
     this.setState({
       loading: true,
     });
-
-    this.form.validateAll();
 
     const { dispatch } = this.props;
 
@@ -162,6 +189,7 @@ class FormsEdit extends Component {
       title: this.state.title,
       subtitle: this.state.subtitle,
       orderLevel: this.state.orderLevel,
+      default: this.state.isDefault,
       itemsForm: this.state.asignados,
     };
 
@@ -229,7 +257,9 @@ class FormsEdit extends Component {
               }}
             >
               <div className="form-group">
-                <label htmlFor="name">Título</label>
+                <label htmlFor="name">
+                  Título <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -241,7 +271,9 @@ class FormsEdit extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="lastname">Subtítulo</label>
+                <label htmlFor="lastname">
+                  Subtítulo <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -253,7 +285,9 @@ class FormsEdit extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="lastname">Orden</label>
+                <label htmlFor="lastname">
+                  Orden <span class="required">*</span>
+                </label>
                 <Input
                   type="number"
                   className="form-control"
@@ -261,6 +295,17 @@ class FormsEdit extends Component {
                   value={this.state.orderLevel}
                   onChange={this.onChangeOrderLevel}
                   validations={[required]}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="password">Por defecto</label>
+                <Input
+                  id="isDefault"
+                  type="checkbox"
+                  name="isDefault"
+                  value={this.state.isDefault}
+                  onChange={this.onChangeDefault}
                 />
               </div>
 
@@ -356,7 +401,9 @@ class FormsEdit extends Component {
               }}
             >
               <div className="form-group">
-                <label htmlFor="name">Título</label>
+                <label htmlFor="name">
+                  Título <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -368,7 +415,9 @@ class FormsEdit extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="lastname">Subtítulo</label>
+                <label htmlFor="lastname">
+                  Subtítulo <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -380,7 +429,9 @@ class FormsEdit extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="lastname">Orden</label>
+                <label htmlFor="lastname">
+                  Orden <span class="required">*</span>
+                </label>
                 <Input
                   type="number"
                   className="form-control"
@@ -388,6 +439,17 @@ class FormsEdit extends Component {
                   value={this.state.orderLevel}
                   onChange={this.onChangeOrderLevel}
                   validations={[required]}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="password">Por defecto</label>
+                <Input
+                  id="isDefault"
+                  type="checkbox"
+                  name="isDefault"
+                  value={this.state.isDefault}
+                  onChange={this.onChangeDefault}
                 />
               </div>
 

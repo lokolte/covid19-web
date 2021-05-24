@@ -159,3 +159,8 @@ h4.center {
     width: 350px;
   }
 }
+
+span.required {
+  color: #fa072c;
+  margin-left: 4px;
+}

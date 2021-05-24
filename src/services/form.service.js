@@ -5,12 +5,20 @@ import authHeader from "./auth-header";
 import { API_URL } from "../config/env.config";
 
 class FormService {
-  getPersonForms() {
-    return axios
-      .get(API_URL + "/forms", { headers: authHeader() })
-      .then((response) => {
-        return response.data;
-      });
+  getPersonForms(idPerson) {
+    if (idPerson != null && idPerson != undefined) {
+      return axios
+        .get(API_URL + "/forms?idPerson=" + idPerson, { headers: authHeader() })
+        .then((response) => {
+          return response.data;
+        });
+    } else {
+      return axios
+        .get(API_URL + "/forms", { headers: authHeader() })
+        .then((response) => {
+          return response.data;
+        });
+    }
   }
 
   getForm(id) {
@@ -24,6 +32,14 @@ class FormService {
   create(data) {
     return axios
       .post(API_URL + "/forms/save", data, { headers: authHeader() })
+      .then((response) => {
+        return response;
+      });
+  }
+
+  asignForms(id, data) {
+    return axios
+      .post(API_URL + "/forms/" + id, data, { headers: authHeader() })
       .then((response) => {
         return response;
       });
@@ -71,7 +87,7 @@ class FormService {
       });
   }
 
-  saveItem(data) {
+  createItem(data) {
     return axios
       .post(API_URL + "/forms/items", data, { headers: authHeader() })
       .then((response) => {

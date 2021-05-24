@@ -142,14 +142,41 @@ class CoordinatorEdit extends Component {
     });
   }
 
+  isFormValid() {
+    if (this.state.name == undefined || this.state.name.trim() == "") {
+      return false;
+    }
+    if (this.state.lastname == undefined || this.state.lastname.trim() == "") {
+      return false;
+    }
+
+    if (this.state.document == undefined || this.state.document.trim() == "") {
+      return false;
+    }
+    if (this.state.email == undefined || this.state.email.trim() == "") {
+      return false;
+    }
+
+    if (this.state.phone == undefined || this.state.phone.trim() == "") {
+      return false;
+    }
+    if (this.state.address == undefined || this.state.address.trim() == "") {
+      return false;
+    }
+
+    return true;
+  }
+
   save(e) {
     e.preventDefault();
-
+    this.form.validateAll();
+    if (!this.isFormValid()) {
+      console.log("no valido");
+      return;
+    }
     this.setState({
       loading: true,
     });
-
-    this.form.validateAll();
 
     const { dispatch, history } = this.props;
 
@@ -201,6 +228,7 @@ class CoordinatorEdit extends Component {
         latitude: doctor?.latitude,
         longitude: doctor?.longitude,
         provinceId: doctor?.provinceId,
+        seleccionado: doctor?.provinceId,
         asignados: doctor?.roles,
       });
       this.loadProvinces();
@@ -323,7 +351,9 @@ class CoordinatorEdit extends Component {
               }}
             >
               <div className="form-group">
-                <label htmlFor="name">Nombre</label>
+                <label htmlFor="name">
+                  Nombre <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -337,7 +367,9 @@ class CoordinatorEdit extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="lastname">Apellido</label>
+                <label htmlFor="lastname">
+                  Apellido <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -353,7 +385,9 @@ class CoordinatorEdit extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="document">Número de Documento</label>
+                <label htmlFor="document">
+                  Número de Documento <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -369,7 +403,9 @@ class CoordinatorEdit extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="email">Correo</label>
+                <label htmlFor="email">
+                  Correo <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -385,7 +421,9 @@ class CoordinatorEdit extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="phone">Teléfono</label>
+                <label htmlFor="phone">
+                  Teléfono <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -401,7 +439,9 @@ class CoordinatorEdit extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="address">Dirección</label>
+                <label htmlFor="address">
+                  Dirección <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -428,7 +468,6 @@ class CoordinatorEdit extends Component {
                       : this.state.latitude
                   }
                   onChange={this.onChangeLatitude}
-                  validations={[required]}
                 />
               </div>
 
@@ -444,7 +483,6 @@ class CoordinatorEdit extends Component {
                       : this.state.longitude
                   }
                   onChange={this.onChangeLongitude}
-                  validations={[required]}
                 />
               </div>
 
@@ -552,7 +590,9 @@ class CoordinatorEdit extends Component {
               }}
             >
               <div className="form-group">
-                <label htmlFor="name">Nombre</label>
+                <label htmlFor="name">
+                  Nombre <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -566,7 +606,9 @@ class CoordinatorEdit extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="lastname">Apellido</label>
+                <label htmlFor="lastname">
+                  Apellido <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -582,7 +624,9 @@ class CoordinatorEdit extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="document">Número de Documento</label>
+                <label htmlFor="document">
+                  Número de Documento <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -598,7 +642,9 @@ class CoordinatorEdit extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="email">Correo</label>
+                <label htmlFor="email">
+                  Correo <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -614,7 +660,9 @@ class CoordinatorEdit extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="phone">Teléfono</label>
+                <label htmlFor="phone">
+                  Teléfono <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -630,7 +678,9 @@ class CoordinatorEdit extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="address">Dirección</label>
+                <label htmlFor="address">
+                  Dirección <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -657,7 +707,6 @@ class CoordinatorEdit extends Component {
                       : this.state.latitude
                   }
                   onChange={this.onChangeLatitude}
-                  validations={[required]}
                 />
               </div>
 
@@ -673,7 +722,6 @@ class CoordinatorEdit extends Component {
                       : this.state.longitude
                   }
                   onChange={this.onChangeLongitude}
-                  validations={[required]}
                 />
               </div>
 

@@ -63,14 +63,27 @@ class ItemAdd extends Component {
     });
   }
 
+  isFormValid() {
+    if (this.state.title == undefined || this.state.title.trim() == "") {
+      return false;
+    }
+    if (this.state.subtitle == undefined || this.state.subtitle.trim() == "") {
+      return false;
+    }
+    if (this.state.orderLevel == undefined) {
+      return false;
+    }
+    return true;
+  }
+
   save(e) {
     e.preventDefault();
+    this.form.validateAll();
+    if (!this.isFormValid()) return;
 
     this.setState({
       loading: true,
     });
-
-    this.form.validateAll();
 
     const { dispatch } = this.props;
 
@@ -126,7 +139,9 @@ class ItemAdd extends Component {
             }}
           >
             <div className="form-group">
-              <label htmlFor="name">Título</label>
+              <label htmlFor="name">
+                Título <span class="required">*</span>
+              </label>
               <Input
                 type="text"
                 className="form-control"
@@ -138,7 +153,9 @@ class ItemAdd extends Component {
             </div>
 
             <div className="form-group">
-              <label htmlFor="lastname">Subtítulo</label>
+              <label htmlFor="lastname">
+                Subtítulo <span class="required">*</span>
+              </label>
               <Input
                 type="text"
                 className="form-control"
@@ -150,7 +167,9 @@ class ItemAdd extends Component {
             </div>
 
             <div className="form-group">
-              <label htmlFor="lastname">Orden</label>
+              <label htmlFor="lastname">
+                Orden <span class="required">*</span>
+              </label>
               <Input
                 type="number"
                 className="form-control"
@@ -162,7 +181,9 @@ class ItemAdd extends Component {
             </div>
 
             <div className="form-group">
-              <label htmlFor="tipos">Tipo</label>
+              <label htmlFor="tipos">
+                Tipo <span class="required">*</span>
+              </label>
               <select id="tipos" name="tipos" onChange={this.onChangeType}>
                 <option value="CHECK">CHECK</option>
                 <option value="INPUT_TEXT">INPUT_TEXT</option>

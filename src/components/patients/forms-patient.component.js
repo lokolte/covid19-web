@@ -2,13 +2,12 @@
 
 import React, { Component } from "react";
 import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
 
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { create } from "../../actions/forms";
-import { getItems } from "../../actions/items";
+import { getForms, asignForms } from "../../actions/forms";
+import { getPatient } from "../../actions/patients";
 import { isDoctor, isAdmin, isCoordinator } from "../../actions/generalActions";
 
 import "../../App.css";
@@ -23,7 +22,7 @@ const required = (value) => {
   }
 };
 
-class FormsAdd extends Component {
+class FormsEdit extends Component {
   constructor(props) {
     super(props);
     this.save = this.save.bind(this);
@@ -31,18 +30,17 @@ class FormsAdd extends Component {
     this.onChangeSubtitle = this.onChangeSubtitle.bind(this);
     this.onChangeOrderLevel = this.onChangeOrderLevel.bind(this);
     this.onChangeDefault = this.onChangeDefault.bind(this);
-    this.loadItems = this.loadItems.bind(this);
+    this.loadPatient = this.loadPatient.bind(this);
+    this.loadForms = this.loadForms.bind(this);
     this.handleChange1 = this.handleChange1.bind(this);
     this.handleChange2 = this.handleChange2.bind(this);
 
     this.state = {
-      title: "",
-      subtitle: "",
-      orderLevel: 0,
-      type: "CHECK",
-      isDefault: false,
+      patient: undefined,
+      name: "",
       seleccionado: undefined,
-      items: undefined,
+      formsPatient: undefined,
+      forms: undefined,
       asignados: [],
       itemSeleccionado: undefined,
       desSeleccionado: undefined,
@@ -88,7 +86,7 @@ class FormsAdd extends Component {
     var idSeleccionado = this.state.itemSeleccionado;
     if (idSeleccionado == undefined) return;
     var itemSeleccionado = null;
-    var reduced = this.state.items.reduce(function (filtered, item) {
+    var reduced = this.state.forms.reduce(function (filtered, item) {
       if (item.id == idSeleccionado) {
         itemSeleccionado = item;
       } else {
@@ -97,7 +95,7 @@ class FormsAdd extends Component {
       return filtered;
     }, []);
     if (itemSeleccionado == null) return;
-    this.setState({ items: reduced });
+    this.setState({ forms: reduced });
     this.setState({ asignados: [...this.state.asignados, itemSeleccionado] });
     document.getElementById("items").selectedIndex = -1;
   };
@@ -116,41 +114,12 @@ class FormsAdd extends Component {
     }, []);
     if (itemSeleccionado == null) return;
     this.setState({ asignados: reduced });
-    this.setState({ items: [...this.state.items, itemSeleccionado] });
+    this.setState({ forms: [...this.state.forms, itemSeleccionado] });
     document.getElementById("asignados").selectedIndex = -1;
   };
 
-  loadItems() {
-    const { dispatch, location, items } = this.props;
-
-    let path = location.pathname;
-    let tokens = path.split("/");
-    let id = tokens[2];
-
-    dispatch(getItems()).then(() => {
-      this.setState({
-        items: items,
-      });
-    });
-  }
-
-  isFormValid() {
-    if (this.state.title == undefined || this.state.title.trim() == "") {
-      return false;
-    }
-    if (this.state.subtitle == undefined || this.state.subtitle.trim() == "") {
-      return false;
-    }
-    if (this.state.orderLevel == undefined) {
-      return false;
-    }
-    return true;
-  }
-
   save(e) {
     e.preventDefault();
-    this.form.validateAll();
-    if (!this.isFormValid()) return;
 
     this.setState({
       loading: true,
@@ -158,18 +127,10 @@ class FormsAdd extends Component {
 
     const { dispatch } = this.props;
 
-    let data = {
-      title: this.state.title,
-      subtitle: this.state.subtitle,
-      orderLevel: this.state.orderLevel,
-      itemsForm: this.state.asignados,
-      default: this.state.isDefault,
-    };
-
-    dispatch(create(data))
+    dispatch(asignForms(this.state.patient.id, this.state.asignados))
       .then(() => {
         alert("Datos guardados exitosamente!");
-        window.location.href = "/forms";
+        window.location.href = "/assign-patients";
       })
       .catch(() => {
         alert("Ocurrio un error");
@@ -177,6 +138,35 @@ class FormsAdd extends Component {
           loading: false,
         });
       });
+  }
+
+  loadForms() {
+    const { dispatch, location, forms } = this.props;
+
+    let path = location.pathname;
+    let tokens = path.split("/");
+    let id = tokens[2];
+
+    dispatch(getForms(id)).then(() => {
+      this.setState({
+        forms: forms,
+      });
+    });
+  }
+
+  loadPatient() {
+    const { dispatch, patient, location } = this.props;
+
+    let path = location.pathname;
+    let tokens = path.split("/");
+    let id = tokens[2];
+
+    dispatch(getPatient(id)).then(() => {
+      this.setState({
+        patient: patient,
+        asignados: patient?.forms,
+      });
+    });
   }
 
   render() {
@@ -193,8 +183,12 @@ class FormsAdd extends Component {
       return <Redirect to="/home" />;
     }
 
-    if (!this.state.items) {
-      this.loadItems();
+    if (!this.state.forms) {
+      this.loadForms();
+    }
+
+    if (!this.state.patient) {
+      this.loadPatient();
     }
 
     var MakeItem = function (X) {
@@ -211,13 +205,20 @@ class FormsAdd extends Component {
       return (
         <div className="content">
           <div className="navigation-bar">
-            <a href="/forms">Formularios</a>
-            <span>/ Agregar Formulario</span>
+            <a href="/assign-patients">Pacientes</a>
+            <span>/ Asignar Formulario</span>
           </div>
           <div className="container">
             <header className="jumbotron">
-              <h3 className="titulo">Agregar Formulario</h3>
+              <h3 className="titulo">Formularios del paciente</h3>
             </header>
+
+            <p>
+              <strong>Paciente:</strong>{" "}
+              {this.state.patient
+                ? this.state.patient.name + " " + this.state.patient.lastname
+                : this.state.name}
+            </p>
 
             <Form
               onSubmit={this.save}
@@ -225,62 +226,9 @@ class FormsAdd extends Component {
                 this.form = c;
               }}
             >
-              <div className="form-group">
-                <label htmlFor="name">
-                  Título <span class="required">*</span>
-                </label>
-                <Input
-                  type="text"
-                  className="form-control"
-                  name="name"
-                  value={this.state.title}
-                  onChange={this.onChangeTitle}
-                  validations={[required]}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="lastname">
-                  Subtítulo <span class="required">*</span>
-                </label>
-                <Input
-                  type="text"
-                  className="form-control"
-                  name="lastname"
-                  value={this.state.subtitle}
-                  onChange={this.onChangeSubtitle}
-                  validations={[required]}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="lastname">
-                  Orden <span class="required">*</span>
-                </label>
-                <Input
-                  type="number"
-                  className="form-control"
-                  name="lastname"
-                  value={this.state.orderLevel}
-                  onChange={this.onChangeOrderLevel}
-                  validations={[required]}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="password">Por defecto</label>
-                <Input
-                  id="isDefault"
-                  type="checkbox"
-                  name="isDefault"
-                  value={this.state.isDefault}
-                  onChange={this.onChangeDefault}
-                />
-              </div>
-
               <div>
                 <div>
-                  <label for="items">Items Disponibles</label> <br />
+                  <label for="items">Formularios Disponibles</label> <br />
                   <select
                     size="5"
                     id="items"
@@ -288,7 +236,7 @@ class FormsAdd extends Component {
                     className="selectHospitals"
                     onChange={this.handleChange1}
                   >
-                    {this.state.items?.map(MakeItem)}
+                    {this.state.forms?.map(MakeItem)}
                   </select>
                 </div>
 
@@ -320,7 +268,7 @@ class FormsAdd extends Component {
                   </button>
                 </div>
                 <div>
-                  <label for="asignados">Items Asignados</label> <br />
+                  <label for="asignados">Formularios Asignados</label> <br />
                   <select
                     size="5"
                     id="asignados"
@@ -355,13 +303,20 @@ class FormsAdd extends Component {
       return (
         <div className="content">
           <div className="navigation-bar">
-            <a href="/forms">Formularios</a>
-            <span>/ Agregar Formulario</span>
+            <a href="/assign-patients">Pacientes</a>
+            <span>/ Asignar Formulario</span>
           </div>
           <div className="container">
             <header className="jumbotron">
-              <h3 className="titulo">Agregar Formulario</h3>
+              <h3 className="titulo">Formularios del paciente</h3>
             </header>
+
+            <p>
+              <strong>Paciente:</strong>{" "}
+              {this.state.patient
+                ? this.state.patient.name + " " + this.state.patient.lastname
+                : this.state.name}
+            </p>
 
             <Form
               onSubmit={this.save}
@@ -369,62 +324,9 @@ class FormsAdd extends Component {
                 this.form = c;
               }}
             >
-              <div className="form-group">
-                <label htmlFor="name">
-                  Título <span class="required">*</span>
-                </label>
-                <Input
-                  type="text"
-                  className="form-control"
-                  name="name"
-                  value={this.state.title}
-                  onChange={this.onChangeTitle}
-                  validations={[required]}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="lastname">
-                  Subtítulo <span class="required">*</span>
-                </label>
-                <Input
-                  type="text"
-                  className="form-control"
-                  name="lastname"
-                  value={this.state.subtitle}
-                  onChange={this.onChangeSubtitle}
-                  validations={[required]}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="lastname">
-                  Orden <span class="required">*</span>
-                </label>
-                <Input
-                  type="number"
-                  className="form-control"
-                  name="lastname"
-                  value={this.state.orderLevel}
-                  onChange={this.onChangeOrderLevel}
-                  validations={[required]}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="password">Por defecto</label>
-                <Input
-                  id="isDefault"
-                  type="checkbox"
-                  name="isDefault"
-                  value={this.state.isDefault}
-                  onChange={this.onChangeDefault}
-                />
-              </div>
-
               <div class="Row">
                 <div class="Column">
-                  <label for="items">Items Disponibles</label> <br />
+                  <label for="items">Formularios Disponibles</label> <br />
                   <select
                     size="15"
                     id="items"
@@ -432,7 +334,7 @@ class FormsAdd extends Component {
                     className="selectHospitals"
                     onChange={this.handleChange1}
                   >
-                    {this.state.items?.map(MakeItem)}
+                    {this.state.forms?.map(MakeItem)}
                   </select>
                 </div>
 
@@ -464,7 +366,7 @@ class FormsAdd extends Component {
                   </button>
                 </div>
                 <div class="Column">
-                  <label for="asignados">Items Asignados</label> <br />
+                  <label for="asignados">Formularios Asignados</label> <br />
                   <select
                     size="15"
                     id="asignados"
@@ -498,11 +400,15 @@ class FormsAdd extends Component {
 
 function mapStateToProps(state) {
   const { user } = state.authentication;
-  const { items } = state.items;
+  const { forms } = state.forms;
+  const { patient } = state.patient;
+  const { formsPatient } = state.formsPatient;
   return {
     user,
-    items,
+    forms,
+    patient,
+    formsPatient,
   };
 }
 
-export default connect(mapStateToProps)(withRouter(FormsAdd));
+export default connect(mapStateToProps)(withRouter(FormsEdit));

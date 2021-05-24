@@ -11,6 +11,7 @@ import { getDoctor } from "../../actions/doctors";
 import { isEmail } from "validator";
 import { save } from "../../actions/doctors";
 import { getRoles } from "../../actions/roles";
+import { getProvinces } from "../../actions/provinces";
 import { isDoctor, isAdmin, isCoordinator } from "../../actions/generalActions";
 
 import "../../App.css";
@@ -40,6 +41,7 @@ class DoctorEdit extends Component {
   constructor(props) {
     super(props);
     this.loadDoctor = this.loadDoctor.bind(this);
+    this.loadProvinces = this.loadProvinces.bind(this);
     this.save = this.save.bind(this);
     this.onChangeName = this.onChangeName.bind(this);
     this.onChangeLastName = this.onChangeLastName.bind(this);
@@ -52,6 +54,7 @@ class DoctorEdit extends Component {
     this.loadRoles = this.loadRoles.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleChange2 = this.handleChange2.bind(this);
+    this.handleChangeRegion = this.handleChangeRegion.bind(this);
 
     this.state = {
       email: "",
@@ -64,10 +67,13 @@ class DoctorEdit extends Component {
       longitude: 0.0,
       loading: false,
       doctor: undefined,
+      provinces: undefined,
+      provinceId: undefined,
       roles: undefined,
       asignados: [],
       seleccionado: undefined,
       desSeleccionado: undefined,
+      regionSeleccionada: undefined,
     };
   }
 
@@ -133,14 +139,39 @@ class DoctorEdit extends Component {
     });
   }
 
+  isFormValid() {
+    if (this.state.name == undefined || this.state.name.trim() == "") {
+      return false;
+    }
+    if (this.state.lastname == undefined || this.state.lastname.trim() == "") {
+      return false;
+    }
+
+    if (this.state.document == undefined || this.state.document.trim() == "") {
+      return false;
+    }
+    if (this.state.email == undefined || this.state.email.trim() == "") {
+      return false;
+    }
+
+    if (this.state.phone == undefined || this.state.phone.trim() == "") {
+      return false;
+    }
+    if (this.state.address == undefined || this.state.address.trim() == "") {
+      return false;
+    }
+
+    return true;
+  }
+
   save(e) {
     e.preventDefault();
+    this.form.validateAll();
+    if (!this.isFormValid()) return;
 
     this.setState({
       loading: true,
     });
-
-    this.form.validateAll();
 
     const { dispatch, history } = this.props;
 
@@ -158,6 +189,7 @@ class DoctorEdit extends Component {
       sex: this.state.doctor.sex,
       status: this.state.doctor.status,
       roles: this.state.asignados,
+      province: this.state.regionSeleccionada,
     };
 
     dispatch(save(data))
@@ -191,7 +223,21 @@ class DoctorEdit extends Component {
         latitude: doctor?.latitude,
         longitude: doctor?.longitude,
         asignados: doctor?.roles,
+        provinceId: doctor?.provinceId,
+        regionSeleccionada: doctor?.provinceId,
       });
+      this.loadProvinces();
+    });
+  }
+
+  loadProvinces() {
+    const { dispatch, provinces } = this.props;
+
+    dispatch(getProvinces()).then(() => {
+      this.setState({
+        provinces: provinces,
+      });
+      document.getElementById("provinces").value = this.state.provinceId;
     });
   }
 
@@ -240,6 +286,10 @@ class DoctorEdit extends Component {
 
   handleChange2(e) {
     this.setState({ desSeleccionado: e.target.value });
+  }
+
+  handleChangeRegion(e) {
+    this.setState({ regionSeleccionada: e.target.value });
   }
 
   render() {
@@ -293,7 +343,9 @@ class DoctorEdit extends Component {
               }}
             >
               <div className="form-group">
-                <label htmlFor="name">Nombre</label>
+                <label htmlFor="name">
+                  Nombre <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -307,7 +359,9 @@ class DoctorEdit extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="lastname">Apellido</label>
+                <label htmlFor="lastname">
+                  Apellido <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -323,7 +377,9 @@ class DoctorEdit extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="document">Número de Documento</label>
+                <label htmlFor="document">
+                  Número de Documento <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -339,7 +395,9 @@ class DoctorEdit extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="email">Correo</label>
+                <label htmlFor="email">
+                  Correo <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -355,7 +413,9 @@ class DoctorEdit extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="phone">Teléfono</label>
+                <label htmlFor="phone">
+                  Teléfono <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -371,7 +431,9 @@ class DoctorEdit extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="address">Dirección</label>
+                <label htmlFor="address">
+                  Dirección <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -384,6 +446,17 @@ class DoctorEdit extends Component {
                   onChange={this.onChangeAddress}
                   validations={[required]}
                 />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="provinces">Región</label>
+                <select
+                  id="provinces"
+                  name="provinces"
+                  onChange={this.handleChangeRegion}
+                >
+                  {this.state.provinces?.map(MakeItem)}
+                </select>
               </div>
 
               <div className="form-group">
@@ -507,7 +580,9 @@ class DoctorEdit extends Component {
               }}
             >
               <div className="form-group">
-                <label htmlFor="name">Nombre</label>
+                <label htmlFor="name">
+                  Nombre <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -521,7 +596,9 @@ class DoctorEdit extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="lastname">Apellido</label>
+                <label htmlFor="lastname">
+                  Apellido <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -537,7 +614,9 @@ class DoctorEdit extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="document">Número de Documento</label>
+                <label htmlFor="document">
+                  Número de Documento <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -553,7 +632,9 @@ class DoctorEdit extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="email">Correo</label>
+                <label htmlFor="email">
+                  Correo <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -569,7 +650,9 @@ class DoctorEdit extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="phone">Teléfono</label>
+                <label htmlFor="phone">
+                  Teléfono <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -585,7 +668,9 @@ class DoctorEdit extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="address">Dirección</label>
+                <label htmlFor="address">
+                  Dirección <span class="required">*</span>
+                </label>
                 <Input
                   type="text"
                   className="form-control"
@@ -598,6 +683,17 @@ class DoctorEdit extends Component {
                   onChange={this.onChangeAddress}
                   validations={[required]}
                 />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="provinces">Región</label>
+                <select
+                  id="provinces"
+                  name="provinces"
+                  onChange={this.handleChangeRegion}
+                >
+                  {this.state.provinces?.map(MakeItem)}
+                </select>
               </div>
 
               <div className="form-group">
@@ -710,10 +806,12 @@ function mapStateToProps(state) {
   const { user } = state.authentication;
   const { doctor } = state.doctor;
   const { roles } = state.roles;
+  const { provinces } = state.provinces;
   return {
     user,
     doctor,
     roles,
+    provinces,
   };
 }
 

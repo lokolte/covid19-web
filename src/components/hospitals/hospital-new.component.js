@@ -111,14 +111,39 @@ class HospitalAdd extends Component {
     });
   }
 
+  isFormValid() {
+    if (this.state.name == undefined || this.state.name.trim() == "") {
+      return false;
+    }
+    if (this.state.address == undefined || this.state.address.trim() == "") {
+      return false;
+    }
+    if (this.state.code == undefined || this.state.code.trim() == "") {
+      return false;
+    }
+    if (this.state.area == undefined || this.state.area.trim() == "") {
+      return false;
+    }
+    if (this.state.latitude == undefined || this.state.latitude.trim() == "") {
+      return false;
+    }
+    if (
+      this.state.longitude == undefined ||
+      this.state.longitude.trim() == ""
+    ) {
+      return false;
+    }
+    return true;
+  }
+
   save(e) {
     e.preventDefault();
+    this.form.validateAll();
+    if (!this.isFormValid()) return;
 
     this.setState({
       loading: true,
     });
-
-    this.form.validateAll();
 
     const { dispatch } = this.props;
 
@@ -234,7 +259,9 @@ class HospitalAdd extends Component {
             }}
           >
             <div className="form-group">
-              <label htmlFor="phone">Codigo</label>
+              <label htmlFor="phone">
+                Codigo <span class="required">*</span>
+              </label>
               <Input
                 type="text"
                 className="form-control"
@@ -250,7 +277,9 @@ class HospitalAdd extends Component {
             </div>
 
             <div className="form-group">
-              <label htmlFor="name">Nombre</label>
+              <label htmlFor="name">
+                Nombre <span class="required">*</span>
+              </label>
               <Input
                 type="text"
                 className="form-control"
@@ -277,12 +306,13 @@ class HospitalAdd extends Component {
                     : this.state.phone
                 }
                 onChange={this.onChangePhone}
-                validations={[required]}
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="address">Dirección</label>
+              <label htmlFor="address">
+                Dirección <span class="required">*</span>
+              </label>
               <Input
                 type="text"
                 className="form-control"
@@ -298,7 +328,9 @@ class HospitalAdd extends Component {
             </div>
 
             <div className="form-group">
-              <label htmlFor="area">Area</label>
+              <label htmlFor="area">
+                Area <span class="required">*</span>
+              </label>
               <Input
                 type="text"
                 className="form-control"
@@ -325,7 +357,6 @@ class HospitalAdd extends Component {
                     : this.state.director
                 }
                 onChange={this.onChangeDirector}
-                validations={[required]}
               />
             </div>
 
@@ -352,7 +383,9 @@ class HospitalAdd extends Component {
             </div>
 
             <div className="form-group">
-              <label htmlFor="latitude">Latitud</label>
+              <label htmlFor="latitude">
+                Latitud <span class="required">*</span>
+              </label>
               <Input
                 type="text"
                 className="form-control"
@@ -364,7 +397,9 @@ class HospitalAdd extends Component {
             </div>
 
             <div className="form-group">
-              <label htmlFor="longitude">Longitud</label>
+              <label htmlFor="longitude">
+                Longitud <span class="required">*</span>
+              </label>
               <Input
                 type="text"
                 className="form-control"
