@@ -8,6 +8,7 @@ import "./App.css";
 
 import Login from "./components/login.component";
 import Home from "./components/home.component";
+import Conditions from "./components/conditions.component";
 import SendEmail from "./components/send.email.component";
 import ResetPassword from "./components/reset.password.component";
 import Profile from "./components/profile.component";
@@ -64,6 +65,7 @@ class App extends Component {
           <div className="mt-3">
             <Switch>
               <Route exact path={["/", "/home"]} component={Home} />
+              <Route exact path={"/conditions"} component={Conditions} />
               <Route exact path="/answers" component={Patients} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/send-email" component={SendEmail} />

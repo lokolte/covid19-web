@@ -40,6 +40,10 @@ export default class Home extends Component {
               Para descargar la aplicación haga click{" "}
               <a href="/assets/app-release.apk">aquí.</a>
             </p>
+            <p>
+              Para para mas información vea las{" "}
+              <a href="/conditions">condiciones de servicio.</a>
+            </p>
           </div>
         </div>
       </div>
