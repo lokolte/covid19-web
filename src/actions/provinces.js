@@ -8,8 +8,8 @@ import {
 
 import service from "../services/provinces.service";
 
-export const getProvinces = () => (dispatch) => {
-  return service.getProvinces().then(
+export const getProvinces = (idPerson) => (dispatch) => {
+  return service.getProvinces(idPerson).then(
     (data) => {
       dispatch({
         type: GET_PROVINCES_SUCCESS,

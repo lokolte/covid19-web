@@ -53,6 +53,8 @@ class DoctorAdd extends Component {
     this.onChangeBirthDate = this.onChangeBirthDate.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
     this.onChangePassword2 = this.onChangePassword2.bind(this);
+    this.handleChangeRegion = this.handleChangeRegion.bind(this);
+    this.handleChangeRegion2 = this.handleChangeRegion2.bind(this);
 
     this.state = {
       email: "",
@@ -72,6 +74,9 @@ class DoctorAdd extends Component {
       birthDate: undefined,
       password: undefined,
       password2: undefined,
+      regionSeleccionada: undefined,
+      regionDesSeleccionada: undefined,
+      regionAsignados: [],
     };
   }
 
@@ -195,6 +200,8 @@ class DoctorAdd extends Component {
 
     const { dispatch } = this.props;
 
+    const provincesIds = this.state.regionAsignados.map((p) => p.id);
+
     let data = {
       name: this.state.name,
       lastname: this.state.lastname,
@@ -209,6 +216,7 @@ class DoctorAdd extends Component {
       province: this.state.provinceSelected,
       password: this.state.password,
       password2: this.state.password2,
+      provinces: provincesIds,
     };
 
     dispatch(create(data))
@@ -233,6 +241,55 @@ class DoctorAdd extends Component {
       });
       document.getElementById("provinces").value = this.state.provinceId;
     });
+  }
+
+  addItemRegion = () => {
+    if (this.state.regionAsignados == undefined) {
+      this.setState({ regionAsignados: [] });
+    }
+    var idSeleccionado = this.state.regionSeleccionada;
+    if (idSeleccionado == undefined) return;
+    var itemSeleccionado = null;
+    var reduced = this.state.provinces.reduce(function (filtered, item) {
+      if (item.id == idSeleccionado) {
+        itemSeleccionado = item;
+      } else {
+        filtered.push(item);
+      }
+      return filtered;
+    }, []);
+    if (itemSeleccionado == null) return;
+    this.setState({ provinces: reduced });
+    this.setState({
+      regionAsignados: [...this.state.regionAsignados, itemSeleccionado],
+    });
+    document.getElementById("provinces").selectedIndex = -1;
+  };
+
+  removeItemRegion = () => {
+    var idSeleccionado = this.state.regionDesSeleccionada;
+    if (idSeleccionado == undefined) return;
+    var itemSeleccionado = null;
+    var reduced = this.state.regionAsignados.reduce(function (filtered, item) {
+      if (item.id == idSeleccionado) {
+        itemSeleccionado = item;
+      } else {
+        filtered.push(item);
+      }
+      return filtered;
+    }, []);
+    if (itemSeleccionado == null) return;
+    this.setState({ regionAsignados: reduced });
+    this.setState({ provinces: [...this.state.provinces, itemSeleccionado] });
+    document.getElementById("regionAsignados").selectedIndex = -1;
+  };
+
+  handleChangeRegion(e) {
+    this.setState({ regionSeleccionada: e.target.value });
+  }
+
+  handleChangeRegion2(e) {
+    this.setState({ regionDesSeleccionada: e.target.value });
   }
 
   render() {
@@ -412,17 +469,6 @@ class DoctorAdd extends Component {
             </div>
 
             <div className="form-group">
-              <label htmlFor="provinces">Región</label>
-              <select
-                id="provinces"
-                name="provinces"
-                onChange={this.onChangeProvince}
-              >
-                {this.state.provinces?.map(MakeItem)}
-              </select>
-            </div>
-
-            <div className="form-group">
               <label htmlFor="latitude">Latitud</label>
               <Input
                 type="text"
@@ -452,6 +498,64 @@ class DoctorAdd extends Component {
                 onChange={this.onChangeLongitude}
                 validations={[required]}
               />
+            </div>
+
+            <div class="Row">
+              <div class="Column">
+                <label for="provinces">Región</label> <br />
+                <select
+                  size="15"
+                  id="provinces"
+                  name="provinces"
+                  className="selectHospitals"
+                  onChange={this.handleChangeRegion}
+                >
+                  {this.state.provinces?.map(MakeItem)}
+                </select>
+              </div>
+
+              <div class="Column">
+                <button
+                  type="button"
+                  onClick={this.addItemRegion}
+                  style={{
+                    borderRadius: "3px",
+                    border: "1px solid #808080",
+                    marginTop: "92px",
+                    marginBottom: "32px",
+                    marginLeft: "132px",
+                  }}
+                >
+                  &gt; &gt;
+                </button>
+                <br />
+                <button
+                  type="button"
+                  onClick={this.removeItemRegion}
+                  style={{
+                    borderRadius: "3px",
+                    border: "1px solid #808080",
+                    marginLeft: "132px",
+                  }}
+                >
+                  &lt; &lt;
+                </button>
+              </div>
+              <div class="Column">
+                <label for="regionAsignados">Regiones Asignadas</label> <br />
+                <select
+                  size="15"
+                  id="regionAsignados"
+                  name="regionAsignados"
+                  onChange={this.handleChangeRegion2}
+                  className="selectHospitals"
+                  style={{
+                    marginLeft: "12px",
+                  }}
+                >
+                  {this.state.regionAsignados?.map(MakeItem)}
+                </select>
+              </div>
             </div>
 
             <div className="form-group">

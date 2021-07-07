@@ -55,6 +55,7 @@ class DoctorEdit extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleChange2 = this.handleChange2.bind(this);
     this.handleChangeRegion = this.handleChangeRegion.bind(this);
+    this.handleChangeRegion2 = this.handleChangeRegion2.bind(this);
 
     this.state = {
       email: "",
@@ -74,6 +75,8 @@ class DoctorEdit extends Component {
       seleccionado: undefined,
       desSeleccionado: undefined,
       regionSeleccionada: undefined,
+      regionDesSeleccionada: undefined,
+      regionAsignados: [],
     };
   }
 
@@ -175,6 +178,8 @@ class DoctorEdit extends Component {
 
     const { dispatch, history } = this.props;
 
+    const provincesIds = this.state.regionAsignados.map((p) => p.id);
+
     let data = {
       id: this.state.doctor.id,
       name: this.state.name,
@@ -190,6 +195,7 @@ class DoctorEdit extends Component {
       status: this.state.doctor.status,
       roles: this.state.asignados,
       province: this.state.regionSeleccionada,
+      provinces: provincesIds,
     };
 
     dispatch(save(data))
@@ -224,16 +230,16 @@ class DoctorEdit extends Component {
         longitude: doctor?.longitude,
         asignados: doctor?.roles,
         provinceId: doctor?.provinceId,
-        regionSeleccionada: doctor?.provinceId,
+        regionAsignados: doctor?.provinces,
       });
-      this.loadProvinces();
+      this.loadProvinces(doctor?.id);
     });
   }
 
-  loadProvinces() {
+  loadProvinces(id) {
     const { dispatch, provinces } = this.props;
 
-    dispatch(getProvinces()).then(() => {
+    dispatch(getProvinces(id)).then(() => {
       this.setState({
         provinces: provinces,
       });
@@ -280,6 +286,47 @@ class DoctorEdit extends Component {
     document.getElementById("asignados").selectedIndex = -1;
   };
 
+  addItemRegion = () => {
+    if (this.state.regionAsignados == undefined) {
+      this.setState({ regionAsignados: [] });
+    }
+    var idSeleccionado = this.state.regionSeleccionada;
+    if (idSeleccionado == undefined) return;
+    var itemSeleccionado = null;
+    var reduced = this.state.provinces.reduce(function (filtered, item) {
+      if (item.id == idSeleccionado) {
+        itemSeleccionado = item;
+      } else {
+        filtered.push(item);
+      }
+      return filtered;
+    }, []);
+    if (itemSeleccionado == null) return;
+    this.setState({ provinces: reduced });
+    this.setState({
+      regionAsignados: [...this.state.regionAsignados, itemSeleccionado],
+    });
+    document.getElementById("provinces").selectedIndex = -1;
+  };
+
+  removeItemRegion = () => {
+    var idSeleccionado = this.state.regionDesSeleccionada;
+    if (idSeleccionado == undefined) return;
+    var itemSeleccionado = null;
+    var reduced = this.state.regionAsignados.reduce(function (filtered, item) {
+      if (item.id == idSeleccionado) {
+        itemSeleccionado = item;
+      } else {
+        filtered.push(item);
+      }
+      return filtered;
+    }, []);
+    if (itemSeleccionado == null) return;
+    this.setState({ regionAsignados: reduced });
+    this.setState({ provinces: [...this.state.provinces, itemSeleccionado] });
+    document.getElementById("regionAsignados").selectedIndex = -1;
+  };
+
   handleChange(e) {
     this.setState({ seleccionado: e.target.value });
   }
@@ -290,6 +337,10 @@ class DoctorEdit extends Component {
 
   handleChangeRegion(e) {
     this.setState({ regionSeleccionada: e.target.value });
+  }
+
+  handleChangeRegion2(e) {
+    this.setState({ regionDesSeleccionada: e.target.value });
   }
 
   render() {
@@ -446,17 +497,6 @@ class DoctorEdit extends Component {
                   onChange={this.onChangeAddress}
                   validations={[required]}
                 />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="provinces">Región</label>
-                <select
-                  id="provinces"
-                  name="provinces"
-                  onChange={this.handleChangeRegion}
-                >
-                  {this.state.provinces?.map(MakeItem)}
-                </select>
               </div>
 
               <div className="form-group">
@@ -686,17 +726,6 @@ class DoctorEdit extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="provinces">Región</label>
-                <select
-                  id="provinces"
-                  name="provinces"
-                  onChange={this.handleChangeRegion}
-                >
-                  {this.state.provinces?.map(MakeItem)}
-                </select>
-              </div>
-
-              <div className="form-group">
                 <label htmlFor="latitude">Latitud</label>
                 <Input
                   type="text"
@@ -779,6 +808,64 @@ class DoctorEdit extends Component {
                     className="selectHospitals"
                   >
                     {this.state.asignados?.map(MakeItem)}
+                  </select>
+                </div>
+              </div>
+
+              <div class="Row">
+                <div class="Column">
+                  <label for="provinces">Región</label> <br />
+                  <select
+                    size="15"
+                    id="provinces"
+                    name="provinces"
+                    className="selectHospitals"
+                    onChange={this.handleChangeRegion}
+                  >
+                    {this.state.provinces?.map(MakeItem)}
+                  </select>
+                </div>
+
+                <div class="Column">
+                  <button
+                    type="button"
+                    onClick={this.addItemRegion}
+                    style={{
+                      borderRadius: "3px",
+                      border: "1px solid #808080",
+                      marginTop: "92px",
+                      marginBottom: "32px",
+                      marginLeft: "132px",
+                    }}
+                  >
+                    &gt; &gt;
+                  </button>
+                  <br />
+                  <button
+                    type="button"
+                    onClick={this.removeItemRegion}
+                    style={{
+                      borderRadius: "3px",
+                      border: "1px solid #808080",
+                      marginLeft: "132px",
+                    }}
+                  >
+                    &lt; &lt;
+                  </button>
+                </div>
+                <div class="Column">
+                  <label for="regionAsignados">Regiones Asignadas</label> <br />
+                  <select
+                    size="15"
+                    id="regionAsignados"
+                    name="regionAsignados"
+                    onChange={this.handleChangeRegion2}
+                    className="selectHospitals"
+                    style={{
+                      marginLeft: "12px",
+                    }}
+                  >
+                    {this.state.regionAsignados?.map(MakeItem)}
                   </select>
                 </div>
               </div>

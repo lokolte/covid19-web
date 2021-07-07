@@ -5,17 +5,19 @@ import authHeader from "./auth-header";
 import { API_URL } from "../config/env.config";
 
 class ProvinceService {
-
-  getProvinces(id) {
+  getProvinces(idPerson) {
+    let url = API_URL + "/provinces";
+    if (idPerson != null && idPerson != undefined)
+      url = API_URL + "/provinces?idPerson=" + idPerson;
     return axios
-      .get(API_URL + "/provinces", {
+      .get(url, {
         headers: authHeader(),
       })
       .then((response) => {
         return response.data;
       });
   }
-  
+
   getDistricts(id) {
     return axios
       .get(API_URL + "/provinces/" + id + "/districts", {
